@@ -9,8 +9,8 @@
 
 #### Feature Branch
 
-- 브랜치 이름 : Feature/<기능명>/#<이슈번호>
-- 브랜치 이름 예시 : Feature/login/#1
+- 브랜치 이름 : feature/<기능명>/#<이슈번호>
+- 브랜치 이름 예시 : feature/login/#1
 - 기능 개발, 오류 수정 등에 사용되는 브랜치입니다.
 
 ## Git Commit Message Convention
