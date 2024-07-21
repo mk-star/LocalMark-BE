@@ -29,3 +29,24 @@ export const letterResponseDTO = (data) => {
 const formatDate = (date) => {
     return new Intl.DateTimeFormat('kr').format(new Date(date)).replaceAll(" ", "").slice(0, -1);
 }
+
+// 이벤트 목록 조회
+export const eventlistResponseDTO = (data) => {
+
+    const events = [];
+
+    for (let i = 0; i < data.length; i++) {
+        events.push({
+            "event_id": data[i].event_id,
+            "region_id": data[i].region_id,
+            "region_name": data[i].region_name,
+            "title": data[i].title,
+            "thumbnail_url": data[i].thumbnail_url,
+            "created_date": formatDate(data[i].created_date),
+            "start_date": formatDate(data[i].start_date),
+            "end_date": formatDate(data[i].end_date)
+        })
+    }
+
+    return {"events": events};
+}

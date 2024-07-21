@@ -79,3 +79,56 @@ paths:
                     "content": "설명 어쩌구"
                   }
                 }
+  /morelocal/events:
+    get:
+      tags:
+        - More Local
+      summary: 이벤트 목록 조회
+      parameters:
+        - name: regionId
+          in: query
+          schema:
+            type: integer
+            description: 지역 id
+          required: false
+      responses:
+        '200':
+          description: 이벤트 목록 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "events": [
+                    {
+                      "event_id": 1,
+                      "region_id": 0,
+                      "region_name": "서울",
+                      "title": "푸른 어쩌구",
+                      "thumbnail_url": "https://image.png",
+                      "created_date": "2024.7.21",
+                      "start_date": "2024.7.21",
+                      "end_date": "2024.7.21"
+                    },
+                    {
+                      "event_id": 2,
+                      "region_id": 0,
+                      "region_name": "서울",
+                      "title": "봄날 어쩌구",
+                      "thumbnail_url": "https://image.png",
+                      "created_date": "2024.7.21",
+                      "start_date": "2024.7.21",
+                      "end_date": "2024.7.21"
+                    }
+                  ]
+                }
