@@ -30,4 +30,3 @@ export const removeProduct = async (req, res, next) => {
 
   res.send(response(status.SUCCESS, await deleteProductById(req.params.id)));
 };
-module.exports = { uploadProduct, modifyProduct, removeProduct };
