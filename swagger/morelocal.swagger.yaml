@@ -132,3 +132,45 @@ paths:
                     }
                   ]
                 }
+  /morelocal/events/{eventId}:
+    get:
+      tags:
+        - More Local
+      summary: 이벤트 상세 조회
+      parameters:
+        - name: eventId
+          in: path
+          schema:
+            type: integer
+            description: 이벤트 id
+          required: true
+      responses:
+        '200':
+          description: 이벤트 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "event": {
+                    "event_id": 1,
+                    "region_id": 0,
+                    "region_name": "서울",
+                    "title": "푸른 하늘",
+                    "thumbnail_url": "https://image.png",
+                    "created_date": "2024.7.21",
+                    "start_date": "2024.7.21",
+                    "end_date": "2024.7.21",
+                    "content": "설명 어쩌구"
+                  }
+                }

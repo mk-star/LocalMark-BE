@@ -19,9 +19,7 @@ export const letterlistResponseDTO = (data) => {
 // 로컬레터 상세 조회
 export const letterResponseDTO = (data) => {
 
-    console.log("dto data", data[0]);
     data[0].created_date = formatDate(data[0].created_date)
-
 
     return {"letter": data[0]};
 }
@@ -49,4 +47,14 @@ export const eventlistResponseDTO = (data) => {
     }
 
     return {"events": events};
+}
+
+// 이벤트 상세 조회
+export const eventResponseDTO = (data) => {
+
+    data[0].created_date = formatDate(data[0].created_date)
+    data[0].start_date = formatDate(data[0].start_date)
+    data[0].end_date = formatDate(data[0].end_date)
+
+    return {"event": data[0]};
 }

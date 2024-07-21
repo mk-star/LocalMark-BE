@@ -1,5 +1,5 @@
 import { pool } from "../../config/db.config.js";
-import { getLetterList, getLetterInfo, getEventList, getEventListByRegion } from "./morelocal.sql.js";
+import { getLetterList, getLetterInfo, getEventList, getEventListByRegion, getEventInfo } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -20,8 +20,6 @@ export const getLetterDetail = async (letterId) => {
     try {
         const conn = await pool.getConnection();
         const letter = await pool.query(getLetterInfo, letterId);
-
-        console.log("dao letter", letter[0]);
 
         conn.release();
         return letter[0];
@@ -47,6 +45,20 @@ export const getEvents = async (regionId) => {
             conn.release();
             return events;
         }
+        
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+// 이벤트 상세 조회
+export const getEventDetail = async (eventId) => {
+    try {
+        const conn = await pool.getConnection();
+        const event = await pool.query(getEventInfo, eventId);
+
+        conn.release();
+        return event[0];
         
     } catch (err) {
         throw new Error(err.message)
