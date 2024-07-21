@@ -1,6 +1,7 @@
 import { pool } from "../../config/db.config.js";
-import { getGalleryCnt, getGalleryByKeywordCnt, getGalleryList, getGalleryByKeyword } from "./gallery.sql.js";
+import { getGalleryCnt, getGalleryByKeywordCnt, getGalleryList, getGalleryByKeyword, getProductInfo, getProductColor, getProductSize } from "./gallery.sql.js";
 
+// 제품 갤러리 목록 조회/검색
 export const getGellery = async (regionId, categoryId, page, keyword) => {
 
     try {
@@ -27,5 +28,47 @@ export const getGellery = async (regionId, categoryId, page, keyword) => {
         }
     } catch (err) {
         throw new Error(err.message);
+    }
+}
+
+// 제품 상세 페이지 조회
+export const getProduct = async (productId) => {
+    try {
+        const conn = await pool.getConnection();
+        const [product] = await pool.query(getProductInfo, productId);
+
+        conn.release();
+        return product;
+        
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+// 제품 상세 페이지 색상 목록 조회
+export const getColor = async (productId) => {
+    try {
+        const conn = await pool.getConnection();
+        const [color] = await pool.query(getProductColor, productId);
+
+        conn.release();
+        return color;
+        
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+// 제품 상세 페이지 색상 목록 조회
+export const getSize = async (productId) => {
+    try {
+        const conn = await pool.getConnection();
+        const [size] = await pool.query(getProductSize, productId);
+
+        conn.release();
+        return size;
+        
+    } catch (err) {
+        throw new Error(err.message)
     }
 }

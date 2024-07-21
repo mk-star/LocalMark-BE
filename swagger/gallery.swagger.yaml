@@ -72,3 +72,56 @@ paths:
                   "currentPage" : 1,
                   "totalPage" : 5
                 }
+  /gallery/product/{productId}:
+    get:
+      tags:
+        - Gallery
+      summary: 제품 상세 페이지 조회
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+            description: 제품 id
+          required: true
+      responses:
+        '200':
+          description: 제품 상세 페이지 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "product": [
+                    {
+                      "product_id": 1,
+                      "brand_id": 1,
+                      "product_name": "이불",
+                      "brand_name": "푸른",
+                      "region": "서울",
+                      "price": 12000,
+                      "discount_rate": 30,
+                      "delivery_fee": 3000,
+                      "description": "따스한 ~~ "
+                    }
+                  ],
+                  "colors": [
+                    "핑크",
+                    "레드"
+                  ],
+                  "sizes": [
+                    "s",
+                    "m",
+                    "l"
+                  ]
+                }

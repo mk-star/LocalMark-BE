@@ -59,3 +59,39 @@ WHERE r.id = ?
   AND pc.category_id = ?
   AND p.name LIKE ?
 LIMIT ? OFFSET ?;`
+
+// 제품 상세 페이지 조회
+export const getProductInfo = `
+SELECT
+    p.id as product_id,
+    b.id as brand_id,
+    p.name as product_name,
+    b.name as brand_name,
+    r.name as region,
+    p.price,
+    p.discount_rate,
+    p.delivery_fee,
+    p.description
+FROM product p
+    JOIN brand b on b.id = p.brand_id
+    JOIN region r on r.id = b.region_id
+WHERE p.id = ?;
+`
+
+// 제품 상세 페이지 색상 목록
+export const getProductColor = `
+SELECT
+    c.name
+FROM color c
+JOIN product p on p.id = c.product_id
+WHERE p.id = ?;
+`
+
+// 제품 상세 페이지 사이즈 목록
+export const getProductSize = `
+SELECT
+    s.size
+FROM size s
+JOIN product p on p.id = s.product_id
+WHERE p.id = ?;
+`
