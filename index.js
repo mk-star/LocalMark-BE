@@ -4,6 +4,8 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
 
+import { morelocalRouter } from './src/routes/morelocal.routes.js';
+
 //서버 가동
 dotenv.config();
 const app = express();
@@ -14,6 +16,9 @@ app.use(cors()); // cors 방식 허용
 app.use(express.static("public")); // 정적 파일 접근
 app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함
 app.use(express.urlencoded({ extended: false }));
+
+
+app.use('/morelocal', morelocalRouter);
 
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
