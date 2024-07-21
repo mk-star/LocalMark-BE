@@ -1,5 +1,5 @@
 import { pool } from "../../config/database.js";
-import { status } from "../../config/baseResponseStatus.js";
+import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
 import {
   confirmBrand,

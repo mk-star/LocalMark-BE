@@ -1,5 +1,5 @@
 import { response } from "../../config/response.js";
-import { status } from "../../config/baseResponseStatus.js";
+import { status } from "../../config/response.status.js";
 import {
   createProduct,
   updateProductDetails,

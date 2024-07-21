@@ -1,5 +1,5 @@
 import { BaseError } from "../../config/error.js";
-import { status } from "../../config/baseResponseStatus.js";
+import { status } from "../../config/response.status.js";
 import {
   addProduct,
   addCategoryToProduct,
