@@ -16,6 +16,16 @@ export const letterlistResponseDTO = (data) => {
     return {"letters": letters};
 }
 
+// 로컬레터 상세 조회
+export const letterResponseDTO = (data) => {
+
+    console.log("dto data", data[0]);
+    data[0].created_date = formatDate(data[0].created_date)
+
+
+    return {"letter": data[0]};
+}
+
 const formatDate = (date) => {
     return new Intl.DateTimeFormat('kr').format(new Date(date)).replaceAll(" ", "").slice(0, -1);
 }
