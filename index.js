@@ -1,8 +1,10 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import swaggerUi from "swagger-ui-express";
-import specs from "./config/swagger.config.js";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const specs = require("./config/swagger.config");
+
+// import문으로 변경 예정
 import { productRouter } from "./src/routes/product.route.js";
 
 //서버 가동
