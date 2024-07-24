@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
+const userRouter = require("./src/routes/user.route");
 
 //서버 가동
 dotenv.config();
@@ -21,6 +22,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
+app.use('/users', userRouter);
 
 app.listen(app.get("port"), () => {
   console.log(`Example app listening on port ${app.get("port")}`);
