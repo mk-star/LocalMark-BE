@@ -1,27 +1,17 @@
-import { addBrand, getBrand, upBrand } from "./brandDAO";
+const BrandDAO = require('../models/brand.dao');
+const BrandDto = require('../dtos/brand.dto');
 
-export const createBrandC = async (body, userId) => {
-    const createBrandData = await addBrand({
-        'id':body.id,
-        'user_id':userId,
-        'region_id':body.region_id,
-        'name':body.name,
-        'brand_url':body.brand_url,
-        'description':body.description,
-        'brand_image':body.brand_image,
-        'business_name':body.business_name,
-        'business_registration_number':body.business_registration_number,
-        'contact':body.contact,
-    });
-    // user_id 겹치는지 예외처리 코드 추가
-    return getBrand(createBrandData)
-}
-
-export const updateBrandC = async (userId, brandId, brandData) =>{
-    const brand = await getBrand(brandId);
-    if (brand.user_id !== userId) {
-        throw new Error('You do not have permission to update this brand.');
+class BrandService {
+    static async createBrand(brandData) {
+        const createBrandDto = new BrandDto(brandData);
+        const newBrand = await BrandDAO.createBrand(createBrandDto);
+        return newBrand;
     }
-    const updatedBrand = await upBrand(brandId, brandData);
-    return updatedBrand;
+    static async updateBrand(brandId, brandData) {
+        const updateBrandDto = new BrandDto(brandData);
+        const updatedBrand = await BrandDAO.updateBrand(brandId, updateBrandDto);
+        return updatedBrand;
+    }
 }
+
+module.exports = BrandService;

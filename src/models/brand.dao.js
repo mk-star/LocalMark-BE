@@ -1,70 +1,47 @@
-import { pool } from '../../config/database.js';
-import { insertBrandSql,  getBrandID, upBrandSql } from './brandSQL';
+const { pool } = require('../../config/database');
 
-export const addBrand = async (data) => {
-    try{
-        const conn = await pool.getConnection();
-
-        // user_id 겹치는지 확인 추가
-        const result = await pool.query(insertBrandSql, [data.id, data.user_id, data.region_id, data.name, data.brand_url, data.description, data.brand_image, data.business_name, data.business_registration_number, data.contact]);
-
-        conn.release();
-        return result[0].insertId;
-    }catch (err) {
-        throw new Error(err.message);
+class BrandDAO {
+    static async createBrand(brandData) {
+        const sql = `
+            INSERT INTO Brand (
+                user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        const values = [
+            brandData.user_id, brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+            brandData.brand_image, brandData.business_name, brandData.business_registration_number, brandData.contact
+        ];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, values, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+    static async updateBrand(brandId, brandData) {
+        const sql = `
+            UPDATE Brand SET
+                region_id = ?, name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ? AND user_id = ?
+        `;
+        const values = [
+            brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+            brandData.brand_image, brandData.business_name, brandData.business_registration_number,
+            brandData.contact, brandId, brandData.user_id
+        ];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, values, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
     }
 }
 
-
-// 브랜드 정보 얻기
-export const getBrand = async (id) => {
-    try {
-        const conn = await pool.getConnection();
-        const [brand] = await pool.query(getBrandID, id);
-
-        console.log(brand);
-
-        if(user.length == 0){
-            return -1;
-        }
-
-        conn.release();
-        return brand;
-
-    } catch (err) {
-        throw new Error(err.message);
-    }
-}
-
-// 브랜드 정보 업데이트
-export const upBrand = async (brandId, brandData)=>{
-    const {
-        region_id,
-        name,
-        brand_url,
-        description,
-        brand_image,
-        business_name,
-        business_registration_number,
-        contact
-    } = brandData;
-
-    const conn = await pool.getConnection();
-
-    try {
-        const result = await pool.query(upBrandSql, [
-            region_id,
-            name,
-            brand_url,
-            description,
-            brand_image,
-            business_name,
-            business_registration_number,
-            contact,
-            brandId
-        ]);
-        return result.rows[0];
-    } catch (err) {
-        throw new Error(err.message);
-    }
-}
+module.exports = BrandDAO;

@@ -1,19 +1,30 @@
-import { createBrandC, updateBrandC  } from './brandService';
-import { response } from '../../config/response';
-import { successStatus } from '../../config/successStatus';
+const BrandService = require('../services/brand.service');
+const { response, errResponse } = require('../../config/response');
 
-export const createBrand = async (req, res, next) =>{
-    console.log(req.body);
-    //const userId = req.currentUserId;
-    const userId = 'unhi';
-    res.send(response(successStatus.SUCCESS, await createBrandC(req.body, userId)))
+class BrandController {
+    static async createBrand(req, res) {
+        try {
+            const brandData = req.body;
+            // brandData.user_id = req.userId;
+            brandData.user_id = 1;
+            const newBrand = await BrandService.createBrand(brandData);
+            return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Brand created successfully' }, newBrand));
+        } catch (error) {
+            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+        }
+    }
+    static async updateBrand(req, res) {
+        try {
+            const brandId = req.params.id;
+            const brandData = req.body;
+            // brandData.user_id = req.userId;
+            brandData.user_id = 1;
+            const updatedBrand = await BrandService.updateBrand(brandId, brandData);
+            return res.status(200).json(response({ isSuccess: true, code: 200, message: 'Brand updated successfully' }, updatedBrand));
+        } catch (error) {
+            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+        }
+    }
 }
 
-export const updateBrand = async (req, res, next) =>{
-    const brandId = req.params.id;
-    const brandData = req.body;
-    //const userId = req.currentUserId;
-    const userId = 'unhi';
-    const updatedBrand = await updateBrandC(userId, brandId, brandData);
-    res.send(response(successStatus.SUCCESS, updatedBrand))
-}
+module.exports = BrandController;
