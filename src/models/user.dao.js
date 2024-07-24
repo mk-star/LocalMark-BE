@@ -1,4 +1,4 @@
-const { pool } = require('../../config/dbConnect');
+const { pool } = require('../../config/database');
 
 class UserDAO {
     static async findByEmail(email) {
