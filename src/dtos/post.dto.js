@@ -1,7 +1,8 @@
-export const previewPostsResponseDTO = (data) => {
+export const postsResponseDTO = (data) => {
     const posts = [];
 
     for (let i = 0; i < data.length; i++) {
+
         posts.push({
             "post_id": data[i].id,
             "user_id": data[i].user_id,
@@ -12,10 +13,19 @@ export const previewPostsResponseDTO = (data) => {
             "created_date": formatDate(data[i].created_date),
             "modified_date": formatDate(data[i].modified_date)
         })
+        
     }
 
     return {"postData": posts};
 
+}
+
+export const postDetailResponseDTO = (data) => {
+
+    console.log("post detail", data[0]);
+    data[0].created_date = formatDate(data[0].created_date);
+
+    return {"post": data[0]}; 
 }
 
 const formatDate = (date) => {
