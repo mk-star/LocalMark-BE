@@ -1,14 +1,20 @@
 import { pool } from "../../config/db.config.js";
-import { getLetterList, getLetterInfo, getEventList, getEventListByRegion, getEventInfo } from "./morelocal.sql.js";
+import { getLetterList, getLetterListByRegion, getLetterInfo, getEventList, getEventListByRegion, getEventInfo } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
-export const getLetters = async () => {
+export const getLetters = async (regionId) => {
     try {
         const conn = await pool.getConnection();
-        const [letters] = await pool.query(getLetterList);
+        if(regionId == "undefined" || typeof regionId == "undefined" || regionId == null){
+            const [letters] = await pool.query(getLetterList);
+            conn.release();
+            return letters;
+        } else {
+            const [letters] = await pool.query(getLetterListByRegion, regionId);
 
-        conn.release();
-        return letters;
+            conn.release();
+            return letters;
+        }
         
     } catch (err) {
         throw new Error(err.message)

@@ -5,6 +5,13 @@ paths:
       tags:
         - More Local
       summary: 로컬레터 목록 조회
+      parameters:
+        - name: regionId
+          in: query
+          schema:
+            type: integer
+            description: 지역 id
+          required: false
       responses:
         '200':
           description: 로컬레터 목록 조회 성공

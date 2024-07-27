@@ -9,6 +9,18 @@ SELECT
 FROM letter;
 `
 
+// 로컬레터 목록 조회 (지역 필터링)
+export const getLetterListByRegion = `
+SELECT
+    id as letter_id,
+    category,
+    title,
+    thumbnail_url,
+    created_date
+FROM letter
+WHERE r.id = ?;
+`
+
 // 로컬레터 상세 조회
 export const getLetterInfo = `
 SELECT
