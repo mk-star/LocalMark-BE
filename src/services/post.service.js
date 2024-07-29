@@ -6,4 +6,13 @@ export const addPostInfo =async (body) =>{
 
   const result = await addPost(userId, category, title, image, type, content);
   return result
+
+export const getPostsByCategory = async(category, page) => {
+
+    try {
+        
+    } catch (error) {
+        
+    }
+
 }
