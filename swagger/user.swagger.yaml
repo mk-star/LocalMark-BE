@@ -1,5 +1,5 @@
 paths:
-  /users/register:
+  /users/signup:
     post:
       tags:
         - User
