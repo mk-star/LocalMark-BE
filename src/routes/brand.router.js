@@ -3,6 +3,6 @@ const BrandController = require('../controllers/brand.controller');
 const brandRouter = express.Router();
 
 brandRouter.post('', BrandController.createBrand);
-brandRouter.put('/:id', BrandController.updateBrand); // login_required 추가
+brandRouter.patch('/:id', BrandController.updateBrand); // login_required 추가
 
 module.exports = brandRouter;

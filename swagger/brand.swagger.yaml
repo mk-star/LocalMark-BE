@@ -1,0 +1,231 @@
+paths:
+  /brand:
+    post:
+      tags:
+        - Brand
+      summary: 브랜드 등록
+      parameters:
+        - name: createBrand
+          in: body
+          required: true
+          schema:
+            properties:
+                region_id:
+                  type: integer
+                  description: 지역 id
+                  example: 1
+                user_id:
+                  type: integer
+                  description: 회원 id
+                  example: 1
+                name:
+                  type: string
+                  description: 브랜드명
+                  example: lodge
+                brand_url:
+                  type: string
+                  description: 브랜드 url
+                  example: https://example.com
+                description:
+                  type: string
+                  description: 브랜드 설명
+                  example: This is an example brand description.
+                brand_image:
+                  type: string
+                  description: 대표 이미지
+                  example: https://example.com/image.png
+                business_name:
+                  type: string
+                  description: 사업자명
+                  example: Example Business
+                business_registration_number:
+                  type: integer
+                  description: 사업자 등록번호
+                  example: 123456
+                contact:
+                  type: string
+                  description: 담당자 연락처
+                  example: example@example.com
+      responses:
+        "201":
+          description: 브랜드 등록 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: Brand registered successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: lodge
+        "400":
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        "500":
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /brand/{id}:
+    patch:
+      tags:
+        - Brand
+      summary: 브랜드 정보 수정
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: updateBrand
+          in: body
+          required: true
+          schema:
+            properties:
+                name:
+                  type: string
+                  description: 브랜드명
+                  example: updatedExample444
+                region_id:
+                  type: integer
+                  description: 지역 id
+                  example: 1
+                brand_url:
+                  type: string
+                  description: 브랜드 URL
+                  example: https://example.com
+                description:
+                  type: string
+                  description: 브랜드 설명
+                  example: This is an example brand description.
+                brand_image:
+                  type: string
+                  description: 브랜드 이미지
+                  example: https://example.com/image.png
+                business_name:
+                  type: string
+                  description: 사업자명
+                  example: Example Business
+                business_registration_number:
+                  type: integer
+                  description: 사업자등록번호
+                  example: 1111111111
+                contact:
+                  type: string
+                  description: 담당처 연락처
+                  example: example@example.com
+      responses:
+        200:
+          description: 브랜드 정보 수정 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: Brand information updated successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: user@example.com
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.

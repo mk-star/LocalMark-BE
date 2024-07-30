@@ -5,18 +5,19 @@ const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
 const brandRouter = require("./src/routes/brand.router");
 
-//서버 가동
+
+// 서버 가동
 dotenv.config();
 const app = express();
 
-// server setting
-app.set("port", process.env.PORT || 3000); // 서버 포트 지정
-app.use(cors()); // cors 방식 허용
-app.use(express.static("public")); // 정적 파일 접근
-app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함
+// 서버 설정
+app.set("port", process.env.PORT || 3000);
+app.use(cors());
+app.use(express.static("public"));
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// swagger
+// Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.get("/", (req, res) => {
