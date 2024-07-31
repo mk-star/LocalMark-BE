@@ -3,8 +3,10 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
-// const { postRouter, postsRouter } = require("./src/routes/post.route");
+
+const { postRouter, postsRouter } = require("./src/routes/post.route");
 const userRouter = require("./src/routes/user.route");
+const mypageRouter = require("./src/routes/mypage.route");
 
 //서버 가동
 dotenv.config();
@@ -24,8 +26,9 @@ app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
 app.use('/users', userRouter);
+app.use('/mypage', mypageRouter);
 
-// app.use('/posts', postsRouter);
+app.use('/posts', postsRouter);
 
 app.listen(app.get("port"), () => {
   console.log(`Example app listening on port ${app.get("port")}`);
