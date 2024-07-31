@@ -12,7 +12,7 @@ export const addPost = async(userId, category, title, image, type, content)=> {
   }catch(err){
     console.log(`DB 저장 실패 ${err.message}`)
   }
-
+}
 export const getPreviewPostsByCategory = async(category, page) => {
 
     try {

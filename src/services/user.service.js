@@ -4,6 +4,10 @@ const UserDTO = require('../dtos/user.dto');
 
 class UserService {
     static async registerUser(userData) {
+        const existingUserByID = await UserDAO.findByID(userData.id);
+        if (existingUserByID) {
+            throw new Error('This id is already in use.');
+        }
         const existingUser = await UserDAO.findByEmail(userData.email);
         if (existingUser) {
             throw new Error('This email is already in use.');
@@ -16,8 +20,8 @@ class UserService {
             status: 'active'
         });
 
-        const userId = await UserDAO.createUser(userDTO);
-        return { userId, ...userDTO };
+        await UserDAO.createUser(userDTO);
+        return {  ...userData };
     }
 }
 

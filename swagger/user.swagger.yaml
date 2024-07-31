@@ -10,6 +10,10 @@ paths:
           required: true
           schema:
             properties:
+                id:
+                  type: string
+                  description: 아이디
+                  examples: exampleId
                 email:
                   type: string
                   description: 이메일
