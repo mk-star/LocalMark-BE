@@ -1,6 +1,20 @@
 const bcrypt = require('bcrypt');
 const UserDAO = require('../models/user.dao');
 const UserDTO = require('../dtos/user.dto');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_SERVICE,
+    port: process.env.EMAIL_PORT,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+});
 
 class UserService {
     static async registerUser(userData) {
@@ -22,6 +36,24 @@ class UserService {
 
         await UserDAO.createUser(userDTO);
         return {  ...userData };
+    }
+    static async findUsernameByEmail(email){
+        try {
+            const user = await UserDAO.getUsernameByEmail(email);
+            if (user) {
+              const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'Your Account Username',
+                text: `Your username is: ${user.id}`
+              };
+              await transporter.sendMail(mailOptions);
+              return user;
+            }
+            return false;
+        } catch (error) {
+        throw error;
+        }
     }
 }
 

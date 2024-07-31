@@ -6,7 +6,6 @@ const specs = require("./config/swagger.config");
 
 const { postRouter, postsRouter } = require("./src/routes/post.route");
 const userRouter = require("./src/routes/user.route");
-const mypageRouter = require("./src/routes/mypage.route");
 
 //서버 가동
 dotenv.config();
@@ -26,7 +25,6 @@ app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
 app.use('/users', userRouter);
-app.use('/mypage', mypageRouter);
 
 app.use('/posts', postsRouter);
 
