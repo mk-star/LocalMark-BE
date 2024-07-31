@@ -1,12 +1,10 @@
 class UserDTO {
-    constructor({ id, email, password, name, nickname, phone, birth, type, status }) {
-        this.id = id;
+    constructor({ loginId, email, password, name, nickname, type, status }) {
+        this.loginId = loginId;
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
-        this.phone = phone;
-        this.birth = birth;
         this.type = type;
         this.status = status;
     }

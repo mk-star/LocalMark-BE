@@ -10,35 +10,22 @@ paths:
           required: true
           schema:
             properties:
-                id:
+                loginId:
                   type: string
                   description: 아이디
                   examples: exampleId
                 email:
                   type: string
                   description: 이메일
-                  example: user@example.com
+                  example: user@naver.com
                 password:
                   type: string
                   description: 비밀번호
                   example: password123
-                name:
-                  type: string
-                  description: 이름
-                  example: 홍길동
                 nickname:
                   type: string
                   description: 닉네임
                   example: 길동이
-                phone:
-                  type: string
-                  description: 전화번호
-                  example: 010-1234-5678
-                birth:
-                  type: string
-                  format: date
-                  description: 생년월일
-                  example: 1990-01-01
                 type:
                   type: string
                   description: 유저 타입(일반, 판매자)

@@ -29,10 +29,10 @@ class UserDAO {
     static async createUser(user) {
         return new Promise((resolve, reject) => {
             const sql = `
-                INSERT INTO User (id, email, password, name, nickname, phone, birth, type, status, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
             `;
-            const values = [user.id, user.email, user.password, user.name, user.nickname, user.phone, user.birth, user.type, user.status];
+            const values = [user.loginId, user.email, user.password, user.nickname, user.type, user.status];
             pool.query(sql, values, (error, results) => {
                 if (error) {
                     reject(error);
