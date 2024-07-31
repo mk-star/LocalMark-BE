@@ -22,7 +22,7 @@ exports.findUsernameByEmail = async (email) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'Your Account Username',
-        text: `Your username is: ${user.nickname}`
+        text: `Your username is: ${user.id}`
       };
       await transporter.sendMail(mailOptions);
       return user;
