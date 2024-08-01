@@ -53,7 +53,7 @@ class UserService {
             }
             return false;
         } catch (error) {
-            throw error;
+          throw error;
         }
     }
     static async getOrders(user_id){
@@ -64,9 +64,17 @@ class UserService {
         throw error;
       }
     }
-    static async getOrderItems(ids){
+    static async getOrderItemNumber(ids){
       try{
-        const items = await UserDAO.getOrderItemsByIDs(ids);
+        const itemNumber = await UserDAO.getOrderItemNumberByIDs(ids);
+        return itemNumber;
+      }catch (error) {
+        throw error;
+      }
+    }
+    static async getOrderItems(itemNumber){
+      try{
+        const items = await UserDAO.getOrderItems(itemNumber);
         return items;
       }catch (error) {
         throw error;

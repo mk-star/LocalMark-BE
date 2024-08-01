@@ -64,6 +64,7 @@ class UserDAO {
                     return reject(err);
                 }
                 if (results.length > 0) {
+                    console.log('1111', results);
                     const ids = results.map(order => order.id);
                     resolve(ids);
                 } else {
@@ -72,18 +73,35 @@ class UserDAO {
             })
         })
     }
-    static async getOrderItemsByIDs(ids) {
+    static async getOrderItemNumberByIDs(ids) {
         return new Promise((resolve, reject) => {
             const placeholders = ids.map(() => '?').join(',');
-            const query = `SELECT * FROM Order_Item WHERE order_id IN (${placeholders})`;
+            const query = `SELECT product_id FROM Order_Item WHERE order_id IN (${placeholders})`;
             pool.query(query, ids, (error, results) => {
                 if (error) {
                     reject(error);
+                }
+                if (results.length > 0) {
+                    const ids = results.map(order => order.product_id);
+                    resolve(ids);
                 } else {
-                    resolve(results);
+                    resolve(null);
                 }
             });
         });
+    }
+    static async getOrderItems(itemNumber){
+        return new Promise((resolve, reject) =>{
+            const placeholders = itemNumber.map(() => '?').join(',');
+            const query = `SELECT * FROM Product WHERE id IN (${placeholders})`;
+            pool.query(query, itemNumber, (error, results) => {
+                if(error) {
+                    reject(error);
+                }else{
+                    resolve(results);
+                }
+            });
+        })
     }
 }
 

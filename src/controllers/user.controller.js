@@ -29,8 +29,9 @@ class UserController {
         try{
             const ids = await UserService.getOrders(user_id);
             if (ids) {
-                const items = await UserService.getOrderItems(ids);
-                return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Orders are found' }, items));
+                const itemNumber = await UserService.getOrderItemNumber(ids);
+                const items = await UserService.getOrderItems(itemNumber);
+                return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Order items are found' }, items));
             } else {
                 return res.status(201).json(response({ isSuccess: true, code: 201, message: 'No orders' }));
             }
