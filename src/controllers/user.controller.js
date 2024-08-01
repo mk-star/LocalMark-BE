@@ -1,5 +1,5 @@
-const UserService = require('../services/user.service');
-const { response, errResponse } = require('../../config/response');
+import UserService from '../services/user.service.js';
+import { response, errResponse } from '../../config/response.js';
 
 class UserController {
     static async registerUser(req, res, next) {
@@ -24,5 +24,20 @@ class UserController {
             res.status(500).send(error.message);
         }
     }
+    static async getOrderItems(req, res){
+        const user_id = 1;
+        try{
+            const ids = await UserService.getOrders(user_id);
+            if (ids) {
+                const items = await UserService.getOrderItems(ids);
+                return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Orders are found' }, items));
+            } else {
+                return res.status(201).json(response({ isSuccess: true, code: 201, message: 'No orders' }));
+            }
+        }catch(error){
+            res.status(500).send(error.message);
+        }
+    }
 }
-module.exports = UserController;
+
+export default UserController;

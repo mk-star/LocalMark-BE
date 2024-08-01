@@ -3,9 +3,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
-
+const { userRouter } = require("./src/routes/user.route");
 const { postRouter, postsRouter } = require("./src/routes/post.route");
-const userRouter = require("./src/routes/user.route");
 
 //서버 가동
 dotenv.config();

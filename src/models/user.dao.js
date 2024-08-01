@@ -1,4 +1,4 @@
-const { pool } = require('../../config/database');
+import { pool } from '../../config/database.js';
 
 class UserDAO {
     static async findByID(id) {
@@ -13,6 +13,7 @@ class UserDAO {
             });
         });
     }
+
     static async findByEmail(email) {
         return new Promise((resolve, reject) => {
             const sql = `SELECT * FROM User WHERE email = ?`;
@@ -56,6 +57,34 @@ class UserDAO {
             });
         });
     }
+    static async getOrdersByID(user_id){
+        return new Promise((resolve, reject)=>{
+            pool.query('SELECT id FROM Orders WHERE user_id = ? AND status = "COMPLETE"', [user_id], (err, results)=>{
+                if(err){
+                    return reject(err);
+                }
+                if (results.length > 0) {
+                    const ids = results.map(order => order.id);
+                    resolve(ids);
+                } else {
+                    resolve(null);
+                }
+            })
+        })
+    }
+    static async getOrderItemsByIDs(ids) {
+        return new Promise((resolve, reject) => {
+            const placeholders = ids.map(() => '?').join(',');
+            const query = `SELECT * FROM Order_Item WHERE order_id IN (${placeholders})`;
+            pool.query(query, ids, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
 }
 
-module.exports = UserDAO;
+export default UserDAO;
