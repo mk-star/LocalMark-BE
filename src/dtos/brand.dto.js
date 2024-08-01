@@ -12,4 +12,4 @@ class BrandDto {
     }
 }
 
-module.exports = BrandDto;
+export default BrandDto;

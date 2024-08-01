@@ -1,5 +1,5 @@
-const BrandDAO = require('../models/brand.dao');
-const BrandDto = require('../dtos/brand.dto');
+import BrandDAO from '../models/brand.dao.js';
+import BrandDto from '../dtos/brand.dto.js';
 
 class BrandService {
     static async createBrand(brandData) {
@@ -7,6 +7,7 @@ class BrandService {
         const newBrand = await BrandDAO.createBrand(createBrandDto);
         return newBrand;
     }
+
     static async updateBrand(brandId, brandData) {
         const updateBrandDto = new BrandDto(brandData);
         const updatedBrand = await BrandDAO.updateBrand(brandId, updateBrandDto);
@@ -14,4 +15,4 @@ class BrandService {
     }
 }
 
-module.exports = BrandService;
+export default BrandService;

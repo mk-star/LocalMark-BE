@@ -1,4 +1,4 @@
-const { pool } = require('../../config/database');
+import { pool } from '../../config/database.js';
 
 class BrandDAO {
     static async createBrand(brandData) {
@@ -21,6 +21,7 @@ class BrandDAO {
             });
         });
     }
+
     static async updateBrand(brandId, brandData) {
         const sql = `
             UPDATE Brand SET
@@ -44,4 +45,4 @@ class BrandDAO {
     }
 }
 
-module.exports = BrandDAO;
+export default BrandDAO;
