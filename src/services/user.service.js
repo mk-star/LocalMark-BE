@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const UserDAO = require('../models/user.dao');
-const UserDTO = require('../dtos/user.dto');
+import bcrypt from 'bcrypt';
+import UserDAO from '../models/user.dao.js';
+import UserDTO from '../dtos/user.dto.js';
 
 class UserService {
     static async registerUser(userData) {
@@ -21,8 +21,8 @@ class UserService {
         });
 
         await UserDAO.createUser(userDTO);
-        return {  ...userData };
+        return { ...userData };
     }
 }
 
-module.exports = UserService;
+export default UserService;

@@ -1,4 +1,4 @@
-const { pool } = require('../../config/database');
+import { pool } from '../../config/database.js';
 
 class UserDAO {
     static async findByID(id) {
@@ -13,6 +13,7 @@ class UserDAO {
             });
         });
     }
+
     static async findByEmail(email) {
         return new Promise((resolve, reject) => {
             const sql = `SELECT * FROM User WHERE email = ?`;
@@ -44,4 +45,4 @@ class UserDAO {
     }
 }
 
-module.exports = UserDAO;
+export default UserDAO;

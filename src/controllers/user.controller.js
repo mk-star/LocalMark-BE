@@ -1,5 +1,5 @@
-const UserService = require('../services/user.service');
-const { response, errResponse } = require('../../config/response');
+import UserService from '../services/user.service.js';
+import { response, errResponse } from '../../config/response.js';
 
 class UserController {
     static async registerUser(req, res, next) {
@@ -12,4 +12,5 @@ class UserController {
         }
     }
 }
-module.exports = UserController;
+
+export default UserController;
