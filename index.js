@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
+const { postRouter, postsRouter } = require("./src/routes/post.route");
 
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
 
@@ -26,6 +27,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
+
+app.use('/posts', postsRouter);
 
 app.listen(app.get("port"), () => {
   console.log(`Example app listening on port ${app.get("port")}`);
