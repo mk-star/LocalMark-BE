@@ -1,5 +1,5 @@
-import { postsResponseDTO } from "../dtos/post.dto"
-import { getPreviewPosts, getPreviewPostsByCategory } from "../models/post.dao"
+import {  postsResponseDTO } from "../dtos/post.dto"
+import {  getPreviewPosts, getPreviewPostsByCategory, updatePost } from "../models/post.dao"
 
 export const getPosts = async(category, page) => {
 
@@ -11,9 +11,3 @@ export const getPosts = async(category, page) => {
 
 }
 
-
-export const getPostDetail = async(postId) => {
-
-    return 
-
-}
