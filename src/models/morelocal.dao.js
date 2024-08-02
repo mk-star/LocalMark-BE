@@ -1,5 +1,5 @@
 import { pool } from "../../config/db.config.js";
-import { getLetterList, getLetterListByRegion, getLetterInfo, getEventList, getEventListByRegion, getEventInfo } from "./morelocal.sql.js";
+import { getLetterList, getLetterListByRegion, recentLetters, getLetterInfo, getEventList, getEventListByRegion, getEventInfo } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async (regionId) => {
@@ -29,6 +29,22 @@ export const getLetterDetail = async (letterId) => {
 
         conn.release();
         return letter[0];
+        
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+// 로컬레터 최근 업데이트글 6개
+export const getRecentLetters = async() => {
+    try {
+        const conn = await pool.getConnection();
+
+        const [letters] = await pool.query(recentLetters);
+
+        conn.release();
+        return letters;
+        
         
     } catch (err) {
         throw new Error(err.message)

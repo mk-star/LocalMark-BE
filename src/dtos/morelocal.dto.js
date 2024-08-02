@@ -24,6 +24,21 @@ export const letterResponseDTO = (data) => {
     return {"letter": data[0]};
 }
 
+// 로컬레터 최근 업데이트글 6개
+export const recentLetterResponseDTO = (data) => {
+    const letters = [];
+
+    for (let i = 0; i < data.length; i++) {
+        letters.push({
+            "letter_id": data[i].letter_id,
+            "title": data[i].title,
+            "thumbnail_url": data[i].thumbnail_url
+        })
+    }
+
+    return {"letters": letters};
+}
+
 const formatDate = (date) => {
     return new Intl.DateTimeFormat('kr').format(new Date(date)).replaceAll(" ", "").slice(0, -1);
 }

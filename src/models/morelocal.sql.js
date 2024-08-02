@@ -34,6 +34,18 @@ FROM letter
 WHERE id = ?;
 `
 
+// 로컬레터 최근 업데이트글 6개
+export const recentLetters = `
+SELECT
+    id as letter_id,
+    title,
+    thumbnail_url
+FROM letter
+ORDER BY
+    created_at DESC
+Limit 6;
+`
+
 // 이벤트 목록 조회
 export const getEventList = `
 SELECT

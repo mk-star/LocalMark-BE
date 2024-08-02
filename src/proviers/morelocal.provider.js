@@ -1,6 +1,6 @@
 import { status } from "../../config/response.status.js";
-import { letterlistResponseDTO, letterResponseDTO, eventlistResponseDTO, eventResponseDTO } from "../dtos/morelocal.dto.js";
-import { getLetters, getLetterDetail, getEvents, getEventDetail } from "../models/morelocal.dao.js";
+import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO } from "../dtos/morelocal.dto.js";
+import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail } from "../models/morelocal.dao.js";
 
 // 로컬레터 목록 조회
 export const getLetterLists = async (regionId) => {
@@ -10,6 +10,11 @@ export const getLetterLists = async (regionId) => {
 // 로컬레터 상세 조회
 export const getLetter = async (letterId) => {
     return letterResponseDTO(await getLetterDetail(letterId));
+}
+
+// 로컬레터 최근 업데이트글 6개
+export const getRecentLetterList = async () => {
+    return recentLetterResponseDTO(await getRecentLetters());
 }
 
 // 이벤트 목록 조회

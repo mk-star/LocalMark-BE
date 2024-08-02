@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { getLetterLists, getLetter, getEventLists, getEvent } from "../proviers/morelocal.provider.js";
+import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent } from "../proviers/morelocal.provider.js";
 
 // 로컬레터 목록 조회
 export const letterList = async (req, res, next) => {
@@ -17,6 +17,14 @@ export const letterInfo = async (req, res, next) => {
 
     return res.send(response(status.SUCCESS, await getLetter(req.params.letterId)));
 }
+
+// 로컬레터 최근 업데이트글 6개
+export const recentLetters = async (req, res, next) => {
+    console.log("로컬 레터 최근 업데이트 글 6개를 요청하였습니다!");
+    
+    return res.send(response(status.SUCCESS, await getRecentLetterList()));
+}
+
 
 // 이벤트 목록 조회
 export const eventList = async (req, res, next) => {
