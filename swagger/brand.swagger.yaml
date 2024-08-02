@@ -39,3 +39,104 @@ paths:
                     "brand_image": "https://image.com"
                   }
                 }
+  /brand/{brandId}/products:
+    get:
+      tags:
+        - Brand
+      summary: 브랜드 정보 조회 (정렬 순서 - sort 없음:조회순, 1:가격 낮음, 2:가격 높음, 3:인기순)
+      parameters:
+        - name: brandId
+          in: path
+          schema:
+            type: integer
+            description: 브랜드 id
+          required: true
+        - name: page
+          in: query
+          schema:
+            type: integer
+            description: 페이지
+          required: true
+        - name: sort
+          in: query
+          schema:
+            type: integer
+            description: 정렬 순서  1 -가격 낮음 2 -가격 높음 3 -인기순 
+          required: false
+      responses:
+        '200':
+          description: 브랜드 상품 목록 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "products": [
+                    {
+                      "product_id": 0,
+                      "subregion_name": "중구",
+                      "brand_name": "브랜드명",
+                      "product_name": "상품명",
+                      "discount_rate": 10,
+                      "price": 1200,
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "product_id": 1,
+                      "subregion_name": "중구",
+                      "brand_name": "브랜드명",
+                      "product_name": "상품명",
+                      "discount_rate": 5,
+                      "price": 1300,
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "product_id": 6,
+                      "subregion_name": "중구",
+                      "brand_name": "브랜드명",
+                      "product_name": "상품명",
+                      "discount_rate": 5,
+                      "price": 1600,
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "product_id": 3,
+                      "subregion_name": "중구",
+                      "brand_name": "브랜드명",
+                      "product_name": "상품명",
+                      "discount_rate": 10,
+                      "price": 1800,
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "product_id": 9,
+                      "subregion_name": "중구",
+                      "brand_name": "브랜드명",
+                      "product_name": "상품명",
+                      "discount_rate": 50,
+                      "price": 2000,
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "product_id": 8,
+                      "subregion_name": "중구",
+                      "brand_name": "브랜드명",
+                      "product_name": "상품명",
+                      "discount_rate": 40,
+                      "price": 2100,
+                      "thumbnail_url": "https://image.png"
+                    }
+                  ],
+                  "currentPage": 1,
+                  "totalPage": 1
+                }
