@@ -73,3 +73,18 @@ export const eventResponseDTO = (data) => {
 
     return {"event": data[0]};
 }
+
+// 이벤트 최근 업데이트글 6개
+export const recentEventResponseDTO = (data) => {
+    const events = [];
+
+    for (let i = 0; i < data.length; i++) {
+        events.push({
+            "event_id": data[i].event_id,
+            "title": data[i].title,
+            "thumbnail_url": data[i].thumbnail_url
+        })
+    }
+
+    return {"events": events};
+}

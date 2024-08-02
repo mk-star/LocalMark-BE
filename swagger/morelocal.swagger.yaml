@@ -109,7 +109,7 @@ paths:
               result:
                 type: array
                 example: {
-                  "letter": [
+                  "letters": [
                     {
                       "letter_id": 7,
                       "title": "제목8",
@@ -236,4 +236,60 @@ paths:
                     "end_date": "2024.7.21",
                     "content": "설명 어쩌구"
                   }
+                }
+  /morelocal/events/recent:
+    get:
+      tags:
+        - More Local
+      summary: 이벤트 최근 업데이트된 글 6개 조회
+      responses:
+        '200':
+          description: 로컬레터 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "events": [
+                    {
+                      "event_id": 7,
+                      "title": "제목8",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 6,
+                      "title": "제목7",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 5,
+                      "title": "제목6",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 4,
+                      "title": "제목5",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 3,
+                      "title": "제목4",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 2,
+                      "title": "제목3",
+                      "thumbnail_url": "https://image.png"
+                    }
+                  ]
                 }

@@ -93,3 +93,15 @@ FROM event e
 JOIN region r on r.id = e.region_id
 WHERE e.id = ?;
 `
+
+// 이벤트 최근 업데이트글 6개
+export const recentEvents = `
+SELECT
+    id as event_id,
+    title,
+    thumbnail_url
+FROM event
+ORDER BY
+    created_at DESC
+Limit 6;
+`
