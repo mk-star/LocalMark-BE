@@ -39,42 +39,41 @@ Limit 6;
 export const getEventList = `
 SELECT
     e.id as event_id,
-    e.region_id,
-    r.name as region_name,
+    r.region_name,
     e.title,
     e.thumbnail_url,
-    e.created_date,
+    e.created_at,
     e.start_date,
     e.end_date
 FROM event e
-JOIN region r on r.id = e.region_id;
+JOIN region r on r.id = e.region_id
+ORDER BY created_at DESC;
 `
 
 // 이벤트 목록 조회 (지역 필터링)
 export const getEventListByRegion = `
 SELECT
     e.id as event_id,
-    e.region_id,
-    r.name as region_name,
+    r.region_name,
     e.title,
     e.thumbnail_url,
-    e.created_date,
+    e.created_at,
     e.start_date,
     e.end_date
 FROM event e
 JOIN region r on r.id = e.region_id
-WHERE r.id = ?;
+WHERE r.id = ?
+ORDER BY created_at DESC;
 `
 
 // 이벤트 상세 조회
 export const getEventInfo = `
 SELECT
     e.id as event_id,
-    e.region_id,
-    r.name as region_name,
+    r.region_name,
     e.title,
     e.thumbnail_url,
-    e.created_date,
+    e.created_at,
     e.start_date,
     e.end_date,
     e.content

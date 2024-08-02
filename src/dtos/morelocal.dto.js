@@ -51,11 +51,10 @@ export const eventlistResponseDTO = (data) => {
     for (let i = 0; i < data.length; i++) {
         events.push({
             "event_id": data[i].event_id,
-            "region_id": data[i].region_id,
             "region_name": data[i].region_name,
             "title": data[i].title,
             "thumbnail_url": data[i].thumbnail_url,
-            "created_date": formatDate(data[i].created_date),
+            "created_at": formatDate(data[i].created_at),
             "start_date": formatDate(data[i].start_date),
             "end_date": formatDate(data[i].end_date)
         })
@@ -67,7 +66,7 @@ export const eventlistResponseDTO = (data) => {
 // 이벤트 상세 조회
 export const eventResponseDTO = (data) => {
 
-    data[0].created_date = formatDate(data[0].created_date)
+    data[0].created_at = formatDate(data[0].created_at)
     data[0].start_date = formatDate(data[0].start_date)
     data[0].end_date = formatDate(data[0].end_date)
 

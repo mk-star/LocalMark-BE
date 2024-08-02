@@ -49,12 +49,12 @@ export const getEvents = async (regionId) => {
     try {
         const conn = await pool.getConnection();
 
-        if(regionId == "undefined" || typeof regionId == "undefined" || regionId == null){
+        if(regionId == "undefined" || typeof regionId == "undefined" || regionId == null){  // 지역 필터링 X
             const [events] = await pool.query(getEventList);
 
             conn.release();
             return events;
-        } else {
+        } else {    // 지역 필터링 O
             const [events] = await pool.query(getEventListByRegion, regionId);
 
             conn.release();

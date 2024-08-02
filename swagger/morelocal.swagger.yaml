@@ -209,24 +209,40 @@ paths:
                 example: {
                   "events": [
                     {
-                      "event_id": 1,
-                      "region_id": 0,
+                      "event_id": 6,
                       "region_name": "서울",
-                      "title": "푸른 어쩌구",
+                      "title": "제목7",
                       "thumbnail_url": "https://image.png",
-                      "created_date": "2024.7.21",
-                      "start_date": "2024.7.21",
-                      "end_date": "2024.7.21"
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.11.2"
+                    },
+                    {
+                      "event_id": 3,
+                      "region_name": "서울",
+                      "title": "제목4",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.10.2"
                     },
                     {
                       "event_id": 2,
-                      "region_id": 0,
                       "region_name": "서울",
-                      "title": "봄날 어쩌구",
+                      "title": "제목3",
                       "thumbnail_url": "https://image.png",
-                      "created_date": "2024.7.21",
-                      "start_date": "2024.7.21",
-                      "end_date": "2024.7.21"
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.11.2"
+                    },
+                    {
+                      "event_id": 0,
+                      "region_name": "서울",
+                      "title": "제목1",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.10.2"
                     }
                   ]
                 }
@@ -261,15 +277,14 @@ paths:
                 type: array
                 example: {
                   "event": {
-                    "event_id": 1,
-                    "region_id": 0,
+                    "event_id": 0,
                     "region_name": "서울",
-                    "title": "푸른 하늘",
+                    "title": "제목",
                     "thumbnail_url": "https://image.png",
-                    "created_date": "2024.7.21",
-                    "start_date": "2024.7.21",
-                    "end_date": "2024.7.21",
-                    "content": "설명 어쩌구"
+                    "created_at": "2024.7.2",
+                    "start_date": "2024.8.2",
+                    "end_date": "2024.10.2",
+                    "content": "내용"
                   }
                 }
   /morelocal/events/recent:
