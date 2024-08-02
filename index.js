@@ -5,6 +5,8 @@ const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
 const { postRouter, postsRouter } = require("./src/routes/post.route");
 
+import { brandRouter } from "./src/routes/brand.route"
+
 //서버 가동
 dotenv.config();
 const app = express();
@@ -24,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/posts', postsRouter);
+app.use('/brand', brandRouter);
 
 app.listen(app.get("port"), () => {
   console.log(`Example app listening on port ${app.get("port")}`);

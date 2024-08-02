@@ -1,0 +1,41 @@
+
+paths:
+  /brand/{brandId}:
+    get:
+      tags:
+        - Brand
+      summary: 브랜드 정보 조회
+      parameters:
+        - name: brandId
+          in: path
+          schema:
+            type: integer
+            description: 브랜드 id
+          required: true
+      responses:
+        '200':
+          description: 브랜드 정보 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "brand": {
+                    "brand_id": 0,
+                    "region_name": "서울",
+                    "brand_name": "브랜드명",
+                    "description": "브랜드 설명",
+                    "brand_url": "https://brand.com",
+                    "brand_image": "https://image.com"
+                  }
+                }
