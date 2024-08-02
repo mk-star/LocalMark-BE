@@ -1,8 +1,7 @@
 import { pool } from '../../config/database.js';
 
-class BrandDAO {
-    static async createBrand(brandData) {
-        const sql = `
+export const createBrand = async(brandData) =>{
+    const sql = `
             INSERT INTO Brand (
                 user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -20,29 +19,25 @@ class BrandDAO {
                 }
             });
         });
-    }
-
-    static async updateBrand(brandId, brandData) {
-        const sql = `
-            UPDATE Brand SET
-                region_id = ?, name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
-            WHERE id = ? AND user_id = ?
-        `;
-        const values = [
-            brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
-            brandData.brand_image, brandData.business_name, brandData.business_registration_number,
-            brandData.contact, brandId, brandData.user_id
-        ];
-        return new Promise((resolve, reject) => {
-            pool.query(sql, values, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
-    }
 }
-
-export default BrandDAO;
+export const updateBrand = async(brandId, brandData) => {
+    const sql = `
+        UPDATE Brand SET
+            region_id = ?, name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ? AND user_id = ?
+    `;
+    const values = [
+        brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+        brandData.brand_image, brandData.business_name, brandData.business_registration_number,
+        brandData.contact, brandId, brandData.user_id
+    ];
+    return new Promise((resolve, reject) => {
+        pool.query(sql, values, (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
