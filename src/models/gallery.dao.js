@@ -6,23 +6,32 @@ export const getGellery = async (regionId, categoryId, page, keyword) => {
 
     try {
         const conn = await pool.getConnection();
-
+        // 키워드 없을 경우
         if(keyword == "undefined" || typeof keyword == "undefined" || keyword == null){
             const [ totalProductCnt ] = await pool.query(getGalleryCnt, [parseInt(regionId), parseInt(categoryId)]);
-            const totalPage = parseInt(totalProductCnt[0].products_cnt / 15) + 1
-            const offset = (parseInt(page) - 1) * 15;
-            const [products] = await pool.query(getGalleryList, [parseInt(regionId), parseInt(categoryId), 15, offset]);
+            let totalPage;
+            if (totalProductCnt[0].products_cnt % 12 > 0){
+                totalPage = parseInt(totalProductCnt[0].products_cnt / 12) + 1;
+            } else {
+                totalPage = parseInt(totalProductCnt[0].products_cnt / 12);
+            }
+            const offset = (parseInt(page) - 1) * 12;
+            const [products] = await pool.query(getGalleryList, [parseInt(regionId), parseInt(categoryId), 12, offset]);
             conn.release();
             
             return {products, "currentPage": parseInt(page), totalPage};
     
-        }else{
+        }else{  // 키워드 있을 경우
             const keywordPattern = `%${keyword}%`;
-            console.log("dao keyword", keywordPattern);
             const [ totalProductCnt ] = await pool.query(getGalleryByKeywordCnt, [parseInt(regionId), parseInt(categoryId), keywordPattern]);
-            const totalPage = parseInt(totalProductCnt[0].products_cnt / 15) + 1
-            const offset = (parseInt(page) - 1) * 15;
-            const [products] = await pool.query(getGalleryByKeyword, [parseInt(regionId), parseInt(categoryId), keywordPattern, 15, offset]);
+            let totalPage;
+            if (totalProductCnt[0].products_cnt % 12 > 0){
+                totalPage = parseInt(totalProductCnt[0].products_cnt / 12) + 1;
+            } else {
+                totalPage = parseInt(totalProductCnt[0].products_cnt / 12);
+            }
+            const offset = (parseInt(page) - 1) * 12;
+            const [products] = await pool.query(getGalleryByKeyword, [parseInt(regionId), parseInt(categoryId), keywordPattern, 12, offset]);
             conn.release();
             return {products, "currentPage": parseInt(page), totalPage};    
         }
