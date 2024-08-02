@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 class UserService {
     static async registerUser(userData) {
-        const existingUserByID = await UserDAO.findByID(userData.id);
+        const existingUserByID = await UserDAO.findByID(userData.loginId);
         if (existingUserByID) {
             throw new Error('This id is already in use.');
         }
@@ -77,6 +77,23 @@ class UserService {
         const items = await UserDAO.getOrderItems(itemNumber);
         return items;
       }catch (error) {
+        throw error;
+      }
+    }
+    static async updateUser(userId, userData){
+      try{
+        const existingUserByID = await UserDAO.findByID(userData.loginId);
+        if (existingUserByID) {
+            throw new Error('This id is already in use.');
+        }
+        const existingUser = await UserDAO.findByEmail(userData.email);
+        if (existingUser) {
+            throw new Error('This email is already in use.');
+        }
+        const updateUserDTO = new UserDTO(userData);
+        const updatedUser = await UserDAO.updateUser(userId, updateUserDTO);
+        return updatedUser;
+      }catch(error){
         throw error;
       }
     }

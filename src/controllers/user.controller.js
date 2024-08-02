@@ -39,6 +39,16 @@ class UserController {
             res.status(500).send(error.message);
         }
     }
+    static async updateUser(req, res){
+        const userId = 1;
+        const userData = req.body;
+        try{
+            const updatedUser = await UserService.updateUser(userId, userData);
+            return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User updated successfully' }, updatedUser));
+        }catch(error){
+            res.status(500).send(error.message);
+        }
+    }
 }
 
 export default UserController;

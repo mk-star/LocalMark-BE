@@ -3,7 +3,7 @@ import { pool } from '../../config/database.js';
 class UserDAO {
     static async findByID(id) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM User WHERE id = ?`;
+            const sql = `SELECT * FROM User WHERE loginId = ?`;
             pool.query(sql, [id], (error, results) => {
                 if (error) {
                     reject(error);
@@ -39,6 +39,26 @@ class UserDAO {
                     reject(error);
                 } else {
                     resolve();
+                }
+            });
+        });
+    }
+    static async updateUser(userId, userData){
+        /////////////////////
+        const sql = `
+            UPDATE User SET
+                loginId = ?, email = ?, password = ?, nickname = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+        `;
+        const values = [
+            userData.loginId, userData.email, userData.password, userData.nickname, userId
+        ];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, values, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
                 }
             });
         });
