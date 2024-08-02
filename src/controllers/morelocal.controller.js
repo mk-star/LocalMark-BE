@@ -7,7 +7,7 @@ import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent
 export const letterList = async (req, res, next) => {
     console.log("로컬 레터 목록을 요청하였습니다!");
 
-    return res.send(response(status.SUCCESS, await getLetterLists(req.query.regionId)));
+    return res.send(response(status.SUCCESS, await getLetterLists()));
 }
 
 // 로컬레터 상세 조회

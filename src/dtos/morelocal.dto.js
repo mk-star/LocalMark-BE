@@ -9,7 +9,7 @@ export const letterlistResponseDTO = (data) => {
             "category": data[i].category,
             "title": data[i].title,
             "thumbnail_url": data[i].thumbnail_url,
-            "created_date": formatDate(data[i].created_date)
+            "created_at": formatDate(data[i].created_at)
         })
     }
 
@@ -19,7 +19,7 @@ export const letterlistResponseDTO = (data) => {
 // 로컬레터 상세 조회
 export const letterResponseDTO = (data) => {
 
-    data[0].created_date = formatDate(data[0].created_date)
+    data[0].created_at = formatDate(data[0].created_at)
 
     return {"letter": data[0]};
 }

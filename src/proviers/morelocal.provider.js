@@ -3,7 +3,7 @@ import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, even
 import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents } from "../models/morelocal.dao.js";
 
 // 로컬레터 목록 조회
-export const getLetterLists = async (regionId) => {
+export const getLetterLists = async () => {
     return letterlistResponseDTO(await getLetters());
 }
 
