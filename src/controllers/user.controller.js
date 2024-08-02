@@ -25,7 +25,8 @@ class UserController {
         }
     }
     static async getOrderItems(req, res){
-        const user_id = 1;
+        // login_required
+        const user_id = req.params.userId;
         try{
             const ids = await UserService.getOrders(user_id);
             if (ids) {
@@ -40,7 +41,8 @@ class UserController {
         }
     }
     static async updateUser(req, res){
-        const userId = 1;
+        // login_required
+        const userId = req.params.userId;
         const userData = req.body;
         try{
             const updatedUser = await UserService.updateUser(userId, userData);
