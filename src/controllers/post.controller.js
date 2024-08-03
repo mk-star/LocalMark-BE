@@ -1,8 +1,17 @@
+
 import { response } from "express";
 import { path } from "path";
+import { addPostInfo } from '../services/post.service'
+import { StatusCodes } from 'http-status-codes';
 import { status } from "../../config/response.status";
 import { createPost, deletePostById, getPostDetail, getPosts, updatePostDetail } from "../services/post.service";
 import { removeImageById, uploadFileToS3AndSave } from "../services/image.service";
+
+
+export const addPost = async(req,res,next)=>{
+  await addPostInfo(req.body)
+  return res.send(StatusCodes.OK)
+}
 
 // 커뮤니티 게시글 전체 및 카테고리별 게시글 목록 조회
 export const posts = async(req, res) => {
@@ -101,3 +110,4 @@ export const removePost = async(req, res) => {
 
         return res.send(response(status.SUCCESS, await deletePostById(params)));
 }
+

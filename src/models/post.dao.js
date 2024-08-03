@@ -2,31 +2,19 @@ import { status } from "../../config/response.status";
 import { confirmPost, deletePostSql, getPostDetail, getPosts, getPostsByCategory, insertPost, updatePostSql } from "./post.query";
 
 const pool = require("../../config/database");
+import { createPost } from './post.sql.js'; 
 
-
-export const addPost = async() => {
-
-    try {
-
-        const conn = await pool.getConnection();
-
-        const [confirm] = await pool.query(confirmPost, postId);
-        if (!confirm[0].isExistPost) {
-            conn.release();
-            return -1;
-        }
-
-        const result = await pool.query(insertPost,[
-            
-        ])
-
-
-        
-    } catch (error) {
-        
-    }
-
+export const addPost = async(userId, category, title, image, type, content)=> {
+  try{
+    const conn = await pool.getConnection();
+    const [addPost] = await pool.query(createPost,[userId, category, title, image, type, content]);
+    conn.release();
+    return addPost
+  }catch(err){
+    console.log(`DB 저장 실패 ${err.message}`)
+  }
 }
+
 
 export const getPreviewPostsByCategory = async(category, page) => {
 
@@ -45,7 +33,7 @@ export const getPreviewPostsByCategory = async(category, page) => {
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
-};
+}
 
 export const getPreviewPosts = async(page) => {
 
@@ -134,4 +122,5 @@ export const deletePost = async (postId) => {
     } catch (err) {
         throw new BaseError(status.BAD_REQUEST);
     }
-  };
+
+}
