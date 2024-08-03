@@ -8,7 +8,7 @@ import {
   selectUserSql,
   updateTokenSql,
   confirmToken,
-  getTokenSql,
+  selectTokenSql,
 } from "../models/user.sql.js";
 
 export const verifyUser = async (body) => {
@@ -74,7 +74,7 @@ export const createAccessToken = async (userId, token) => {
 export const removeRefreshToken = async (userId, refreshToken) => {
   try {
     const conn = await pool.getConnection();
-    const [rows] = await pool.query(getTokenSql, [userId]);
+    const [rows] = await pool.query(selectTokenSql, [userId]);
     const userToken = rows[0].token;
 
     console.log("User Token:", userToken);

@@ -9,4 +9,4 @@ export const updateTokenSql = "UPDATE user SET token = ? WHERE id = ?";
 export const confirmToken =
   "SELECT EXISTS(SELECT 1 FROM user WHERE id = ? AND token = ?) as isExistToken;";
 
-export const getTokenSql = "SELECT token FROM user WHERE id = ?;";
+export const selectTokenSql = "SELECT token FROM user WHERE id = ?;";
