@@ -23,8 +23,6 @@ export const verifyUser = async (body) => {
       return -1;
     }
 
-    console.log("엥");
-
     const [rows] = await pool.query(selectUserSql, [loginId]);
     const user = rows[0];
 
