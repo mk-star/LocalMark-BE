@@ -1,6 +1,7 @@
 import { deleteComment, addComment } from '../services/comment.service';
 import { getComment } from '../providers/comment.providers';
 import {status} from "../../config/response.status";
+import { response } from "../../config/response.js";
 
 export const deleteCommentInfo = async(req,res,next)=>{
   const { postId } = req.params;

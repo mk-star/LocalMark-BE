@@ -1,6 +1,7 @@
 import { addPostInfo } from '../services/post.service'
 import { status } from "../../config/response.status";
 import { getPosts } from "../providers/post.providers";
+import { response } from "../../config/response.js";
 
 
 export const addPost = async(req,res,next)=>{
