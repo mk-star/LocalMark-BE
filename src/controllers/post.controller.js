@@ -5,8 +5,7 @@ import { getPosts } from "../proviers/post.providers";
 
 
 export const addPost = async(req,res,next)=>{
-  await addPostInfo(req.body)
-  return res.send(StatusCodes.OK)
+  return res.send(response(status.SUCCESS,await addPostInfo(req.body)));
 }
 
 // 커뮤니티 게시글 전체 및 카테고리별 게시글 목록 조회
