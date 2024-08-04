@@ -5,7 +5,7 @@ const swaggerUi = require("swagger-ui-express");
 const specs = require("./config/swagger.config");
 import cookieParser from "cookie-parser";
 const { postRouter, postsRouter } = require("./src/routes/post.route");
-import { loginRouter, logoutRouter } from "./src/routes/user.route.js"; // .js 확장자 추가
+import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 
 //서버 가동
 dotenv.config();
@@ -24,8 +24,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use(cookieParser());
 
 app.use("/posts", postsRouter);
-app.use("/login", loginRouter);
-app.use("/logout", logoutRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");

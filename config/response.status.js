@@ -51,11 +51,11 @@ export const status = {
   },
 
   // user
-  EMAIL_NOT_EXIST: {
+  LOGINID_NOT_EXISTS: {
     status: StatusCodes.BAD_REQUEST,
     isSuccess: false,
     code: "USER4001",
-    message: "가입되지 않은 이메일입니다.",
+    message: "가입되지 않은 아이디입니다.",
   },
   PASSWORD_NOT_MATCHED: {
     status: StatusCodes.BAD_REQUEST,
