@@ -1,4 +1,5 @@
-import { postsPreview ,addPost} from '../controllers/post.controller';
+import { postsPreview } from '../controllers/post.controller';
+import { addPost } from '../controllers/post.controller';
 import asyncHandler from 'express-async-handler';
 import express from 'express'; 
 
