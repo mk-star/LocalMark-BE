@@ -7,9 +7,16 @@ import cookieParser from "cookie-parser";
 const { postRouter, postsRouter } = require("./src/routes/post.route");
 import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 
+import { likeRouter } from './src/routes/postLike.route';
+import { postRouter } from './src/routes/post.route';
+import { commentRouter } from './src/routes/comment.route';
+
+const app = createApp(); // 함수 호출로 app 객체 생성
+
 //서버 가동
 dotenv.config();
 const app = express();
+
 
 // server setting
 app.set("port", process.env.PORT || 3000); // 서버 포트 지정
@@ -29,6 +36,10 @@ app.use("/auth", authRouter);
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
+
+app.use("/post",postRouter)
+app.use("/like",likeRouter )
+app.use("/comment",commentRouter)
 
 app.listen(app.get("port"), () => {
   console.log(`Example app listening on port ${app.get("port")}`);

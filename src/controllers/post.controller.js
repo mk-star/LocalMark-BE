@@ -9,6 +9,7 @@ export const addPost = async(req,res,next)=>{
   return res.send(StatusCodes.OK)
 }
 
+
 // 커뮤니티 게시글 전체 및 카테고리별 게시글 목록 조회
 export const postsPreview = async(req,res) => {
 
