@@ -1,27 +1,28 @@
 name: Node.js Dev CI/CD
 
 on:
-  pull_request:
-    types: [closed]
-  workflow_dispatch:
+  pull_request:      
+    types: [ closed ]
+  workflow_dispatch: 
 
 jobs:
   build:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
-
-    runs-on: ubuntu-latest
+    
+    runs-on: ubuntu-latest  
 
     strategy:
       matrix:
-        node-version: ["20.x"]
-
+        node-version: ['20.x']  
+        
     steps:
       - uses: actions/checkout@v3
+      # Node.js 세팅
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: 'npm'
 
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -66,22 +67,25 @@ jobs:
           cp -r swagger dist
           cd dist
           zip -r deploy.zip .
-
+          
       - name: Get Zip Inside
         run: zipinfo -1 dist/deploy.zip
 
+      # 현재 시간 얻기 (Build 시점의 시간 얻기)
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"
+          utcOffset: "+09:00" # 한국 시간 고려
 
+      # 현재 시간 출력 (위에서 얻은 build 시점의 시간 보여주기)
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
-        shell: bash
+        shell: bash 
 
-      - name: Beanstalk Deploy
+      # Deploy to Elastic Beanstalk
+      - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{secrets.AWS_ACTION_ACCESS_KEY_ID}}
@@ -91,7 +95,7 @@ jobs:
           region: ap-northeast-2
           deployment_package: dist/deploy.zip
           use_existing_version_if_available: true
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }} # version_label은 이전에 배포한 label과 중복되면 안됨!
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           wait_for_deployment: false
 
       - name: Deployed!
