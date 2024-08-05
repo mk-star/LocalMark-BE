@@ -8,6 +8,7 @@ import { postRouter } from "./src/routes/post.route";
 import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
+import { healthRoute } from "./src/routes/health.route.js";
 
 //서버 가동
 dotenv.config();
@@ -26,10 +27,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use(cookieParser());
 
 app.use("/posts", postRouter);
-app.use("/comments",commentRouter)
-app.use("/likes",likeRouter);
+app.use("/comments", commentRouter);
+app.use("/likes", likeRouter);
 app.use("/auth", authRouter);
 
+app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
