@@ -16,9 +16,7 @@ jobs:
         node-version: ["20.x"]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -30,11 +28,34 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
-        run: npm ci
 
-      - name: Run Build
-        run: npm run build
+      # Download AWS CLI 2
+      - name: Install AWS CLI 2
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          which aws
+          sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+          
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # npm install for ci
+      - run: |
+          npm install
+          npm i passport passport-kakao -S
+          npm install moment-timezone
+
+
+      # Build
+      - run: npm run build
+      # Unit test
+      #- run: npm run test:unit
 
       - name: Generate deployment package
         run: |
@@ -42,6 +63,7 @@ jobs:
           cp package.json dist/package.json
           cp package-lock.json dist/package-lock.json
           cp Procfile dist/Procfile
+          cp -r swagger dist
           cd dist
           zip -r deploy.zip .
 
@@ -66,10 +88,10 @@ jobs:
           aws_secret_key: ${{secrets.AWS_ACTION_SECRET_ACCESS_KEY}}
           application_name: localmark-release
           environment_name: Localmark-release-env
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }} # version_label은 이전에 배포한 label과 중복되면 안됨!
-          use_existing_version_if_available: true
           region: ap-northeast-2
           deployment_package: dist/deploy.zip
+          use_existing_version_if_available: true
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }} # version_label은 이전에 배포한 label과 중복되면 안됨!
           wait_for_deployment: false
 
       - name: Deployed!
