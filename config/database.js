@@ -19,6 +19,4 @@ pool.on("release", function (connection) {
   logger.info(`DB: Connection ${connection.threadId} released`);
 });
 
-module.exports = {
-  pool: pool,
-};
+export { pool };
