@@ -4,7 +4,7 @@ INSERT INTO Post (userId, category, title, content)
   VALUES (?, ?, ?, ?)
 `
 
-export const postExists =`SELECT id FROM Post WHERE id = ?;`
+export const confirmPost =`SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) AS isExistPost;`
 
 export const uploadImages = `INSERT INTO PostImage (post_id, imageUrl) VALUES (?, ?)`
 

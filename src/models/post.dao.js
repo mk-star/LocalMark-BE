@@ -1,6 +1,7 @@
 import { pool } from '../../config/database.js';
 import { status } from "../../config/response.status";
 import { createPost, uploadImages, getPostsByCategory, getPosts  } from './post.sql.js';
+import {BaseError} from "../../config/error.js";
 
 export const addPost = async(userId, category, title, images, content)=> {
   try{
@@ -14,12 +15,10 @@ export const addPost = async(userId, category, title, images, content)=> {
               await pool.query(uploadImages, [postId, url]);
           });
       }
-
-    conn.release();
-    return addPost
-
+      conn.release();
+      return addPost
   }catch(err){
-    console.log(`DB 저장 실패 ${err.message}`)
+      throw new BaseError(status.BAD_REQUEST);
   }
 
 }

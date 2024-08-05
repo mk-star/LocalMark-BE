@@ -1,4 +1,9 @@
-//대댓글 추가 
+//레코드 존재1, 존재X =0
+export const confirmCommend = `
+SELECT EXISTS(SELECT 1 FROM Comment WHERE id = ?) AS isExistComment; 
+`
+
+//대댓글 추가
 export const addCommentChild = `
 insert into Comment(userId, postId,parentId,content) values (?,?,?,?);
 `

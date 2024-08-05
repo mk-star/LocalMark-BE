@@ -50,6 +50,14 @@ export const status = {
     message: "게시글이 없습니다.",
   },
 
+  // comment err
+  COMMENT_NOT_FOUND:{
+    status: StatusCodes.NOT_FOUND,
+    isSuccess: false,
+    code: "COMMENT001",
+    message:"댓글이 없습니다."
+  },
+
   // user
   LOGINID_NOT_EXISTS: {
     status: StatusCodes.BAD_REQUEST,
