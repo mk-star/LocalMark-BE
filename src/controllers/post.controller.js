@@ -5,7 +5,14 @@ import { response } from "../../config/response.js";
 
 
 export const addPost = async(req,res,next)=>{
-  return res.send(response(status.SUCCESS,await addPostInfo(req.body)));
+        // 업로드된 파일 목록을 파일 경로 배열로 변환
+        const thumbnail_urls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+
+        const postData = {
+                ...req.body,
+                thumbnail_urls, // 파일 경로 배열 설정
+        };
+        return res.send(response(status.SUCCESS,await addPostInfo(postData)));
 }
 
 
@@ -17,7 +24,7 @@ export const postsPreview = async(req,res) => {
 
         const category = querys.category;
         console.log(category);
-        const page = parseInt(querys.page);
+        const page = parseInt(querys.page, 10) || 1; // 페이지 번호 기본값 설정
 
         res.send(response(status.SUCCESS, await getPosts(category, page)));
 

@@ -1,8 +1,8 @@
 import { addPost } from '../models/post.dao'
 
 export const addPostInfo =async (body) =>{
-  const { userId, category, title, image, type, content} = body;
-  const result = await addPost(userId, category, title, image, type, content);
+  const { userId, category, title, images, content} = body;
+  const result = await addPost(userId, category, title, images, content);
   return result
 
 }
