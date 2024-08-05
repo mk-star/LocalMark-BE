@@ -6,7 +6,7 @@ INSERT INTO Post (userId, category, title, content)
 
 export const postExists =`SELECT id FROM Post WHERE id = ?;`
 
-export const uploadImages = `INSERT INTO PostImage (postId, imageUrl) VALUES (?, ?)`
+export const uploadImages = `INSERT INTO PostImage (post_id, imageUrl) VALUES (?, ?)`
 
 export const getPostsByCategory =
     "SELECT * FROM post" +

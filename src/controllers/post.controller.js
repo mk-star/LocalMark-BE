@@ -6,11 +6,12 @@ import { response } from "../../config/response.js";
 
 export const addPost = async(req,res,next)=>{
         // 업로드된 파일 목록을 파일 경로 배열로 변환
-        const thumbnail_urls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
-
+        const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+        // postInfo 필드를 JSON으로 파싱
+        const postInfo = JSON.parse(req.body.postInfo);
         const postData = {
-                ...req.body,
-                thumbnail_urls, // 파일 경로 배열 설정
+                ...postInfo,
+                images, // 파일 경로 배열 설정
         };
         return res.send(response(status.SUCCESS,await addPostInfo(postData)));
 }

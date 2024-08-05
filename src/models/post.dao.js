@@ -8,7 +8,6 @@ export const addPost = async(userId, category, title, images, content)=> {
     // 게시글 저장
     const [addPost] = await pool.query(createPost,[userId, category, title, content]);
     const postId = addPost.insertId;
-
       // 이미지 저장
       if (images && images.length > 0) {
           images.map(async (url) => {
