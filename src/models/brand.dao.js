@@ -1,4 +1,5 @@
 import { pool } from "../../config/db.config.js";
+import { status } from "../../config/response.status.js";
 import { getBrandInfo, confirmBrand, getBrandGallery, getProductCnt } from "./brand.sql.js";
 
 // 브랜드 정보 조회
@@ -17,7 +18,7 @@ export const getBrandInfos = async (brandId) => {
         conn.release();
         return brand[0];
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
 
@@ -57,6 +58,6 @@ export const getBrandGalleryList = async (brandId, page, sort) => {
         conn.release();
         return {"products": products, "currentPage": parseInt(page), totalPage};
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
