@@ -1,18 +1,27 @@
-import { status } from "../../config/response.status";
+import { pool } from '../../config/database.js';
+import { status } from "../../config/response.status.js";
+import { createPost, uploadImages, getPostsByCategory, getPosts  } from './post.sql.js';
+import {BaseError} from "../../config/error.js";
 
-const pool = require("../../config/database");
-import { createPost } from './post.sql.js'; 
-
-export const addPost = async(userId, category, title, image, type, content)=> {
+export const addPost = async(userId, category, title, images, content)=> {
   try{
     const conn = await pool.getConnection();
-    const [addPost] = await pool.query(createPost,[userId, category, title, image, type, content]);
-    conn.release();
-    return addPost
+    // 게시글 저장
+    const [addPost] = await pool.query(createPost,[userId, category, title, content]);
+    const postId = addPost.insertId;
+      // 이미지 저장
+      if (images && images.length > 0) {
+          images.map(async (url) => {
+              await pool.query(uploadImages, [postId, url]);
+          });
+      }
+      conn.release();
+      return addPost
   }catch(err){
-    console.log(`DB 저장 실패 ${err.message}`)
+      throw new BaseError(status.BAD_REQUEST);
   }
 }
+
 export const getPreviewPostsByCategory = async(category, page) => {
 
     try {
