@@ -1,6 +1,6 @@
-import { deleteComment, addComment } from '../services/comment.service';
-import { getComment } from '../providers/comment.provider';
-import {status} from "../../config/response.status";
+import { deleteComment, addComment } from '../services/comment.service.js';
+import { getComment } from '../providers/comment.provider.js';
+import {status} from "../../config/response.status.js";
 import { response } from "../../config/response.js";
 
 export const deleteCommentInfo = async(req,res,next)=>{

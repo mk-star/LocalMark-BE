@@ -1,4 +1,4 @@
-import { addPost } from '../models/post.dao'
+import { addPost } from '../models/post.dao.js'
 
 export const addPostInfo =async (body) =>{
   const { userId, category, title, images, content} = body;

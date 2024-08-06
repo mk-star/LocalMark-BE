@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import express from 'express'; 
-import { deleteCommentInfo, getCommentInfo, addCommentInfo } from '../controllers/comment.controller';
+import { deleteCommentInfo, getCommentInfo, addCommentInfo } from '../controllers/comment.controller.js';
 
 export const commentRouter= express.Router();
 commentRouter.delete('/:postId/posts',asyncHandler(deleteCommentInfo));

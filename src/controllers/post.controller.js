@@ -1,6 +1,6 @@
-import { addPostInfo } from '../services/post.service'
-import { status } from "../../config/response.status";
-import { getPosts } from "../providers/post.provider";
+import { addPostInfo } from '../services/post.service.js'
+import { status } from "../../config/response.status.js";
+import { getPosts } from "../providers/post.provider.js";
 import { response } from "../../config/response.js";
 
 

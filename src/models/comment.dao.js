@@ -1,6 +1,6 @@
 import { pool } from '../../config/database.js';
 import { addComment, addCommentChild, selectComment ,deleteComment, deleteChildComments} from './comment.sql.js';
-import {confirmPost} from "./post.sql";
+import {confirmPost} from "./post.sql.js";
 
 
 export const addCommentInfo = async(userId, postId,parentId,content)=>{
