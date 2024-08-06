@@ -45,22 +45,14 @@ export const getRecentLetters = async() => {
 }
 
 // 이벤트 목록 조회
-export const getEvents = async (regionId) => {
+export const getEvents = async () => {
     try {
         const conn = await pool.getConnection();
 
-        if(regionId == "undefined" || typeof regionId == "undefined" || regionId == null){  // 지역 필터링 X
-            const [events] = await pool.query(getEventList);
+        const [events] = await pool.query(getEventList);
 
-            conn.release();
-            return events;
-        } else {    // 지역 필터링 O
-            const [events] = await pool.query(getEventListByRegion, regionId);
-
-            conn.release();
-            return events;
-        }
-        
+        conn.release();
+        return events;
     } catch (err) {
         throw new Error(err.message)
     }

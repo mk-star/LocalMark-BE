@@ -6,7 +6,7 @@ SELECT
     title,
     thumbnail_url,
     created_at
-FROM letter
+FROM Letter
 ORDER BY created_at DESC;
 `
 
@@ -19,7 +19,7 @@ SELECT
     thumbnail_url,
     created_at,
     content
-FROM letter
+FROM Letter
 WHERE id = ?;
 `
 
@@ -29,7 +29,7 @@ SELECT
     id as letter_id,
     title,
     thumbnail_url
-FROM letter
+FROM Letter
 ORDER BY
     created_at DESC
 Limit 6;
@@ -39,30 +39,14 @@ Limit 6;
 export const getEventList = `
 SELECT
     e.id as event_id,
-    r.region_name,
+    s.subregion_name,
     e.title,
     e.thumbnail_url,
     e.created_at,
     e.start_date,
     e.end_date
-FROM event e
-JOIN region r on r.id = e.region_id
-ORDER BY created_at DESC;
-`
-
-// 이벤트 목록 조회 (지역 필터링)
-export const getEventListByRegion = `
-SELECT
-    e.id as event_id,
-    r.region_name,
-    e.title,
-    e.thumbnail_url,
-    e.created_at,
-    e.start_date,
-    e.end_date
-FROM event e
-JOIN region r on r.id = e.region_id
-WHERE r.id = ?
+FROM Event e
+JOIN Subregion s on s.id = e.subregion_id
 ORDER BY created_at DESC;
 `
 
@@ -70,15 +54,15 @@ ORDER BY created_at DESC;
 export const getEventInfo = `
 SELECT
     e.id as event_id,
-    r.region_name,
+    s.subregion_name,
     e.title,
     e.thumbnail_url,
     e.created_at,
     e.start_date,
     e.end_date,
     e.content
-FROM event e
-JOIN region r on r.id = e.region_id
+FROM Event e
+JOIN Subregion s on s.id = e.subregion_id
 WHERE e.id = ?;
 `
 
@@ -88,7 +72,7 @@ SELECT
     id as event_id,
     title,
     thumbnail_url
-FROM event
+FROM Event
 ORDER BY
     created_at DESC
 Limit 6;

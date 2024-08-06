@@ -18,8 +18,8 @@ export const getRecentLetterList = async () => {
 }
 
 // 이벤트 목록 조회
-export const getEventLists = async (regionId) => {
-    return eventlistResponseDTO(await getEvents(regionId));
+export const getEventLists = async () => {
+    return eventlistResponseDTO(await getEvents());
 }
 
 // 이벤트 상세 조회
