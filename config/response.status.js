@@ -17,5 +17,13 @@ export const status = {
     POST_NOT_FOUND: {status: StatusCodes.NOT_FOUND, "isSuccess": false, "code": "POST4001", "message": "게시글이 없습니다."},
 
 
+    // brand err
+    BRAND_NOT_EXIST: {
+        status: StatusCodes.BAD_REQUEST, 
+        "isSuccess": false, 
+        "code": "BRAND4001", 
+        "message": "존재하지 않는 브랜드입니다."
+      }
+
 
 };

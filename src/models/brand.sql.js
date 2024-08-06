@@ -7,9 +7,16 @@ SELECT
     b.description,
     b.brand_url,
     b.brand_image
-FROM brand b
-JOIN region r on r.id = b.region_id
+FROM Brand b
+JOIN Region r on r.id = b.region_id
 WHERE b.id = ?;
+`
+
+// 브랜드 존재 유무 확인
+export const confirmBrand = `
+SELECT
+    EXISTS(SELECT 1 FROM Brand WHERE id = ?)
+        as isExistBrand;
 `
 
 // 브랜드 프로필 - 제품 개수
@@ -17,8 +24,8 @@ export const getProductCnt = `
 SELECT
     count(*) as product_cnt
 FROM product p
-JOIN brand b on b.id = p.brand_id
-JOIN subregion s on s.id = p.subregion_id
+JOIN Brand b on b.id = p.brand_id
+JOIN Subregion s on s.id = p.subregion_id
 WHERE b.id = ?;
 `
 
@@ -32,8 +39,8 @@ SELECT
     p.discount_rate,
     p.price,
     p.thumbnail_url
-FROM product p
-JOIN brand b on b.id = p.brand_id
-JOIN subregion s on s.id = p.subregion_id
+FROM Product p
+JOIN Brand b on b.id = p.brand_id
+JOIN Subregion s on s.id = p.subregion_id
 WHERE b.id = ?
 `

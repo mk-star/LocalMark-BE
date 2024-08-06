@@ -1,10 +1,17 @@
 import { pool } from "../../config/db.config.js";
-import { getBrandInfo, getBrandGallery, getProductCnt } from "./brand.sql.js";
+import { getBrandInfo, confirmBrand, getBrandGallery, getProductCnt } from "./brand.sql.js";
 
-// 로컬레터 목록 조회
+// 브랜드 정보 조회
 export const getBrandInfos = async (brandId) => {
     try {
         const conn = await pool.getConnection();
+
+        const [confirm] = await pool.query(confirmBrand, brandId);
+        if (!confirm[0].isExistBrand) {
+          conn.release();
+          return -1;
+        }
+
         const brand = await pool.query(getBrandInfo, brandId);
         
         conn.release();

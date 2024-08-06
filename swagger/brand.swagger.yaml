@@ -26,7 +26,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
@@ -39,6 +39,20 @@ paths:
                     "brand_image": "https://image.com"
                   }
                 }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: BRAND4001
+              message:
+                type: string
+                example: 존재하지 않는 브랜드입니다. 
   /brand/{brandId}/products:
     get:
       tags:
