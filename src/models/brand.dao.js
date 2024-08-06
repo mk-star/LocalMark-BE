@@ -1,6 +1,6 @@
 import { pool } from '../../config/database.js';
 
-export const createBrand = async(brandData) =>{
+export const createBrandDAO = async(brandData) =>{
     const sql = `
             INSERT INTO Brand (
                 user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact
@@ -20,7 +20,7 @@ export const createBrand = async(brandData) =>{
             });
         });
 }
-export const updateBrand = async(brandId, brandData) => {
+export const updateBrandDAO = async(brandId, brandData) => {
     const sql = `
         UPDATE Brand SET
             region_id = ?, name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP

@@ -1,14 +1,14 @@
-import { createBrand, updateBrand } from '../models/brand.dao.js';
-import BrandDto from '../dtos/brand.dto.js';
+import { createBrandDAO, updateBrandDAO } from '../models/brand.dao.js';
+import { BrandDto } from '../dtos/brand.dto.js';
 
-export const createBrand = async(brandData)=>{
+export const createBrandService = async(brandData)=>{
     const createBrandDto = new BrandDto(brandData);
-    const newBrand = await createBrand(createBrandDto);
+    const newBrand = await createBrandDAO(createBrandDto);
     return newBrand;
 }
 
-export const updateBrand = async(brandId, brandData) =>{
+export const updateBrandService = async(brandId, brandData) =>{
     const updateBrandDto = new BrandDto(brandData);
-    const updatedBrand = await updateBrand(brandId, updateBrandDto);
+    const updatedBrand = await updateBrandDAO(brandId, updateBrandDto);
     return updatedBrand;
 }
