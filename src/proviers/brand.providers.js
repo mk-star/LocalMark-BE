@@ -16,6 +16,12 @@ export const getBrandInformation = async (brandId) => {
 // 브랜드 프로필 - 제품 갤러리
 export const getBrandProducts = async (brandId, page, sort) => {
 
-    const result = await getBrandGalleryList(brandId, page, sort)
-    return brandGalleryResponseDTO(result.products, result.currentPage, result.totalPage);
+    const result = await getBrandGalleryList(brandId, page, sort);
+    if (result == -1){
+        throw new BaseError(status.BRAND_NOT_EXIST);
+    } else if(result == -2){
+        throw new BaseError(status.PAGE_PARAMETER_NOT_EXIST);
+    } else {
+        return brandGalleryResponseDTO(result.products, result.currentPage, result.totalPage);
+    }
 }

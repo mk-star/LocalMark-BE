@@ -27,6 +27,19 @@ export const getBrandGalleryList = async (brandId, page, sort) => {
     try {
         const conn = await pool.getConnection();
 
+        // 유효하지 않은 브랜드 id
+        const [confirm] = await pool.query(confirmBrand, brandId);
+        if (!confirm[0].isExistBrand) {
+          conn.release();
+          return -1;
+        }
+
+        // 페이지 미입력
+        if (page == "undefined" || typeof page == "undefined" || page == null) {
+            conn.release();
+            return -2;
+        }
+
         // 페이징 처리
         const [ totalProductCnt ] = await pool.query(getProductCnt, brandId);
         let totalPage = 0;

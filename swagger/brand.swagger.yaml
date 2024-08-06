@@ -8,6 +8,7 @@ paths:
       parameters:
         - name: brandId
           in: path
+          type: integer
           schema:
             type: integer
             description: 브랜드 id
@@ -57,21 +58,24 @@ paths:
     get:
       tags:
         - Brand
-      summary: 브랜드 정보 조회 (정렬 순서 - sort 없음:조회순, 1:가격 낮음, 2:가격 높음, 3:인기순)
+      summary: 브랜드 정보 조회 (정렬 순서 - sort  없음:조회순,  1:가격 낮음,  2:가격 높음,  3:인기순)
       parameters:
         - name: brandId
+          type: integer
           in: path
           schema:
             type: integer
             description: 브랜드 id
           required: true
         - name: page
+          type: integer
           in: query
           schema:
             type: integer
             description: 페이지
           required: true
         - name: sort
+          type: integer
           in: query
           schema:
             type: integer
@@ -154,3 +158,17 @@ paths:
                   "currentPage": 1,
                   "totalPage": 1
                 }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: BRAND4001
+              message:
+                type: string
+                example: 존재하지 않는 브랜드입니다. 
