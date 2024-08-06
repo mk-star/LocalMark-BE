@@ -14,7 +14,7 @@ import { healthRoute } from "./src/routes/health.route.js";
 
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
 
-import { brandRouter } from "./src/routes/brand.route"
+import { brandRouter } from "./src/routes/brand.route.js"
 
 //서버 가동
 dotenv.config();
