@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import specs from "./config/swagger.config.js"; 
 import cookieParser from "cookie-parser";
 import { response } from './config/response.js';
+import { status } from './config/response.status.js';
 import { postRouter } from "./src/routes/post.route.js";
 import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { likeRouter } from "./src/routes/Like.route.js";
