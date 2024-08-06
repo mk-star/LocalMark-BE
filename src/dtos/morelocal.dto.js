@@ -40,7 +40,11 @@ export const recentLetterResponseDTO = (data) => {
 }
 
 const formatDate = (date) => {
-    return new Intl.DateTimeFormat('kr').format(new Date(date)).replaceAll(" ", "").slice(0, -1);
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2); 
+    return `${year}.${month}.${day}`;
 }
 
 // 이벤트 목록 조회
@@ -51,7 +55,7 @@ export const eventlistResponseDTO = (data) => {
     for (let i = 0; i < data.length; i++) {
         events.push({
             "event_id": data[i].event_id,
-            "region_name": data[i].region_name,
+            "subregion_name": data[i].subregion_name,
             "title": data[i].title,
             "thumbnail_url": data[i].thumbnail_url,
             "created_at": formatDate(data[i].created_at),
