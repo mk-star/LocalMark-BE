@@ -6,8 +6,6 @@ export const addPostInfo =async (body) =>{
   return result
 }
 
-}
-
 export const getPostsByCategory = async(category, page) => {
 
     try {
