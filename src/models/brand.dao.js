@@ -30,10 +30,10 @@ export const getBrandGalleryList = async (brandId, page, sort) => {
         // 페이징 처리
         const [ totalProductCnt ] = await pool.query(getProductCnt, brandId);
         let totalPage = 0;
-        if (parseInt(totalProductCnt[0].product_cnt) < 16){
+        if (parseInt(totalProductCnt[0].product_cnt) <= 16){
             totalPage = 1;
         }
-        else if (totalProductCnt[0].products_cnt % 16 > 0){
+        else if (totalProductCnt[0].product_cnt % 16 > 0){
             totalPage = parseInt(totalProductCnt[0].product_cnt / 16) + 1;
         } else {
             totalPage = parseInt(totalProductCnt[0].product_cnt / 16);

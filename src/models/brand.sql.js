@@ -23,7 +23,7 @@ SELECT
 export const getProductCnt = `
 SELECT
     count(*) as product_cnt
-FROM product p
+FROM Product p
 JOIN Brand b on b.id = p.brand_id
 JOIN Subregion s on s.id = p.subregion_id
 WHERE b.id = ?;

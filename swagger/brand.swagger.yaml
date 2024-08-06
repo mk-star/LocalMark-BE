@@ -91,7 +91,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
