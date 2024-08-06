@@ -1,5 +1,5 @@
 import { pool } from '../../config/database.js';
-import { status } from "../../config/response.status";
+import { status } from "../../config/response.status.js";
 import { createPost, uploadImages, getPostsByCategory, getPosts  } from './post.sql.js';
 import {BaseError} from "../../config/error.js";
 

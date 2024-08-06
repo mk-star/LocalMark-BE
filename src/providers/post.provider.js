@@ -1,5 +1,5 @@
-import { previewPostsResponseDTO } from "../dtos/post.dto"
-import { getPreviewPosts, getPreviewPostsByCategory } from "../models/post.dao"
+import { previewPostsResponseDTO } from "../dtos/post.dto.js"
+import { getPreviewPosts, getPreviewPostsByCategory } from "../models/post.dao.js"
 
 export const getPosts = async(category, page) => {
 

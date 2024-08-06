@@ -1,6 +1,6 @@
-import { deleteCommentInfo, addCommentInfo } from '../models/comment.dao';
-import {BaseError} from "../../config/error";
-import {status} from "../../config/response.status";
+import { deleteCommentInfo, addCommentInfo } from '../models/comment.dao.js';
+import {BaseError} from "../../config/error.js";
+import {status} from "../../config/response.status.js";
 
 export const addComment = async(post_Id,body) =>{
   const postId = post_Id;

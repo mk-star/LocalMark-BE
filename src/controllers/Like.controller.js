@@ -1,5 +1,5 @@
-import {commentLikeService, postLikeService} from '../services/Like.service';
-import {status} from "../../config/response.status";
+import {commentLikeService, postLikeService} from '../services/Like.service.js';
+import {status} from "../../config/response.status.js";
 import { response } from "../../config/response.js";
 
 export const postLike = async(req,res,next)=>{

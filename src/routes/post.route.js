@@ -1,4 +1,4 @@
-import {addPost, postsPreview } from '../controllers/post.controller';
+import {addPost, postsPreview } from '../controllers/post.controller.js';
 import asyncHandler from 'express-async-handler';
 import express from 'express';
 import multer from 'multer';

@@ -1,4 +1,4 @@
-import { postLike, commentLike } from '../controllers/Like.controller';
+import { postLike, commentLike } from '../controllers/Like.controller.js';
 import express from 'express'; 
 import asyncHandler from 'express-async-handler';
 

@@ -1,7 +1,7 @@
 import { pool } from '../../config/database.js';
 import { postLikeWhether,postAddLike,postDeleteLike, commentLikeWhether,commentAddLike,commentDeleteLike } from './Like.sql.js';
 import {confirmCommend} from "./comment.sql.js";
-import {confirmPost} from "./post.sql";
+import {confirmPost} from "./post.sql.js";
 
 
 export const postLike = async(user_id,post_id) => {

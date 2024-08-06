@@ -1,6 +1,6 @@
-import { postLike , commentLike } from '../models/Like.dao';
+import { postLike , commentLike } from '../models/Like.dao.js';
 import {BaseError} from "../../config/error.js";
-import {status} from "../../config/response.status";
+import {status} from "../../config/response.status.js";
 
 export const postLikeService =async (postId,body) =>{
   const post_id = postId;
