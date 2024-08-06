@@ -19,7 +19,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
@@ -29,56 +29,56 @@ paths:
                       "category": "뉴스레터",
                       "title": "제목8",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 6,
                       "category": "인터뷰",
                       "title": "제목7",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 5,
                       "category": "인터뷰",
                       "title": "제목6",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 4,
                       "category": "뉴스레터",
                       "title": "제목5",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 3,
                       "category": "인터뷰",
                       "title": "제목4",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 2,
                       "category": "인터뷰",
                       "title": "제목3",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 1,
                       "category": "뉴스레터",
                       "title": "제목2",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     },
                     {
                       "letter_id": 0,
                       "category": "인터뷰",
                       "title": "제목1",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2"
+                      "created_at": "2024.08.02"
                     }
                   ]
                 }
@@ -89,6 +89,7 @@ paths:
       summary: 로컬레터 상세 조회
       parameters:
         - name: letterId
+          type: integer
           in: path
           schema:
             type: integer
@@ -108,7 +109,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
@@ -117,7 +118,7 @@ paths:
                     "category": "인터뷰",
                     "title": "제목",
                     "thumbnail_url": "https://image.png",
-                    "created_at": "2024.8.2",
+                    "created_at": "2024.08.02",
                     "content": "내용"
                   }
                 }
@@ -196,46 +197,46 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
                   "events": [
                     {
                       "event_id": 6,
-                      "region_name": "서울",
+                      "subregion_name": "중구",
                       "title": "제목7",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2",
-                      "start_date": "2024.8.2",
-                      "end_date": "2024.11.2"
+                      "created_at": "2024.08.02",
+                      "start_date": "2024.08.02",
+                      "end_date": "2024.11.02"
                     },
                     {
                       "event_id": 3,
-                      "region_name": "서울",
+                      "subregion_name": "중구",
                       "title": "제목4",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2",
-                      "start_date": "2024.8.2",
-                      "end_date": "2024.10.2"
+                      "created_at": "2024.08.02",
+                      "start_date": "2024.08.02",
+                      "end_date": "2024.10.02"
                     },
                     {
                       "event_id": 2,
-                      "region_name": "서울",
+                      "subregion_name": "서대문구",
                       "title": "제목3",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2",
-                      "start_date": "2024.8.2",
-                      "end_date": "2024.11.2"
+                      "created_at": "2024.08.02",
+                      "start_date": "2024.08.02",
+                      "end_date": "2024.11.02"
                     },
                     {
                       "event_id": 0,
-                      "region_name": "서울",
+                      "subregion_name": "서대문구",
                       "title": "제목1",
                       "thumbnail_url": "https://image.png",
-                      "created_at": "2024.8.2",
-                      "start_date": "2024.8.2",
-                      "end_date": "2024.10.2"
+                      "created_at": "2024.08.02",
+                      "start_date": "2024.08.02",
+                      "end_date": "2024.10.02"
                     }
                   ]
                 }
@@ -246,6 +247,7 @@ paths:
       summary: 이벤트 상세 조회
       parameters:
         - name: eventId
+          type: integer
           in: path
           schema:
             type: integer
@@ -265,18 +267,18 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
                   "event": {
                     "event_id": 0,
-                    "region_name": "서울",
+                    "subregion_name": "중구",
                     "title": "제목",
                     "thumbnail_url": "https://image.png",
-                    "created_at": "2024.7.2",
-                    "start_date": "2024.8.2",
-                    "end_date": "2024.10.2",
+                    "created_at": "2024.07.02",
+                    "start_date": "2024.08.02",
+                    "end_date": "2024.10.02",
                     "content": "내용"
                   }
                 }
@@ -299,7 +301,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
