@@ -54,13 +54,13 @@ export const status = {
   LETTER_NOT_EXIST: {
     status: StatusCodes.BAD_REQUEST, 
     "isSuccess": false, 
-    "code": "MORELOCAL4001", 
+    "code": "LETTER4001", 
     "message": "존재하지 않는 로컬레터입니다."
   },
   EVENT_NOT_EXIST: {
     status: StatusCodes.BAD_REQUEST, 
     "isSuccess": false,
-    "code": "MORELOCAL4001", 
+    "code": "EVENT4001", 
     "message": "존재하지 않는 이벤트입니다."
   },
 
