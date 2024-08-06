@@ -1,0 +1,338 @@
+
+paths:
+  /morelocal/letters:
+    get:
+      tags:
+        - More Local
+      summary: 로컬레터 목록 조회
+      responses:
+        '200':
+          description: 로컬레터 목록 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "letters": [
+                    {
+                      "letter_id": 7,
+                      "category": "뉴스레터",
+                      "title": "제목8",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 6,
+                      "category": "인터뷰",
+                      "title": "제목7",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 5,
+                      "category": "인터뷰",
+                      "title": "제목6",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 4,
+                      "category": "뉴스레터",
+                      "title": "제목5",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 3,
+                      "category": "인터뷰",
+                      "title": "제목4",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 2,
+                      "category": "인터뷰",
+                      "title": "제목3",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 1,
+                      "category": "뉴스레터",
+                      "title": "제목2",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    },
+                    {
+                      "letter_id": 0,
+                      "category": "인터뷰",
+                      "title": "제목1",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2"
+                    }
+                  ]
+                }
+  /morelocal/letters/{letterId}:
+    get:
+      tags:
+        - More Local
+      summary: 로컬레터 상세 조회
+      parameters:
+        - name: letterId
+          in: path
+          schema:
+            type: integer
+            description: 로컬레터 id
+          required: true
+      responses:
+        '200':
+          description: 로컬레터 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "letter": {
+                    "letter_id": 0,
+                    "category": "인터뷰",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.8.2",
+                    "content": "내용"
+                  }
+                }
+  /morelocal/letters/recent:
+    get:
+      tags:
+        - More Local
+      summary: 로컬레터 최근 업데이트된 글 6개 조회
+      responses:
+        '200':
+          description: 로컬레터 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "letters": [
+                    {
+                      "letter_id": 7,
+                      "title": "제목8",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "letter_id": 6,
+                      "title": "제목7",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "letter_id": 5,
+                      "title": "제목6",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "letter_id": 4,
+                      "title": "제목5",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "letter_id": 3,
+                      "title": "제목4",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "letter_id": 2,
+                      "title": "제목3",
+                      "thumbnail_url": "https://image.png"
+                    }
+                  ]
+                }
+  /morelocal/events:
+    get:
+      tags:
+        - More Local
+      summary: 이벤트 목록 조회
+      responses:
+        '200':
+          description: 이벤트 목록 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "events": [
+                    {
+                      "event_id": 6,
+                      "region_name": "서울",
+                      "title": "제목7",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.11.2"
+                    },
+                    {
+                      "event_id": 3,
+                      "region_name": "서울",
+                      "title": "제목4",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.10.2"
+                    },
+                    {
+                      "event_id": 2,
+                      "region_name": "서울",
+                      "title": "제목3",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.11.2"
+                    },
+                    {
+                      "event_id": 0,
+                      "region_name": "서울",
+                      "title": "제목1",
+                      "thumbnail_url": "https://image.png",
+                      "created_at": "2024.8.2",
+                      "start_date": "2024.8.2",
+                      "end_date": "2024.10.2"
+                    }
+                  ]
+                }
+  /morelocal/events/{eventId}:
+    get:
+      tags:
+        - More Local
+      summary: 이벤트 상세 조회
+      parameters:
+        - name: eventId
+          in: path
+          schema:
+            type: integer
+            description: 이벤트 id
+          required: true
+      responses:
+        '200':
+          description: 이벤트 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "event": {
+                    "event_id": 0,
+                    "region_name": "서울",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.7.2",
+                    "start_date": "2024.8.2",
+                    "end_date": "2024.10.2",
+                    "content": "내용"
+                  }
+                }
+  /morelocal/events/recent:
+    get:
+      tags:
+        - More Local
+      summary: 이벤트 최근 업데이트된 글 6개 조회
+      responses:
+        '200':
+          description: 로컬레터 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "events": [
+                    {
+                      "event_id": 7,
+                      "title": "제목8",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 6,
+                      "title": "제목7",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 5,
+                      "title": "제목6",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 4,
+                      "title": "제목5",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 3,
+                      "title": "제목4",
+                      "thumbnail_url": "https://image.png"
+                    },
+                    {
+                      "event_id": 2,
+                      "title": "제목3",
+                      "thumbnail_url": "https://image.png"
+                    }
+                  ]
+                }
