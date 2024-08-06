@@ -16,6 +16,9 @@ export const status = {
     // post err
     POST_NOT_FOUND: {status: StatusCodes.NOT_FOUND, "isSuccess": false, "code": "POST4001", "message": "게시글이 없습니다."},
 
+    // more local err
+    LETTER_NOT_EXIST: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "MORELOCAL4001", "message": "존재하지 않는 로컬레터입니다."},
+    EVENT_NOT_EXIST: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "MORELOCAL4001", "message": "존재하지 않는 이벤트입니다."},
 
 
 

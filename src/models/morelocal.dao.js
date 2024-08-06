@@ -1,5 +1,6 @@
 import { pool } from "../../config/db.config.js";
-import { getLetterList, recentLetters, getLetterInfo, getEventList, getEventListByRegion, getEventInfo, recentEvents } from "./morelocal.sql.js";
+import { status } from "../../config/response.status.js";
+import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getEventList, confirmEvent, getEventInfo, recentEvents } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -10,7 +11,7 @@ export const getLetters = async () => {
         conn.release();
         return letters;
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
 
@@ -18,13 +19,20 @@ export const getLetters = async () => {
 export const getLetterDetail = async (letterId) => {
     try {
         const conn = await pool.getConnection();
+
+        const [confirm] = await pool.query(confirmLetter, letterId);
+        if (!confirm[0].isExistLetter) {
+          conn.release();
+          return -1;
+        }
+        
         const letter = await pool.query(getLetterInfo, letterId);
 
         conn.release();
         return letter[0];
         
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
 
@@ -40,7 +48,7 @@ export const getRecentLetters = async() => {
         
         
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
 
@@ -54,7 +62,7 @@ export const getEvents = async () => {
         conn.release();
         return events;
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
 
@@ -62,13 +70,20 @@ export const getEvents = async () => {
 export const getEventDetail = async (eventId) => {
     try {
         const conn = await pool.getConnection();
+
+        const [confirm] = await pool.query(confirmEvent, eventId);
+        if (!confirm[0].isExistEvent) {
+          conn.release();
+          return -1;
+        }
+
         const event = await pool.query(getEventInfo, eventId);
 
         conn.release();
         return event[0];
         
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
 
@@ -84,6 +99,6 @@ export const getRecentEvents = async() => {
         
         
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }

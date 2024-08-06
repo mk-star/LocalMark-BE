@@ -10,6 +10,13 @@ FROM Letter
 ORDER BY created_at DESC;
 `
 
+// 로컬레터 존재 유무 확인
+export const confirmLetter = `
+SELECT
+    EXISTS(SELECT 1 FROM Letter WHERE id = ?)
+        as isExistLetter;
+`
+
 // 로컬레터 상세 조회
 export const getLetterInfo = `
 SELECT
@@ -48,6 +55,13 @@ SELECT
 FROM Event e
 JOIN Subregion s on s.id = e.subregion_id
 ORDER BY created_at DESC;
+`
+
+// 이벤트 존재 유무 확인
+export const confirmEvent = `
+SELECT
+    EXISTS(SELECT 1 FROM Event WHERE id = ?)
+        as isExistEvent;
 `
 
 // 이벤트 상세 조회
