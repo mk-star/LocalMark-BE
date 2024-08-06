@@ -1,9 +1,9 @@
 import express from 'express';
-import UserController from '../controllers/user.controller.js';
+import { registerUser, findUsername, getOrderItems, updateUser } from '../controllers/user.controller.js';
 
 export const userRouter = express.Router();
 
-userRouter.post('/signup', UserController.registerUser);
-userRouter.post('/find-username', UserController.findUsername);
-userRouter.get('/:userId/orders', UserController.getOrderItems);
-userRouter.patch('/:userId', UserController.updateUser);
+userRouter.post('/signup', registerUser);
+userRouter.post('/find-username', findUsername);
+userRouter.get('/:userId/orders', getOrderItems);
+userRouter.patch('/:userId', updateUser);
