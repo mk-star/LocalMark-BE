@@ -23,7 +23,7 @@ export const saveImageByPostId = async (postId, filename) => {
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
-    
+
 }
 
 // DB 에서 이미지 아이디에 해당하는 이미지 파일 이름 조회
@@ -70,7 +70,7 @@ export const getImagesByPostId = async (postId) => {
         
         conn.release();
 
-               // 이미지 ID와 파일명을 포함한 객체 배열로 반환
+        // 이미지 ID와 파일명을 포함한 객체 배열로 반환
         return images.map(image => ({
                 id: image.id,
                 filename: image.filename

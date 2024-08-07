@@ -1,4 +1,3 @@
-
 import { response } from "express";
 import { path } from "path";
 import { addPostInfo } from '../services/post.service'
@@ -37,12 +36,14 @@ export const uploadPost = async(req, res) => {
                 const postId = await createPost({ userId, title, content, category, imageId });
                 
                 const imageUrls = [];
-                for (const file of files) {
-                        const filePath = path.join(file.destination, file.filename);
-                        const imageUrl = await uploadFileToS3AndSave(postId, filePath);
-                        imageUrls.push(imageUrl);
+                if (files && files.length > 0) {
+                        for (const file of files) {
+                                const filePath = path.join(file.destination, file.filename);
+                                const imageUrl = await uploadFileToS3AndSave(postId, filePath);
+                                imageUrls.push(imageUrl);
 
-                        fs.unlinkSync(filePath);
+                                fs.unlinkSync(filePath);
+                        }
                 }
 
                 res.send(response(status.SUCCESS, imageUrls));
@@ -84,8 +85,8 @@ export const modifyPost = async(req, res) => {
                             await removeImageById(imageId);
                         }
                 }
+                
                 // 3. 새로 추가한 이미지 처리
-        
                 const newImageUrls = [];
                 if (newImages && newImages.length > 0) {
                     for (const file of newImages) {
