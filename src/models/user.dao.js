@@ -46,11 +46,11 @@ export const createUser = async (user) => {
 export const updateUser = async (userId, userData) => {
     const sql = `
         UPDATE User SET
-            loginId = ?, email = ?, password = ?, nickname = ?, updated_at = CURRENT_TIMESTAMP
+            loginId = ?, email = ?, nickname = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
     `;
     const values = [
-        userData.loginId, userData.email, userData.password, userData.nickname, userId
+        userData.loginId, userData.email, userData.nickname, userId
     ];
     return new Promise((resolve, reject) => {
         pool.query(sql, values, (error, results) => {
