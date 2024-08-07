@@ -34,6 +34,7 @@ app.use("/auth", authRouter);
 app.use("/reviews", reviewRouter);
 
 app.get("/", (req, res) => {
+  c;
   res.send("로컬마크 시작~");
 });
 
