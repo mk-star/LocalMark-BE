@@ -1,6 +1,8 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
-import { login, logout, registerUser, findUsername, getOrderItems, updateUser } from "../controllers/user.controller.js";
+import { registerUser, findUsername, getOrderItems, updateUser } from "../controllers/user.controller.js";
+import { login, logout } from "../controllers/auth.controller.js";
+
 import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
 
 export const loginRouter = express.Router();
