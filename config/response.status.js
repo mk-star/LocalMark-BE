@@ -51,11 +51,11 @@ export const status = {
   },
 
   // comment err
-  COMMENT_NOT_FOUND: {
+  COMMENT_NOT_FOUND:{
     status: StatusCodes.NOT_FOUND,
     isSuccess: false,
     code: "COMMENT001",
-    message: "댓글이 없습니다.",
+    message: "댓글이 없습니다."
   },
 
   // user
