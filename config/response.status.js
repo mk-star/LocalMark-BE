@@ -51,11 +51,11 @@ export const status = {
   },
 
   // comment err
-  COMMENT_NOT_FOUND:{
+  COMMENT_NOT_FOUND: {
     status: StatusCodes.NOT_FOUND,
     isSuccess: false,
     code: "COMMENT001",
-    message:"댓글이 없습니다."
+    message: "댓글이 없습니다.",
   },
 
   // user
@@ -95,6 +95,14 @@ export const status = {
     isSuccess: false,
     code: "USER4007",
     message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
+  },
+
+  //review
+  REVIEW_NOT_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "REVIEW4001",
+    message: "존재하지 않는 리뷰입니다.",
   },
 
   // db error
