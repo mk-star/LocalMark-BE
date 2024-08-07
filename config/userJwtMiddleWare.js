@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getAccessToken } from "../src/services/user.service.js";
+import { getAccessToken } from "../src/services/auth.service.js";
 import { status } from "../config/response.status.js";
 import { response } from "../config/response.js";
 
@@ -39,7 +39,7 @@ export const jwtMiddleware = async (req, res, next) => {
 
         next(); // 인증 성공, 다음 미들웨어로 제어 넘김
       } catch (refreshError) {
-        res.send(response(status.AUTHENTICATION_TIMEOUT));
+        res.send(response(status.TOKEN_UNAUTHORIZED));
       }
     } else {
       res.send(response(status.TOKEN_UNAUTHORIZED));
