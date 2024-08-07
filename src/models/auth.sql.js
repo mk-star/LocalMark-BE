@@ -1,12 +1,12 @@
 export const confirmLoginId =
-  "SELECT EXISTS(SELECT 1 FROM user WHERE loginId = ?) AS isExistLoginId";
+  "SELECT EXISTS(SELECT 1 FROM User WHERE loginId = ?) AS isExistLoginId";
 
 export const selectUserSql =
-  "SELECT id, loginId, password, type FROM user WHERE loginId = ?";
+  "SELECT id, loginId, password, type FROM User WHERE loginId = ?";
 
-export const updateTokenSql = "UPDATE user SET token = ? WHERE id = ?";
+export const updateTokenSql = "UPDATE User SET token = ? WHERE id = ?";
 
 export const confirmToken =
-  "SELECT EXISTS(SELECT 1 FROM user WHERE id = ? AND token = ?) as isExistToken;";
+  "SELECT EXISTS(SELECT 1 FROM User WHERE id = ? AND token = ?) as isExistToken;";
 
-export const selectTokenSql = "SELECT token FROM user WHERE id = ?;";
+export const selectTokenSql = "SELECT token FROM User WHERE id = ?;";
