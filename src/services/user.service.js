@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { findByID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems } from '../models/user.dao.js';
-import UserDTO from '../dtos/user.dto.js';
+import { UserDTO } from '../dtos/user.dto.js';
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVICE,

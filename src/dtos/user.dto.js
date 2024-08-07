@@ -1,4 +1,4 @@
-export const createUserDTO = ({ loginId, email, password, name, nickname, type, status }) => ({
+export const UserDTO = ({ loginId, email, password, name, nickname, type, status }) => ({
     loginId,
     email,
     password,
