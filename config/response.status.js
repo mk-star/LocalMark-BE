@@ -64,6 +64,20 @@ export const status = {
     "message": "존재하지 않는 이벤트입니다."
   },
 
+  // brand err
+   BRAND_NOT_EXIST: {
+     status: StatusCodes.BAD_REQUEST, 
+     "isSuccess": false, 
+     "code": "BRAND4001", 
+     "message": "존재하지 않는 브랜드입니다."
+   },
+  PAGE_PARAMETER_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "BRAND4002", 
+    "message": "페이지 파라미터를 입력해야 합니다."
+  },
+
 
   // comment err
   COMMENT_NOT_FOUND:{

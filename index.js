@@ -11,9 +11,10 @@ import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
-import { brandRouter} from "./src/routes/brand.route";
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
+import { brandRouter } from "./src/routes/brand.route.js"
 
+//서버 가동
 dotenv.config();
 const app = express();
 
@@ -33,14 +34,15 @@ app.use("/posts", postRouter);
 app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
 app.use("/auth", authRouter);
+app.use('/brand', brandRouter);
+app.use('/morelocal', morelocalRouter);
 
 app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
-app.use('/brand', brandRouter);
-app.use('/morelocal', morelocalRouter);
+
 app.use((err, req, res, next) => {
     // 템플릿 엔진 변수 설정
     res.locals.message = err.message;
