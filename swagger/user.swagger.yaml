@@ -205,6 +205,7 @@ paths:
                   message:
                     type: string
                     example: 'Username has been sent to your email'
+
                   data:
                     type: object
                     properties:

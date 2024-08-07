@@ -56,4 +56,8 @@ export const getPreviewPosts = async(page) => {
     }
 
 
+<<<<<<< HEAD
 }
+=======
+};
+>>>>>>> c23b5d0e2883326a28fe973c60ff2b7e39b21789
