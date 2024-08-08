@@ -28,38 +28,38 @@ FROM Product p
     JOIN Subregion s on s.id = p.subregion_id
 `
 
-// 제품 상세 페이지 조회
+// 제품 상세 페이지 조회 - 일반 상품 정보
 export const getProductInfo = `
 SELECT
     p.id as product_id,
     b.id as brand_id,
-    p.name as product_name,
-    b.name as brand_name,
-    r.name as region,
+    p.product_name,
+    b.brand_name,
     p.price,
     p.discount_rate,
     p.delivery_fee,
     p.description
-FROM product p
-    JOIN brand b on b.id = p.brand_id
-    JOIN region r on r.id = b.region_id
+FROM Product p
+    JOIN Brand b on b.id = p.brand_id
 WHERE p.id = ?;
 `
 
-// 제품 상세 페이지 색상 목록
-export const getProductColor = `
+// 제품 갤러리 상세 페이지 조회 - 이미지 
+export const getProductImage = `
 SELECT
-    c.name
-FROM color c
-JOIN product p on p.id = c.product_id
+    pi.id as image_id,
+    pi.filename as image_url
+FROM Product_Image pi
+JOIN Product p on p.id = pi.product_id
 WHERE p.id = ?;
 `
 
-// 제품 상세 페이지 사이즈 목록
-export const getProductSize = `
+// 제품 갤러리 상세 페이지 조회 - 리뷰 정보(평점, 리뷰 개수)
+export const getProductReviewInfo = `
 SELECT
-    s.size
-FROM size s
-JOIN product p on p.id = s.product_id
+    AVG(r.rating) as avgStar,
+    COUNT(r.id) as reviewCnt
+FROM Product p
+    JOIN Review r on p.id = r.product_id
 WHERE p.id = ?;
 `

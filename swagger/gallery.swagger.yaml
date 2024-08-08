@@ -89,6 +89,7 @@ paths:
       summary: 제품 상세 페이지 조회
       parameters:
         - name: productId
+          type: integer
           in: path
           schema:
             type: integer
@@ -105,33 +106,33 @@ paths:
                 example: true
               code:
                 type: integer
-                example: 200
+                example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "SUCCESS!"
               result:
                 type: array
                 example: {
-                  "product": [
+                  "product": {
+                    "product_id": 1,
+                    "brand_id": 1,
+                    "product_name": "이불",
+                    "brand_name": "푸른",
+                    "price": 12000,
+                    "discount_rate": 30,
+                    "delivery_fee": 3000,
+                    "description": "따스한 ~~ ",
+                    "star_avg": "3.5",
+                    "review_cnt": 2
+                  },
+                  "images": [
                     {
-                      "product_id": 1,
-                      "brand_id": 1,
-                      "product_name": "이불",
-                      "brand_name": "푸른",
-                      "region": "서울",
-                      "price": 12000,
-                      "discount_rate": 30,
-                      "delivery_fee": 3000,
-                      "description": "따스한 ~~ "
-                    }
-                  ],
-                  "colors": [
-                    "핑크",
-                    "레드"
-                  ],
-                  "sizes": [
-                    "s",
-                    "m",
-                    "l"
+                      "image_id": 1,
+                      "image_url": "이미지1.png"
+                    },
+                    {
+                      "image_id": 2,
+                      "image_url": "이미지2.png"
+                    },
                   ]
                 }

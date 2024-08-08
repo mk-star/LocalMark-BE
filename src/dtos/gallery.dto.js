@@ -17,17 +17,7 @@ export const galleryResponseDTO = (data, currentPage, totalPage) => {
     return {"products": products, "currentPage": currentPage, "totalPage" : totalPage};
 }
 
-export const productResponseDTO = (product, product_color, product_size) => {
+export const productResponseDTO = (product, images) => {
 
-    const colors = [];
-    const sizes = [];
-
-    for (let i = 0; i < product_color.length; i++) {
-        colors.push(product_color[i].name);
-    }
-    for (let i = 0; i < product_size.length; i++) {
-        sizes.push(product_size[i].size);
-    }
-
-    return {"product": product, "colors": colors, "sizes": sizes};
+    return {product, images };
 }

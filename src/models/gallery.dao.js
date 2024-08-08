@@ -1,5 +1,5 @@
 import { pool } from "../../config/db.config.js";
-import { getGalleryCnt, getGalleryList, getProductInfo, getProductColor, getProductSize } from "./gallery.sql.js";
+import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo } from "./gallery.sql.js";
 
 // 제품 갤러리 목록 조회/검색
 export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
@@ -110,37 +110,14 @@ export const getProduct = async (productId) => {
     try {
         const conn = await pool.getConnection();
         const [product] = await pool.query(getProductInfo, productId);
-
-        conn.release();
-        return product;
+        const [images] = await pool.query(getProductImage, productId);
+        const [review] = await pool.query(getProductReviewInfo, productId);
         
-    } catch (err) {
-        throw new Error(err.message)
-    }
-}
-
-// 제품 상세 페이지 색상 목록 조회
-export const getColor = async (productId) => {
-    try {
-        const conn = await pool.getConnection();
-        const [color] = await pool.query(getProductColor, productId);
+        product[0].star_avg = review[0]?.avgStar ? parseFloat(review[0].avgStar).toFixed(1) : "0.0";
+        product[0].review_cnt = review[0]?.reviewCnt ?? 0;
 
         conn.release();
-        return color;
-        
-    } catch (err) {
-        throw new Error(err.message)
-    }
-}
-
-// 제품 상세 페이지 색상 목록 조회
-export const getSize = async (productId) => {
-    try {
-        const conn = await pool.getConnection();
-        const [size] = await pool.query(getProductSize, productId);
-
-        conn.release();
-        return size;
+        return {product: product[0], images: images};
         
     } catch (err) {
         throw new Error(err.message)

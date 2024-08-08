@@ -1,5 +1,5 @@
 import { galleryResponseDTO, productResponseDTO } from "../dtos/gallery.dto.js"
-import { getGellery, getProduct, getColor, getSize } from "../models/gallery.dao.js";
+import { getGellery, getProduct } from "../models/gallery.dao.js";
 
 export const getProducts = async (query) => {
 
@@ -15,6 +15,6 @@ export const getProducts = async (query) => {
 }
 
 export const getProductDetail = async (productId) => {
-
-    return productResponseDTO(await getProduct(productId), await getColor(productId), await getSize(productId));
+    const { product, images } = await getProduct(productId);
+    return productResponseDTO(product, images);
 }
