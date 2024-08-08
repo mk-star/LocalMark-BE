@@ -10,7 +10,6 @@ export const registerUser = async (req, res, next) => {
         return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
     }
 };
-
 export const findUsername = async (req, res) => {
     const { email } = req.body;
     try {

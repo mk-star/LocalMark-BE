@@ -1,0 +1,133 @@
+
+paths:
+  /gallery:
+    get:
+      tags:
+        - Gallery
+      summary: 제품 갤러리 조회/검색/필터링
+      parameters:
+        - name: region
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 지역 id
+          required: false
+        - name: category
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 카테고리 id
+          required: false
+        - name: page
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 페이지 번호
+          required: true
+        - name: sort
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 정렬 방법
+          required: false
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: 제품 갤러리 조회/검색/필터링 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "products": [
+                    {
+                      "product_id": 2,
+                      "brand_id": 1,
+                      "subregion_name": "성수",
+                      "product_name": "귀여운 양말1",
+                      "brand_name": "네코",
+                      "discount_rate": 10,
+                      "price": 2000,
+                      "thumbnail_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSAOnLXSaPbc4K0IId0dSTI050OfwusYAyfQzMiCF6mrwNPVdmN"
+                    },
+                    {
+                      "product_id": 3,
+                      "brand_id": 1,
+                      "subregion_name": "성수",
+                      "product_name": "귀여운 양말2",
+                      "brand_name": "네코",
+                      "discount_rate": 10,
+                      "price": 2000,
+                      "thumbnail_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSAOnLXSaPbc4K0IId0dSTI050OfwusYAyfQzMiCF6mrwNPVdmN"
+                    }
+                  ],
+                  "currentPage" : 1,
+                  "totalPage" : 5
+                }
+  /gallery/product/{productId}:
+    get:
+      tags:
+        - Gallery
+      summary: 제품 상세 페이지 조회
+      parameters:
+        - name: productId
+          type: integer
+          in: path
+          schema:
+            type: integer
+            description: 제품 id
+          required: true
+      responses:
+        '200':
+          description: 제품 상세 페이지 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "product": {
+                    "product_id": 1,
+                    "brand_id": 1,
+                    "product_name": "이불",
+                    "brand_name": "푸른",
+                    "price": 12000,
+                    "discount_rate": 30,
+                    "delivery_fee": 3000,
+                    "description": "따스한 ~~ ",
+                    "star_avg": "3.5",
+                    "review_cnt": 2
+                  },
+                  "images": [
+                    "이미지1.png",
+                    "이미지2.png",
+                    "이미지3.png"
+                  ]
+                }
