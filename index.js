@@ -13,7 +13,7 @@ import { commentRouter } from "./src/routes/comment.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
 import { brandRouter } from "./src/routes/brand.route.js"
-import { gelleryRouter } from "./src/routes/gallery.routes"
+import { gelleryRouter } from "./src/routes/gallery.routes.js"
 
 //서버 가동
 dotenv.config();
