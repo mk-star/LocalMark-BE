@@ -15,6 +15,7 @@ import { commentRouter } from "./src/routes/comment.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
 import { brandRouter } from "./src/routes/brand.route.js"
+import { gelleryRouter } from "./src/routes/gallery.routes.js"
 
 //서버 가동
 dotenv.config();
@@ -27,11 +28,14 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(cookieParser());
 
+// router setting
+app.use('/gallery', gelleryRouter);
 app.use("/posts", postRouter);
 app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
