@@ -2,6 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import { login, logout } from "../controllers/user.controller.js";
 import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
+import { registerUser } from '../controllers/user.controller.js';
 
 export const loginRouter = express.Router();
 export const logoutRouter = express.Router();
@@ -13,3 +14,7 @@ loginRouter.get("/profile", jwtMiddleware, (req, res) => {
 });
 
 logoutRouter.post("", asyncHandler(logout));
+
+export const userRouter = express.Router();
+
+userRouter.post('/signup',registerUser);

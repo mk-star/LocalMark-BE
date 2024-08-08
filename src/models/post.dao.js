@@ -55,5 +55,4 @@ export const getPreviewPosts = async(page) => {
         throw new BaseError(status.BAD_REQUEST);
     }
 
-
 };

@@ -1,3 +1,4 @@
+
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -8,6 +9,7 @@ import { response } from './config/response.js';
 import { status } from './config/response.status.js';
 import { postRouter } from "./src/routes/post.route.js";
 import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
+import { userRouter } from ("./src/routes/user.route.js");
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
@@ -42,6 +44,7 @@ app.use("/health", healthRoute);
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
+app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {
     // 템플릿 엔진 변수 설정
