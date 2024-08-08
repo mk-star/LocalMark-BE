@@ -9,7 +9,7 @@ import { response } from './config/response.js';
 import { status } from './config/response.status.js';
 import { postRouter } from "./src/routes/post.route.js";
 import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
-import { userRouter } from ("./src/routes/user.route.js");
+import { userRouter } from "./src/routes/user.route.js";
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
