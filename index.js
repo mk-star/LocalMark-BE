@@ -13,22 +13,19 @@ import  { userRouter } from ("./src/routes/user.route");
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
-
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
+import { brandRouter } from "./src/routes/brand.route.js"
 
 //서버 가동
 dotenv.config();
 const app = express();
 
-// server setting
-app.set("port", process.env.PORT || 3000); // 서버 포트 지정
-app.use(cors()); // cors 방식 허용
-app.use(express.static("public")); // 정적 파일 접근
-app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함
+// 서버 설정
+app.set("port", process.env.PORT || 3000);
+app.use(cors());
+app.use(express.static("public"));
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-
-app.use('/morelocal', morelocalRouter);
 
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
@@ -39,6 +36,8 @@ app.use("/posts", postRouter);
 app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
 app.use("/auth", authRouter);
+app.use('/brand', brandRouter);
+app.use('/morelocal', morelocalRouter);
 
 app.use("/health", healthRoute);
 
