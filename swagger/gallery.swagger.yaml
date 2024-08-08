@@ -4,26 +4,36 @@ paths:
     get:
       tags:
         - Gallery
-      summary: 제품 갤러리 조회/검색
+      summary: 제품 갤러리 조회/검색/필터링
       parameters:
-        - name: region_id
+        - name: region
+          type: integer
           in: query
           schema:
             type: integer
             description: 지역 id
-          required: true
-        - name: category_id
+          required: false
+        - name: category
+          type: integer
           in: query
           schema:
             type: integer
             description: 카테고리 id
-          required: true
+          required: false
         - name: page
+          type: integer
           in: query
           schema:
             type: integer
             description: 페이지 번호
           required: true
+        - name: sort
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 정렬 방법
+          required: false
         - name: keyword
           in: query
           schema:
@@ -31,7 +41,7 @@ paths:
           required: false
       responses:
         '200':
-          description: 제품 갤러리 조회/검색 성공
+          description: 제품 갤러리 조회/검색/필터링 성공
           schema:
             type: object
             properties:
@@ -51,9 +61,9 @@ paths:
                     {
                       "product_id": 2,
                       "brand_id": 1,
+                      "subregion_name": "성수",
                       "product_name": "귀여운 양말1",
                       "brand_name": "네코",
-                      "region": "서울",
                       "discount_rate": 10,
                       "price": 2000,
                       "thumbnail_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSAOnLXSaPbc4K0IId0dSTI050OfwusYAyfQzMiCF6mrwNPVdmN"
@@ -61,9 +71,9 @@ paths:
                     {
                       "product_id": 3,
                       "brand_id": 1,
+                      "subregion_name": "성수",
                       "product_name": "귀여운 양말2",
                       "brand_name": "네코",
-                      "region": "서울",
                       "discount_rate": 10,
                       "price": 2000,
                       "thumbnail_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSAOnLXSaPbc4K0IId0dSTI050OfwusYAyfQzMiCF6mrwNPVdmN"

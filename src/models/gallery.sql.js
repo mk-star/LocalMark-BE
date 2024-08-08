@@ -2,63 +2,31 @@
 export const getGalleryCnt = `
 SELECT
     COUNT(*) AS products_cnt
-FROM product p
-    JOIN brand b on b.id = p.brand_id
-    JOIN region r on r.id = b.region_id
-    JOIN product_category pc on p.id = pc.product_id
-WHERE r.id = ?
-  AND pc.category_id = ?;`
+FROM Product p
+    JOIN Brand b on b.id = p.brand_id
+    JOIN Region r on r.id = b.region_id
+    JOIN Category c on p.category_id = c.id
+    JOIN Subregion s on s.id = p.subregion_id
+`
 
-// 갤러리 검색 총 개수
-export const getGalleryByKeywordCnt = `
-SELECT
-    COUNT(*) AS products_cnt
-FROM product p
-    JOIN brand b on b.id = p.brand_id
-    JOIN region r on r.id = b.region_id
-    JOIN product_category pc on p.id = pc.product_id
-WHERE r.id = ?
-  AND pc.category_id = ?
-  AND p.name LIKE ?;`
-
-// 갤러리 제품 보기
+// 갤러리 제품 목록 보기
 export const getGalleryList = `
-SELECT 
-    p.id as product_id, 
-    b.id as brand_id, 
-    p.name as product_name, 
-    b.name as brand_name, 
-    r.name as region, 
-    p.discount_rate, 
-    p.price, 
-    p.thumbnail_url 
-FROM product p 
-    JOIN brand b on b.id = p.brand_id 
-    JOIN region r on r.id = b.region_id 
-    JOIN product_category pc on p.id = pc.product_id 
-WHERE r.id = ? 
-  AND pc.category_id = ?
-LIMIT ? OFFSET ?;`
-
-// 갤러리 제품 이름 검색
-export const getGalleryByKeyword = `
 SELECT
     p.id as product_id,
     b.id as brand_id,
-    p.name as product_name,
-    b.name as brand_name,
-    r.name as region,
+    p.product_name,
+    b.brand_name,
+    s.subregion_name,
+    r.region_name,
     p.discount_rate,
     p.price,
     p.thumbnail_url
-FROM product p
-    JOIN brand b on b.id = p.brand_id
-    JOIN region r on r.id = b.region_id
-    JOIN product_category pc on p.id = pc.product_id
-WHERE r.id = ?
-  AND pc.category_id = ?
-  AND p.name LIKE ?
-LIMIT ? OFFSET ?;`
+FROM Product p
+    JOIN Brand b on b.id = p.brand_id
+    JOIN Region r on r.id = b.region_id
+    JOIN Category c on p.category_id = c.id
+    JOIN Subregion s on s.id = p.subregion_id
+`
 
 // 제품 상세 페이지 조회
 export const getProductInfo = `
