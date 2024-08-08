@@ -113,11 +113,12 @@ export const getProduct = async (productId) => {
         const [images] = await pool.query(getProductImage, productId);
         const [review] = await pool.query(getProductReviewInfo, productId);
         
+        const imageUrls = images.map(image => image.image_url);
         product[0].star_avg = review[0]?.avgStar ? parseFloat(review[0].avgStar).toFixed(1) : "0.0";
         product[0].review_cnt = review[0]?.reviewCnt ?? 0;
 
         conn.release();
-        return {product: product[0], images: images};
+        return {product: product[0], images: imageUrls};
         
     } catch (err) {
         throw new Error(err.message)

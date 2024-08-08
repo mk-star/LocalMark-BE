@@ -47,7 +47,6 @@ WHERE p.id = ?;
 // 제품 갤러리 상세 페이지 조회 - 이미지 
 export const getProductImage = `
 SELECT
-    pi.id as image_id,
     pi.filename as image_url
 FROM Product_Image pi
 JOIN Product p on p.id = pi.product_id

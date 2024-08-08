@@ -126,13 +126,8 @@ paths:
                     "review_cnt": 2
                   },
                   "images": [
-                    {
-                      "image_id": 1,
-                      "image_url": "이미지1.png"
-                    },
-                    {
-                      "image_id": 2,
-                      "image_url": "이미지2.png"
-                    },
+                    "이미지1.png",
+                    "이미지2.png",
+                    "이미지3.png"
                   ]
                 }
