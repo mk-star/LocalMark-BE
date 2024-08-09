@@ -588,3 +588,35 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /users/{userId}/status:
+    patch:
+      tags:
+        - User
+      summary: 탈퇴 신청/취소
+      parameters:
+        - name: userId
+          type: integer
+          in: path
+          schema:
+            type: integer
+            description: 유저 ID
+          required: true
+      responses:
+        "200":
+          description: 탈퇴 신청/취소 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: string
+                example: "회원 탈퇴/취소가 완료되었습니다."
