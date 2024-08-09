@@ -1,15 +1,23 @@
-import { status } from "../../config/response.status";
-import { confirmPost, deletePostSql, getPostDetail, getPosts, getPostsByCategory, insertPost, updatePostSql } from "./post.query";
+import { status } from "../../config/response.status.js";
+import { 
+    confirmPost, 
+    deletePostSql, 
+    getPostDetail, 
+    getPosts, 
+    getPostsByCategory, 
+    insertPost, 
+    updatePostSql } from "./post.sql.js";
 
 const pool = require("../../config/database");
-import { createPost } from './post.sql.js'; 
 
-export const addPost = async(userId, category, title, image, type, content)=> {
+export const addPost = async(data)=> {
   try{
+
     const conn = await pool.getConnection();
-    const [addPost] = await pool.query(createPost,[userId, category, title, image, type, content]);
+    const [addPost] = await pool.query(insertPost, [data.userId, data.category, data.title, data.thumnail_filename, data.content]);
     conn.release();
-    return addPost
+
+    return addPost;
   }catch(err){
     console.log(`DB 저장 실패 ${err.message}`)
   }
@@ -72,7 +80,7 @@ export const getPreviewPostDetail = async(postId) => {
     }
 }
 
-export const updatePost = async({postId, title, content, category, thumbnail_filename}) => {
+export const updatePost = async(data) => {
     try {
 
         const conn = await pool.getConnection();
@@ -85,11 +93,11 @@ export const updatePost = async({postId, title, content, category, thumbnail_fil
         }
 
         const result = await pool.query(updatePostSql, [
-            title,
-            content,
-            category,
-            thumbnail_filename,
-            postId,
+            data.title,
+            data.content,
+            data.category,
+            data.thumbnail_filename,
+            data.postId,
         ]);
       
         conn.release();

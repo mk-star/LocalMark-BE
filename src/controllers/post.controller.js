@@ -30,10 +30,9 @@ export const uploadPost = async(req, res) => {
 
         try {
                 console.log("body: ", req.body);
-                const { userId, title, content, category, imageId } = req.body;
                 const files = req.files;
 
-                const postId = await createPost({ userId, title, content, category, imageId });
+                const postId = await createPost(req.body);
                 
                 const imageUrls = [];
                 if (files && files.length > 0) {

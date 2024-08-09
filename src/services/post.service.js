@@ -1,11 +1,13 @@
-import { status } from "../../config/response.status";
-import { postDetailResponseDTO } from "../dtos/post.dto";
-import { deletePost, updatePost, addPost, getPreviewPostDetail, getPreviewPosts, getPreviewPostsByCategory } from "../models/post.dao";
-import { postsResponseDTO } from "../dtos/post.dto"
-import { deleteImageByPostId, getImageById, getImagesByPostId } from "../models/image.dao";
-import { addPost } from '../models/post.dao'
+import { status } from "../../config/response.status.js";
+import { postDetailResponseDTO } from "../dtos/post.dto.js";
+import { deleteImageByPostId, getImageById } from "../models/image.dao.js";
+import { 
+    deletePost, 
+    updatePost, 
+    addPost } from "../models/post.dao.js";
 
-export const addPostInfo =async (body) =>{
+
+export const addPostInfo = async (body) => {
   const { userId, category, title, image, type, content} = body;
   console.log(userId)
 
@@ -14,50 +16,36 @@ export const addPostInfo =async (body) =>{
 }
 
 
-export const getPosts = async(category, page) => {
-
-    if(category) {
-        return postsResponseDTO(await getPreviewPostsByCategory(category, page));
-    } else {
-        return postsResponseDTO(await getPreviewPosts(page));
-    }
-
-}
-
-export const getPostDetail = async(postId) => {
-
-    const postDetail = await getPreviewPostDetail(postId);
-    const imagefileNames = [];
-    imagefileNames = await getImagesByPostId(postId);
-
-    return postDetailResponseDTO(postDetail, imagefileNames); 
-}
-
-
-export const createPost = async({ userId, title, content, category, imageId }) => {
+export const createPost = async(body) => {
   
     let thumnail_filename = null;
 
     // imageId가 null이 아니고, 유효한 값일 때만 썸네일 파일명을 가져옴
-    if (imageId !== null && imageId !== -1) {
-        thumnail_filename = await getImageById(imageId);
+    if (body.image_id !== null && body.image_id !== -1) {
+        thumnail_filename = await getImageById(body.image_id);
     }
  
     const postId = await addPost({
-        "userId": userId,
-        "title": title,
-        "content": content,
-        "category": category,
+        "userId": body.user_id,
+        "title": body.title,
+        "content": body.content,
+        "category": body.category,
         "thumnail_filename": thumnail_filename //null 이 될 수 있음. (이미지 첨부를 아무것도 하지 않았을 때)
     })
 
 }
 
-export const updatePostDetail = async({postId, title, content, category, thumbnailId}) => {
+export const updatePostDetail = async(data) => {
 
     const thumbnail_filename = getImageById(thumbnailId);
 
-    const updatePostData = await updatePost({postId, title, content, category, thumbnail_filename});
+    const updatePostData = await updatePost(
+        data.postId, 
+        data.title, 
+        data.content, 
+        data.category, 
+        thumbnail_filename
+    );
 
     if(updatePostData == -1) {
         throw new BaseError(status.POST_NOT_FOUND);
