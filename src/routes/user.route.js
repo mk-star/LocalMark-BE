@@ -1,6 +1,7 @@
 import express from "express";
-import { registerGeneral, registerCreator, findUsername, getOrderItems, updateUser, updatePassword, updatePasswordEmail, registerUser, removeUser } from "../controllers/user.controller.js";
+import { registerGeneral, registerCreator, findUsername, getOrderItems, updateUser, updatePassword, updatePasswordEmail, removeUser } from "../controllers/user.controller.js";
 import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
+import asyncHandler from "express-async-handler";
 
 export const userRouter = express.Router();
 

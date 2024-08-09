@@ -8,12 +8,10 @@ export const login = async (req, res, next) => {
   console.log(req.body);
 
   const result = await userLogin(req.body);
-  console.log(result);
+  
   if (result.inactiveDate) {
-    console.log("잉?");
     res.send(response(status.ACCOUNT_CANCELED, { id: result.userId, inactive_date: result.inactiveDate}));
   } else {
-    console.log("우?");
     res.cookie("refreshToken", result.refreshToken, {
       httpOnly: true,
       secure: true,

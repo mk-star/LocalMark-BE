@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import { BaseError } from "../../config/error.js";
+import { status } from "../../config/response.status.js";
 import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, deleteUserById, restoreUserById } from '../models/user.dao.js';
 import { UserDTO } from '../dtos/user.dto.js';
 
@@ -142,13 +144,11 @@ export const resetPassword = async (body) => {
   
   export const deleteUser = async (userId) => {
     const user = await findByID(userId);
-    console.log(user);
 
-    if (user) {
-        console.log("옹");
+    if (!user) {
         throw new BaseError(status.USER_NOT_EXISTS);
     }
-    console.log(user.status);
+
     if (user.status == 'ACTIVE') {
         await deleteUserById(userId);
         return 1;
