@@ -135,6 +135,14 @@ export const status = {
     message: "존재하지 않는 리뷰입니다.",
   },
 
+  //cart
+  CART_ITEM_NOT_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "CARTITEM4001",
+    message: "존재하지 않는 장바구니 상품입니다.",
+  },
+
   // db error
   PARAMETER_IS_WRONG: {
     status: StatusCodes.BAD_REQUEST,
