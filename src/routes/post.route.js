@@ -1,23 +1,16 @@
-import {addPost, postsPreview } from '../controllers/post.controller.js';
-import asyncHandler from 'express-async-handler';
 import express from 'express';
-import multer from 'multer';
-
-
-// Multer 설정
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // 파일 저장 경로
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`); // 파일 이름 설정
-    }
-});
-
-const upload = multer({ storage });
-const uploadMiddleware = upload.array("images",10);
+import asyncHandler from 'express-async-handler';
+import { addPost, postsByCreator } from '../controllers/post.controller.js';
+import { modifyPost, postDetail, posts, removePost, uploadPost } from '../controllers/post.controller.js';
+import { upload } from '../proviers/image.provider.js';
 
 export const postRouter = express.Router({mergeParams: true});
 
-postRouter.post('/',uploadMiddleware, asyncHandler(addPost));
-postRouter.get('/', postsPreview);
+postRouter.post('/signin', asyncHandler(addPost));
+postRouter.get('/posts', asyncHandler(posts));
+postRouter.post('/', upload.array('images', 10), asyncHandler(uploadPost));
+postRouter.get('/:postId', asyncHandler(postDetail));
+postRouter.patch('/:postId', upload.array('images', 10), asyncHandler(modifyPost));
+postRouter.delete('/:postId', asyncHandler(removePost));
+postRouter.get('/:brandId/posts', asyncHandler(postsByCreator));
+

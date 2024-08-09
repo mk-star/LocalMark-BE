@@ -44,3 +44,9 @@ JOIN Brand b on b.id = p.brand_id
 JOIN Subregion s on s.id = p.subregion_id
 WHERE b.id = ?
 `
+
+// 브랜드 크리에이터 정보 조회
+export const getCreatorIdByBrandId = `
+SELECT user_id FROM brand
+WHERE id = ?
+`

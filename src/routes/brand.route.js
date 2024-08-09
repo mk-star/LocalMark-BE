@@ -8,6 +8,5 @@ export const brandRouter = express.Router();
 
 brandRouter.post('/', createBrand);
 brandRouter.patch('/:id', updateBrand); // login_required 추가
-
 brandRouter.get('/:brandId', asyncHandler(brandInfo));
 brandRouter.get('/:brandId/products', asyncHandler(brandProductList));
