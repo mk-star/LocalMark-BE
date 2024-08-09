@@ -11,7 +11,7 @@ import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
 
 export const reviewRouter = express.Router({ mergeParams: true });
 
-reviewRouter.get("/:oiId", asyncHandler(reviewDetail));
+reviewRouter.get("/:oiId", jwtMiddleware, asyncHandler(reviewDetail));
 
 reviewRouter.post(
   "/",

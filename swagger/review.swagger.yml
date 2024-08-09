@@ -13,8 +13,6 @@ paths:
             description: 주문 아이템 PK
             example: 5
           required: true
-      security:
-        - BearerAuth: []
       responses:
         "200":
           description: 리뷰 조회 성공
@@ -94,8 +92,6 @@ paths:
             type: integer
             description: 평점
             example: 4
-      security:
-        - BearerAuth: []
       responses:
         "200":
           description: 리뷰 작성 성공
@@ -157,8 +153,6 @@ paths:
             type: integer
             description: 리뷰 PK
           required: true
-      security:
-        - BearerAuth: []
       responses:
         "200":
           description: 리뷰 삭제 성공
@@ -228,8 +222,6 @@ paths:
           type: integer
           description: 평점
           example: 4
-    security:
-      - BearerAuth: []
     responses:
       "200":
         description: 리뷰 수정 성공
