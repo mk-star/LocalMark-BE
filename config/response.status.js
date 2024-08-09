@@ -50,13 +50,43 @@ export const status = {
     message: "게시글이 없습니다.",
   },
 
+  // more local err
+  LETTER_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "LETTER4001", 
+    "message": "존재하지 않는 로컬레터입니다."
+  },
+  EVENT_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false,
+    "code": "EVENT4001", 
+    "message": "존재하지 않는 이벤트입니다."
+  },
+
+  // brand err
+   BRAND_NOT_EXIST: {
+     status: StatusCodes.BAD_REQUEST, 
+     "isSuccess": false, 
+     "code": "BRAND4001", 
+     "message": "존재하지 않는 브랜드입니다."
+   },
+  PAGE_PARAMETER_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "BRAND4002", 
+    "message": "페이지 파라미터를 입력해야 합니다."
+  },
+
+
   // comment err
   COMMENT_NOT_FOUND:{
     status: StatusCodes.NOT_FOUND,
     isSuccess: false,
-    code: "COMMENT001",
+    code: "COMMENT4001",
     message:"댓글이 없습니다."
   },
+
 
   // user
   LOGINID_NOT_EXISTS: {
@@ -97,6 +127,12 @@ export const status = {
     message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
   },
 
+  // socket error
+  CONNECT_IS_WRONG: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: "SOCKET5001"
+  },
   // db error
   PARAMETER_IS_WRONG: {
     status: StatusCodes.BAD_REQUEST,
@@ -106,3 +142,4 @@ export const status = {
       "쿼리 실행 시 전달되는 파라미터가 잘못되었습니다. 파라미터 개수 혹은 파라미터 형식을 확인해주세요.",
   },
 };
+

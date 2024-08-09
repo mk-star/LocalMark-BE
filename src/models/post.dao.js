@@ -20,7 +20,6 @@ export const addPost = async(userId, category, title, images, content)=> {
   }catch(err){
       throw new BaseError(status.BAD_REQUEST);
   }
-
 }
 
 export const getPreviewPostsByCategory = async(category, page) => {
@@ -57,4 +56,4 @@ export const getPreviewPosts = async(page) => {
     }
 
 
-}
+};
