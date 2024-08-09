@@ -21,5 +21,3 @@ export const postRouter = express.Router({mergeParams: true});
 
 postRouter.post('/',uploadMiddleware, asyncHandler(addPost));
 postRouter.get('/', postsPreview);
-
-
