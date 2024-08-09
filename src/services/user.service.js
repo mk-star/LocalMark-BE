@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
-import { findByID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword } from '../models/user.dao.js';
 import { UserDTO } from '../dtos/user.dto.js';
 
 const transporter = nodemailer.createTransport({
@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export const registerUserService = async (userData) => {
-    const existingUserByID = await findByID(userData.loginId);
+export const registerUserService = async (userData, type) => {
+    const existingUserByID = await findByLoginID(userData.loginId);
     if (existingUserByID) {
         throw new Error('This id is already in use.');
     }
@@ -25,15 +25,9 @@ export const registerUserService = async (userData) => {
     if (existingUser) {
         throw new Error('This email is already in use.');
     }
-
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const userDTO = new UserDTO({
-        ...userData,
-        password: hashedPassword,
-        status: 'active',
-    });
 
-    await createUser(userDTO);
+    await createUser(userData, hashedPassword, type);
     return { ...userData };
 };
 
@@ -93,10 +87,38 @@ export const updateUserService = async (userId, userData) => {
         if (existingUser) {
             throw new Error('This email is already in use.');
         }
-        const updateUserDTO = new UserDTO(userData);
-        const updatedUser = await updateUser(userId, updateUserDTO);
+        const updatedUser = await updateUser(userId, userData);
         return updatedUser;
     } catch (error) {
         throw error;
     }
 };
+
+export const updatePasswordService = async (userId, newPassword) => {
+    try{
+        const newHashedPassword = await bcrypt.hash(newPassword['password'], 10);
+        const updatedPasswordUser = await updatePassword(userId, newHashedPassword);
+        return updatedPasswordUser;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const updatePasswordEmailService = async (userId) =>{
+    try{
+        const userData = await findByID(userId);
+        if (userData) {
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: userData.email,
+                subject: 'Your Account Username',
+                text: `비밀번호 변경링크입니다.\n\nhttps://example.com/${userData.id}/change-password`,
+            };
+            await transporter.sendMail(mailOptions);
+            return true;
+        }
+        return false;
+    } catch(error){
+        throw error;
+    }
+}

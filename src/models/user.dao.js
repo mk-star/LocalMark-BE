@@ -1,46 +1,49 @@
 import { pool } from '../../config/database.js';
 
-export const findByID = async (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM User WHERE loginId = ?`;
-        pool.query(sql, [id], (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results[0]);
-            }
-        });
-    });
+export const findByID = async(userId) => {
+    const sql = `SELECT * FROM User WHERE id = ?`;
+    try {
+        const [results] = await pool.query(sql, [userId]);
+        return results[0];
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const findByLoginID = async (loginId) => {
+    const sql = `SELECT * FROM User WHERE loginId = ?`;
+    try {
+        const [results] = await pool.query(sql, [loginId]);
+        return results[0];
+    } catch (error) {
+        throw error;
+    }
 };
+
 
 export const findByEmail = async (email) => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM User WHERE email = ?`;
-        pool.query(sql, [email], (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results[0]);
-            }
-        });
-    });
+    const sql = `SELECT * FROM User WHERE email = ?`;
+    try{
+        const [results] = await pool.query(sql, [email]);
+        return results[0];
+    } catch (error) {
+        throw error;
+    }
 };
 
-export const createUser = async (user) => {
-    return new Promise((resolve, reject) => {
-        const sql = `
-            INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
-        `;
-        const values = [user.loginId, user.email, user.password, user.nickname, user.type, user.status];
-        pool.query(sql, values, (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve();
-            }
-        });
-    });
+export const createUser = async (userData, hashedPassword, type) => {
+    const sql = `
+        INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+    `;
+    const values = [userData.loginId, userData.email, hashedPassword, userData.nickname, type, userData.status];
+    try{
+        const [results] = await pool.query(sql, values);
+        console.log(results[0]);
+        return results[0];
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const updateUser = async (userId, userData) => {
@@ -52,76 +55,88 @@ export const updateUser = async (userId, userData) => {
     const values = [
         userData.loginId, userData.email, userData.nickname, userId
     ];
-    return new Promise((resolve, reject) => {
-        pool.query(sql, values, (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
-    });
+    try{
+        const [results] = await pool.query(sql, values);
+        return results[0];
+    } catch (error) {
+        console.error('SQL Error:', error);
+        throw error;
+    }
 };
+export const updatePassword = async(userId, newHashedPassword) =>{
+    const sql = `
+        UPDATE User SET
+            password = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+    const values = [
+        newHashedPassword, userId
+    ];
+    try{
+        const [results] = await pool.query(sql, values);
+        console.log('3333',results)
+        return results;
+    } catch(error) {
+        console.error('SQL Error:', error);
+        throw error;
+    }
+}
 
 export const getUsernameByEmail = async (email) => {
-    return new Promise((resolve, reject) => {
-        pool.query('SELECT id, nickname, name FROM User WHERE email = ?', [email], (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            if (results.length > 0) {
-                resolve(results[0]);
-            } else {
-                resolve(null);
-            }
-        });
-    });
+    const sql=`
+        SELECT id, nickname, name FROM User WHERE email = ?
+    `
+    try{
+        const results = await pool.query(sql, [email]);
+        return results[0]
+    } catch(error){
+        console.error('SQL Error:', error);
+        throw error;
+    }
 };
 
-export const getOrdersByID = async (user_id) => {
-    return new Promise((resolve, reject) => {
-        pool.query('SELECT id FROM Orders WHERE user_id = ? AND status = "COMPLETE"', [user_id], (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            if (results.length > 0) {
-                const ids = results.map(order => order.id);
-                resolve(ids);
-            } else {
-                resolve(null);
-            }
-        });
-    });
+export const getOrdersByID = async (userId) => {
+    const sql = `
+        SELECT id FROM Orders WHERE user_id = ? AND status = "COMPLETE"
+    `
+    try{
+        const [results] = await pool.query(sql, [userId]);
+        if(results.length>0){
+            const ids = results.map(order => order.id);
+            return ids;
+        }
+        else{
+            return null;
+        }
+    }catch(error){
+        throw(error)
+    }
 };
 
 export const getOrderItemNumberByIDs = async (ids) => {
-    return new Promise((resolve, reject) => {
-        const placeholders = ids.map(() => '?').join(',');
-        const query = `SELECT product_id FROM Order_Item WHERE order_id IN (${placeholders})`;
-        pool.query(query, ids, (error, results) => {
-            if (error) {
-                reject(error);
-            }
-            if (results.length > 0) {
-                const ids = results.map(order => order.product_id);
-                resolve(ids);
-            } else {
-                resolve(null);
-            }
-        });
-    });
+    const placeholders = ids.ma(()=>'?').join(',');
+    const sql = `SELECT product_id FROM Order_Item WHERE order_id IN (${placeholders})`;
+    try{
+        const [results] = await pool.query(sql, ids)
+        if (results.length > 0) {
+            const ids = results.map(order => order.product_id);
+            return ids;
+        }
+        else{
+            return(null);
+        }
+    }catch(error){
+        throw(error);
+    }
 };
 
 export const getOrderItems = async (itemNumber) => {
-    return new Promise((resolve, reject) => {
-        const placeholders = itemNumber.map(() => '?').join(',');
-        const query = `SELECT * FROM Product WHERE id IN (${placeholders})`;
-        pool.query(query, itemNumber, (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
-    });
+    const placeholders = itemNumber.map(() => '?').join(',');
+    const sql = `SELECT * FROM Product WHERE id IN (${placeholders})`;
+    try{
+        const [results] = await pool.query(sql, itemNumber)
+        return results;
+    } catch(error){
+        throw(error);
+    }
 };
