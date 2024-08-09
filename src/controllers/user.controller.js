@@ -109,9 +109,9 @@ export const updatePasswordEmail = async (req, res)=>{
 
 export const findPassword = async (req, res, next) => {
     console.log("비밀번호 찾기 요청입니다.");
-  
-    const result = await resetPassword(req.body);
-  
+
+    const { loginId, email } = req.body;
+    const result = await resetPassword(loginId, email);
     res.send(response(status.SUCCESS, result));
 };
 

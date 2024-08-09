@@ -5,6 +5,7 @@ import { BaseError } from "../../config/error.js";
 import { smtpTransport } from "../../config/email.js";
 
 import {
+    confirmLoginId,
     selectEmailSql,
     updateActiveUserSql,
     updateInactiveUserSql
@@ -151,20 +152,20 @@ export const getOrderItems = async (itemNumber) => {
     }
 };
 
-export const verifyEmail = async (body) => {
-    const { loginId, email } = body;
-  
+export const verifyEmail = async (loginId, email) => {  
     try {
       const conn = await pool.getConnection();
-  
-      // 이메일로 해당 유저 검색
-      const [rows] = await pool.query(selectEmailSql, [loginId]);
-  
-      console.log(rows[0]);
-  
-      if (rows[0].email != email) {
+
+      const [confirm] = await pool.query(confirmLoginId, [loginId]);
+      if (!confirm[0].isExistLoginId) {
         conn.release();
         return -1;
+      }
+
+      const [user] = await pool.query(selectEmailSql, [loginId]);
+      if (user[0].email != email) {
+        conn.release();
+        return -2;
       }
   
       conn.release();
@@ -174,17 +175,14 @@ export const verifyEmail = async (body) => {
     }
   };
   
-export const findPasswordByEmail = async (email) => {
-    console.log(email);
+export const resetPasswordByEmail = async (email) => {
     const token = crypto.randomBytes(20).toString("hex");
     const expires = new Date();
     expires.setHours(expires.getHours() + 1); //1시간 이후 만료
   
-    console.log("Generated token:", token);
-    console.log("Expires at:", expires);
-  
+    // 아직 안 정해짐..
     const mailOptions = {
-      from: "ssunn0812@naver.com", // 발신자 이메일 주소.
+      from: process.env.NAVER_EMAIL, // 발신자 이메일 주소.
       to: email, //사용자가 입력한 이메일 -> 목적지 주소 이메일
       subject: "로컬마크 비밀번호 변경",
       html: `<p>비밀번호 변경 링크입니다.</p>

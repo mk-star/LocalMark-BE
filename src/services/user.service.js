@@ -2,8 +2,7 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, deleteUserById, restoreUserById } from '../models/user.dao.js';
-import { UserDTO } from '../dtos/user.dto.js';
+import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVICE,
@@ -126,15 +125,15 @@ export const updatePasswordEmailService = async (userId) =>{
     }
 }
 
-export const resetPassword = async (body) => {
-    const email = await verifyEmail(body);
-  
-    if (email == -1) {
-      throw new BaseError(status.EMAIL_NOT_EXISTS);
+export const resetPassword = async (loginId, email) => {
+    const user = await verifyEmail(loginId, email);
+    if (user == -1) {
+        throw new BaseError(status.LOGINID_NOT_EXISTS);
+    } else if (user == -2) {
+        throw new BaseError(status.EMAIL_NOT_EXISTS);
     }
   
-    const result = await findPasswordByEmail(email);
-  
+    const result = await resetPasswordByEmail(email);
     if (result == -1) {
       throw new BaseError(status.EMAIL_SENDING_FAILED);
     }
@@ -144,7 +143,6 @@ export const resetPassword = async (body) => {
   
   export const deleteUser = async (userId) => {
     const user = await findByID(userId);
-
     if (!user) {
         throw new BaseError(status.USER_NOT_EXISTS);
     }

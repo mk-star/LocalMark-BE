@@ -1,3 +1,5 @@
+export const confirmLoginId = "SELECT EXISTS(SELECT 1 FROM User WHERE loginId = ?) AS isExistLoginId";
+
 export const selectEmailSql = "SELECT email FROM User WHERE loginId = ?";
 
 export const updateActiveUserSql =
