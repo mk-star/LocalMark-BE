@@ -16,6 +16,11 @@ const options = {
         name: "Authorization",
       },
     },
+    security: [ // 헤더의 Authorization안에 값을 넣어줄수 있는 기능
+      {
+        Authorization: [],
+      },
+    ],
   },
   apis: ['./src/routes/*.js', './swagger/*'],
 };
