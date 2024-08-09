@@ -8,18 +8,24 @@ export const login = async (req, res, next) => {
   console.log(req.body);
 
   const result = await userLogin(req.body);
-
-  res.cookie("refreshToken", result.refreshToken, {
-    httpOnly: true,
-    secure: true,
-    maxAge: 24 * 60 * 60 * 1000, // 24시간
-  });
-  res.cookie("loginId", result.loginId, {
-    httpOnly: true,
-    secure: true,
-    maxAge: 3 * 24 * 60 * 60 * 1000, // 3일
-  });
-  res.send(response(status.SUCCESS, { accessToken: result.accessToken }));
+  console.log(result);
+  if (result.inactiveDate) {
+    console.log("잉?");
+    res.send(response(status.ACCOUNT_CANCELED, { id: result.userId, inactive_date: result.inactiveDate}));
+  } else {
+    console.log("우?");
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24시간
+    });
+    res.cookie("loginId", result.loginId, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000, // 3일
+    });
+    res.send(response(status.SUCCESS, { accessToken: result.accessToken }));
+  }
 };
 
 export const logout = async (req, res, next) => {

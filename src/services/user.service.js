@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
-import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, deleteUserById, restoreUserById } from '../models/user.dao.js';
 import { UserDTO } from '../dtos/user.dto.js';
 
 const transporter = nodemailer.createTransport({
@@ -30,6 +30,7 @@ export const registerUserService = async (userData, type) => {
     await createUser(userData, hashedPassword, type);
     return { ...userData };
 };
+
 
 export const findUsernameByEmailService = async (email) => {
     try {
@@ -122,3 +123,37 @@ export const updatePasswordEmailService = async (userId) =>{
         throw error;
     }
 }
+
+export const resetPassword = async (body) => {
+    const email = await verifyEmail(body);
+  
+    if (email == -1) {
+      throw new BaseError(status.EMAIL_NOT_EXISTS);
+    }
+  
+    const result = await findPasswordByEmail(email);
+  
+    if (result == -1) {
+      throw new BaseError(status.EMAIL_SENDING_FAILED);
+    }
+  
+    return "비밀번호 찾기 메일 전송에 성공하였습니다.";
+  };
+  
+  export const deleteUser = async (userId) => {
+    const user = await findByID(userId);
+    console.log(user);
+
+    if (user) {
+        console.log("옹");
+        throw new BaseError(status.USER_NOT_EXISTS);
+    }
+    console.log(user.status);
+    if (user.status == 'ACTIVE') {
+        await deleteUserById(userId);
+        return 1;
+    } else if(user.status == 'INACTIVE') {
+        await restoreUserById(userId);
+        return 2;
+    }
+  };

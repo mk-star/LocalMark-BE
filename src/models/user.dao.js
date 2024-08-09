@@ -1,4 +1,14 @@
 import { pool } from '../../config/database.js';
+import crypto from "crypto";
+import { status } from "../../config/response.status.js";
+import { BaseError } from "../../config/error.js";
+import { smtpTransport } from "../../config/email.js";
+
+import {
+    selectEmailSql,
+    updateActiveUserSql,
+    updateInactiveUserSql
+  } from "../models/user.sql.js";
 
 export const findByID = async(userId) => {
     const sql = `SELECT * FROM User WHERE id = ?`;
@@ -140,3 +150,92 @@ export const getOrderItems = async (itemNumber) => {
         throw(error);
     }
 };
+
+export const verifyEmail = async (body) => {
+    const { loginId, email } = body;
+  
+    try {
+      const conn = await pool.getConnection();
+  
+      // 이메일로 해당 유저 검색
+      const [rows] = await pool.query(selectEmailSql, [loginId]);
+  
+      console.log(rows[0]);
+  
+      if (rows[0].email != email) {
+        conn.release();
+        return -1;
+      }
+  
+      conn.release();
+      return email;
+    } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+  };
+  
+export const findPasswordByEmail = async (email) => {
+    console.log(email);
+    const token = crypto.randomBytes(20).toString("hex");
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1); //1시간 이후 만료
+  
+    console.log("Generated token:", token);
+    console.log("Expires at:", expires);
+  
+    const mailOptions = {
+      from: "ssunn0812@naver.com", // 발신자 이메일 주소.
+      to: email, //사용자가 입력한 이메일 -> 목적지 주소 이메일
+      subject: "로컬마크 비밀번호 변경",
+      html: `<p>비밀번호 변경 링크입니다.</p>
+      <p> <a href="http://localhost:3000/verify-email/?email=${email}?token=${token}">Verify email</a></p>
+      <p>이 링크는 ${expires}까지 유효합니다.</p>`,
+    };
+  
+    try {
+      smtpTransport.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          smtpTransport.close(); // 전송 종료
+          conn.release(); // 연결 종료
+          return -1;
+        } else {
+          smtpTransport.close(); // 전송 종료
+          conn.release(); // 연결 종료
+          console.log(info.response);
+          return info.response;
+        }
+      });
+    } catch (err) {
+      smtpTransport.close();
+      throw new BaseError(status.EMAIL_SENDING_FAILED);
+    }
+};
+  
+export const deleteUserById = async (userId) => {
+    try {
+        const conn = await pool.getConnection();
+
+        // ACTIVE한 유저의 상태를 바꿈, inactive_date 설정
+        const [result] = await pool.query(updateActiveUserSql, [userId]);
+    
+        conn.release();
+        return result.affectedRows;
+        } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    };
+};
+  
+export const restoreUserById = async (userId) => {
+    try {
+        const conn = await pool.getConnection();
+    
+        // INACTIVE한 유저의 상태를 바꿈
+        const [result] = await pool.query(updateInactiveUserSql, [userId]);
+    
+        conn.release();
+        return result.affectedRows;
+        } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    };
+};
+  

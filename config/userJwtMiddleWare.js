@@ -5,7 +5,7 @@ import { response } from "../config/response.js";
 
 export const jwtMiddleware = async (req, res, next) => {
   // request 헤더로부터 access 토큰, 쿠키에서 refreshToken을
-  const authHeader = req.headers["authorization"];
+  const authHeader = req.headers["Authorization"];
   const refreshToken = req.cookies.refreshToken;
   const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
