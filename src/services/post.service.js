@@ -15,7 +15,6 @@ export const addPostInfo = async (body) => {
   return result
 }
 
-
 export const createPost = async(body) => {
   
     let thumnail_filename = null;

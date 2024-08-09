@@ -1,10 +1,15 @@
 import { response } from "express";
 import { path } from "path";
-import { addPostInfo } from '../services/post.service'
 import { StatusCodes } from 'http-status-codes';
-import { status } from "../../config/response.status";
-import { createPost, deletePostById, getPostDetail, getPosts, updatePostDetail } from "../services/post.service";
-import { removeImageById, uploadFileToS3AndSave } from "../services/image.service";
+import { status } from "../../config/response.status.js";
+import { 
+        addPostInfo,
+        createPost, 
+        deletePostById, 
+        getPostDetail, 
+        getPosts, 
+        updatePostDetail } from "../services/post.service.js";
+import { removeImageById, uploadFileToS3AndSave } from "../services/image.service.js";
 
 
 export const addPost = async(req,res,next)=>{
@@ -111,3 +116,11 @@ export const removePost = async(req, res) => {
         return res.send(response(status.SUCCESS, await deletePostById(params)));
 }
 
+
+export const postsByCreator = async(req, res) => {
+        console.log("크레이터의 게시글 조회 요청 ");
+        const params = req.params;
+        console.log("params(postId): ", params);
+
+        return res.send(response(status.SUCCESS, await deletePostById(params)));
+}

@@ -1,3 +1,5 @@
+const upload = multer({ storage });
+const uploadMiddleware = upload.array("images",10);
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import { addPost } from '../controllers/post.controller';
@@ -5,7 +7,6 @@ import { modifyPost, postDetail, posts, removePost, uploadPost } from '../contro
 import { upload } from '../proviers/image.provider';
 
 export const postRouter = express.Router({mergeParams: true});
-export const postsRouter = express.Router({mergeParams: true});
 
 postRouter.post('/signin', asyncHandler(addPost));
 postsRouter.get('/', asyncHandler(posts));

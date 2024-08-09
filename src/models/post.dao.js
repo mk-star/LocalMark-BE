@@ -7,20 +7,21 @@ import {
     getPostsByCategory, 
     insertPost, 
     updatePostSql } from "./post.sql.js";
-
-const pool = require("../../config/database");
+import { pool } from '../../config/database.js';
 
 export const addPost = async(data)=> {
-  try{
+  
+    try{
 
     const conn = await pool.getConnection();
     const [addPost] = await pool.query(insertPost, [data.userId, data.category, data.title, data.thumnail_filename, data.content]);
     conn.release();
 
     return addPost;
-  }catch(err){
-    console.log(`DB 저장 실패 ${err.message}`)
-  }
+    }catch(err){
+        console.log(`DB 저장 실패 ${err.message}`)
+    }
+    
 }
 
 
