@@ -12,10 +12,10 @@ import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { userRouter } from "./src/routes/user.route.js";
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
-import { healthRoute } from "./src/routes/health.route.js";
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
-import { brandRouter } from "./src/routes/brand.route.js"
-import { gelleryRouter } from "./src/routes/gallery.routes.js"
+import { brandRouter } from "./src/routes/brand.route.js";
+import { gelleryRouter } from "./src/routes/gallery.routes.js";
+import { reviewRouter } from "./src/routes/review.route.js";
 
 //서버 가동
 dotenv.config();
@@ -42,8 +42,7 @@ app.use("/likes", likeRouter);
 app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
 app.use('/morelocal', morelocalRouter);
-
-app.use("/health", healthRoute);
+app.use("/reviews", reviewRouter);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
