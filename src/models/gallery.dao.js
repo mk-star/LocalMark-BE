@@ -1,5 +1,6 @@
 import { pool } from "../../config/db.config.js";
-import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo } from "./gallery.sql.js";
+import { status } from "../../config/response.status.js";
+import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, confirmRegion, confirmCategory } from "./gallery.sql.js";
 
 // 제품 갤러리 목록 조회/검색
 export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
@@ -22,6 +23,25 @@ export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
 
         const regionExist = (regionId != "undefined" && typeof regionId != "undefined" && regionId != null);
         const categoryExist = (categoryId != "undefined" && typeof categoryId != "undefined" && categoryId != null);
+
+        // 존재하지 않는 지역
+        if(regionExist){
+            const [confirmR] = await pool.query(confirmRegion, regionId);
+            if (!confirmR[0].isExistRegion) {
+                conn.release();
+                return -1;
+            }
+        }
+
+        // 존재하지 않는 카테고리
+        if(categoryExist){
+            const [confirmC] = await pool.query(confirmCategory, categoryId);
+            if (!confirmC[0].isExistCategory) {
+                conn.release();
+                return -2;
+            }
+        }
+
         let galleryListQuery;
         let galleryCntQuery;
         const offset = (parseInt(page) - 1) * 12;
@@ -101,7 +121,7 @@ export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
         conn.release();
         return {products, "currentPage": parseInt(page), totalPage};
     } catch (err) {
-        throw new Error(err.message);
+        throw new Error(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -121,6 +141,6 @@ export const getProduct = async (productId) => {
         return {product: product[0], images: imageUrls};
         
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(status.PARAMETER_IS_WRONG)
     }
 }

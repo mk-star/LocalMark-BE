@@ -62,3 +62,17 @@ FROM Product p
     JOIN Review r on p.id = r.product_id
 WHERE p.id = ?;
 `
+
+// 지역 존재 유무 확인
+export const confirmRegion = `
+SELECT
+    EXISTS(SELECT 1 FROM Region WHERE id = ?)
+        as isExistRegion;
+`
+
+// 카테고리 존재 유무 확인
+export const confirmCategory = `
+SELECT
+    EXISTS(SELECT 1 FROM Category WHERE id = ?)
+        as isExistCategory;
+`
