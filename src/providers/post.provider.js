@@ -18,7 +18,7 @@ export const getPosts = async(category, page) => {
 export const getPostDetail = async(postId) => {
 
     const postDetail = await getPreviewPostDetail(postId);
-    const imagefileNames = [];
+    let imagefileNames = [];
     imagefileNames = await getImagesByPostId(postId);
 
     return postDetailResponseDTO(postDetail, imagefileNames); 

@@ -6,16 +6,7 @@ import {
     updatePost, 
     addPost } from "../models/post.dao.js";
 
-
-export const addPostInfo = async (body) => {
-  const { userId, category, title, image, type, content} = body;
-  console.log(userId)
-
-  const result = await addPost(userId, category, title, image, type, content);
-  return result
-}
-
-export const createPost = async(body) => {
+export const createPostInfo = async(body) => {
   
     let thumnail_filename = null;
 
