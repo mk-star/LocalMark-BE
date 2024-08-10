@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, getProductOptionInfo, confirmRegion, confirmCategory, confirmProduct } from "./gallery.sql.js";
+import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, getProductOptionInfo, confirmRegion, confirmCategory, confirmProduct, getProductThumbnail } from "./gallery.sql.js";
 
 // 제품 갤러리 목록 조회/검색
 export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
@@ -51,18 +51,18 @@ export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
         // 키워드 없을 경우
         if(keyword == "undefined" || typeof keyword == "undefined" || keyword == null){
             if(regionExist && categoryExist){  // 지역O, 카테고리O
-                galleryListQuery = `${getGalleryList} WHERE r.id = ? AND c.id = ? ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
-                galleryCntQuery = `${getGalleryCnt} WHERE r.id = ? AND c.id = ?;`;
+                galleryListQuery = `${getGalleryList} AND r.id = ? AND c.id = ? ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
+                galleryCntQuery = `${getGalleryCnt} AND r.id = ? AND c.id = ?;`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [parseInt(regionId), parseInt(categoryId)]);
                 [products] = await pool.query(galleryListQuery, [parseInt(regionId), parseInt(categoryId)]);
             } else if (regionExist && !categoryExist){ // 지역O, 카테고리x
-                galleryListQuery = `${getGalleryList} WHERE r.id = ? ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;    
-                galleryCntQuery = `${getGalleryCnt} WHERE r.id = ?;`;
+                galleryListQuery = `${getGalleryList} AND r.id = ? ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;    
+                galleryCntQuery = `${getGalleryCnt} AND r.id = ?;`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [parseInt(regionId)]);
                 [products] = await pool.query(galleryListQuery, [parseInt(regionId)]);
             } else if (!regionExist && categoryExist){  // 지역x, 카테고리o
-                galleryListQuery = `${getGalleryList} WHERE c.id = ? ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
-                galleryCntQuery = `${getGalleryCnt} WHERE c.id = ?;`;
+                galleryListQuery = `${getGalleryList} AND c.id = ? ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
+                galleryCntQuery = `${getGalleryCnt} AND c.id = ?;`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [parseInt(categoryId)]);
                 [products] = await pool.query(galleryListQuery, [parseInt(categoryId)]);
             } else {  // 지역x, 카테고리x
@@ -74,35 +74,35 @@ export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
         }else{  // 키워드 있을 경우
             const keywordPattern = `%${keyword}%`;
             if(regionExist && categoryExist){  // 지역O, 카테고리O
-                galleryListQuery = `${getGalleryList} WHERE r.id = ? AND c.id = ? 
+                galleryListQuery = `${getGalleryList} AND r.id = ? AND c.id = ? 
                 AND (s.subregion_name LIKE ? OR p.product_name LIKE ? ) 
                 ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
-                galleryCntQuery = `${getGalleryCnt} WHERE r.id = ? AND c.id = ?
+                galleryCntQuery = `${getGalleryCnt} AND r.id = ? AND c.id = ?
                 AND (s.subregion_name LIKE ? OR p.product_name LIKE ? );`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [parseInt(regionId), parseInt(categoryId), keywordPattern, keywordPattern]);
                 [products] = await pool.query(galleryListQuery, [parseInt(regionId), parseInt(categoryId), keywordPattern, keywordPattern]);
             } else if (regionExist && !categoryExist){ // 지역O, 카테고리x
-                galleryListQuery = `${getGalleryList} WHERE r.id = ? 
+                galleryListQuery = `${getGalleryList} AND r.id = ? 
                 AND (s.subregion_name LIKE ? OR p.product_name LIKE ? ) 
                 ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;    
-                galleryCntQuery = `${getGalleryCnt} WHERE r.id = ?
+                galleryCntQuery = `${getGalleryCnt} AND r.id = ?
                 AND (s.subregion_name LIKE ? OR p.product_name LIKE ? );`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [parseInt(regionId), keywordPattern, keywordPattern]);
                 [products] = await pool.query(galleryListQuery, [parseInt(regionId), keywordPattern, keywordPattern]);
             } else if (!regionExist && categoryExist){  // 지역x, 카테고리o
-                galleryListQuery = `${getGalleryList} WHERE c.id = ? 
+                galleryListQuery = `${getGalleryList} AND c.id = ? 
                 AND (s.subregion_name LIKE ? OR p.product_name LIKE ? ) 
                 ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
-                galleryCntQuery = `${getGalleryCnt} WHERE c.id = ? 
+                galleryCntQuery = `${getGalleryCnt} AND c.id = ? 
                 AND (s.subregion_name LIKE ? OR p.product_name LIKE ? );`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [parseInt(categoryId), keywordPattern, keywordPattern]);
                 [products] = await pool.query(galleryListQuery, [parseInt(categoryId), keywordPattern, keywordPattern]);
             } else {  // 지역x, 카테고리x
                 galleryListQuery = `${getGalleryList}
-                WHERE (s.subregion_name LIKE ? OR p.product_name LIKE ? ) 
+                AND (s.subregion_name LIKE ? OR p.product_name LIKE ? ) 
                 ORDER BY ${sortKeyword} LIMIT 12 OFFSET ${offset};`;
                 galleryCntQuery = `${getGalleryCnt}
-                WHERE (s.subregion_name LIKE ? OR p.product_name LIKE ? ) ;`;
+                AND (s.subregion_name LIKE ? OR p.product_name LIKE ? ) ;`;
                 [ totalProductCnt ] = await pool.query(galleryCntQuery, [keywordPattern, keywordPattern]);
                 [products] = await pool.query(galleryListQuery, [keywordPattern, keywordPattern]);
             }   
@@ -131,9 +131,10 @@ export const getProduct = async (productId) => {
         const conn = await pool.getConnection();
         const [product] = await pool.query(getProductInfo, productId);
         const [images] = await pool.query(getProductImage, productId);
+        const [thumbnail] = await pool.query(getProductThumbnail, productId);
         const [review] = await pool.query(getProductReviewInfo, productId);
         const [options] = await pool.query(getProductOptionInfo, productId);
-        
+
         const [confirmP] = await pool.query(confirmProduct, productId);
         if (!confirmP[0].isExistProduct) {
             conn.release();
@@ -141,6 +142,9 @@ export const getProduct = async (productId) => {
         }
 
         const imageUrls = images.map(image => image.image_url);
+        if (thumbnail[0] && thumbnail[0].thumbnail_url) {
+            imageUrls.unshift(thumbnail[0].thumbnail_url);
+        }
         product[0].star_avg = review[0]?.avgStar ? parseFloat(review[0].avgStar).toFixed(1) : "0.0";
         product[0].review_cnt = review[0]?.reviewCnt ?? 0;
 
@@ -154,7 +158,7 @@ export const getProduct = async (productId) => {
             }, {});
             
             return {
-                id: option.id,
+                opt_comb_id: option.id,
                 option_type: optionTypeObj,
                 stock: option.stock
             };
