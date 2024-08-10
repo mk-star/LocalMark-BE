@@ -7,6 +7,7 @@ FROM Product p
     JOIN Region r on r.id = b.region_id
     JOIN Category c on p.category_id = c.id
     JOIN Subregion s on s.id = p.subregion_id
+WHERE p.status = 'SELL'
 `
 
 // 갤러리 제품 목록 보기
@@ -26,6 +27,7 @@ FROM Product p
     JOIN Region r on r.id = b.region_id
     JOIN Category c on p.category_id = c.id
     JOIN Subregion s on s.id = p.subregion_id
+WHERE p.status = 'SELL'
 `
 
 // 제품 상세 페이지 조회 - 일반 상품 정보
