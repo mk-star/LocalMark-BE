@@ -11,7 +11,9 @@ export const postsResponseDTO = (posts) => {
             "thumbnail_url": posts[i].thumnail_url,
             "content": posts[i].content,
             "created_date": formatDate(posts[i].created_date),
-            "modified_date": formatDate(posts[i].modified_date)
+            "modified_date": formatDate(posts[i].modified_date),
+            "commentNum":posts[i].commentNum,
+            "likeNum": posts[i].likeNum,
         })
     }
 

@@ -5,8 +5,8 @@ export const insertPost=
 export const getPostsByCategory =`
 SELECT
     p.*,
-    COALESCE(comment_count,0) AS comment_count,
-    COALESCE(like_count,0) AS like_count
+    COALESCE(comment_count,0) AS commentNum,
+    COALESCE(like_count,0) AS likeNum
 FROM
     post p
 LEFT JOIN (
