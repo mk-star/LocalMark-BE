@@ -10,6 +10,7 @@ import {
     updatePostSql } from "./post.sql.js";
 import { pool } from '../../config/database.js';
 import { confirmBrand, getCreatorIdByBrandId } from "./brand.sql.js";
+import { getImageFilesByPostId } from "./image.sql.js";
 
 export const addPost = async(data)=> {
   
@@ -70,20 +71,22 @@ export const getPreviewPostDetail = async(postId) => {
     try {
         
         const conn = await pool.getConnection();
-        const postDetail = await pool.query(getPostDetail, postId);
+        const [postDetail] = await pool.query(getPostDetail, postId);
 
-        console.log("게시글 상세: ", postDetail[0]);
+        console.log("게시글 상세: ", postDetail);
         
+        const [images] = await pool.query(getImageFilesByPostId, postId);
+
         conn.release();
 
-        return postDetail[0];
+        return { postDetail, images };
 
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
 }
 
-export const updatePost = async(data) => {
+export const modifyPostById = async(data) => {
     try {
 
         const conn = await pool.getConnection();

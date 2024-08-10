@@ -1,3 +1,11 @@
+export const addPostResponseDTO = ({post, images}) => {
+    return { post, images };
+}
+
+export const modifyPostResponseDTO = ({post, images}) => {
+    return { post, images };
+}
+
 export const postsResponseDTO = (posts, images) => {
     const postsData = [];
 
@@ -8,7 +16,7 @@ export const postsResponseDTO = (posts, images) => {
             "user_id": posts[i].user_id,
             "category": posts[i].category,
             "title": posts[i].title,
-            "thumbnail_url": posts[i].thumnail_url,
+            "thumbnail_filename": posts[i].thumbnail_filename,
             "content": posts[i].content,
             "created_date": formatDate(posts[i].created_date),
             "modified_date": formatDate(posts[i].modified_date)
