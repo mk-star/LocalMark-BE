@@ -603,11 +603,11 @@ paths:
               loginId:
                 type: string
                 description: 로그인 ID
-                example: localmarkId
+                example: generalId
               email:
                 type: string
                 description: 이메일
-                example: localmark@naver.com
+                example: general1@naver.com
       responses:
         "200":
           description: 비밀번호 찾기 성공
@@ -638,6 +638,7 @@ paths:
           in: path
           schema:
             type: integer
+            example: 1
             description: 유저 ID
           required: true
       responses:
