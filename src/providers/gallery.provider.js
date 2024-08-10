@@ -23,6 +23,6 @@ export const getProducts = async (query) => {
 }
 
 export const getProductDetail = async (productId) => {
-    const { product, images } = await getProduct(productId);
-    return productResponseDTO(product, images);
+    const { product, options, images } = await getProduct(productId);
+    return productResponseDTO(product, options, images);
 }

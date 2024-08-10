@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, confirmRegion, confirmCategory } from "./gallery.sql.js";
+import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, getProductOptionInfo, confirmRegion, confirmCategory } from "./gallery.sql.js";
 
 // 제품 갤러리 목록 조회/검색
 export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
@@ -132,13 +132,30 @@ export const getProduct = async (productId) => {
         const [product] = await pool.query(getProductInfo, productId);
         const [images] = await pool.query(getProductImage, productId);
         const [review] = await pool.query(getProductReviewInfo, productId);
+        const [options] = await pool.query(getProductOptionInfo, productId);
         
         const imageUrls = images.map(image => image.image_url);
         product[0].star_avg = review[0]?.avgStar ? parseFloat(review[0].avgStar).toFixed(1) : "0.0";
         product[0].review_cnt = review[0]?.reviewCnt ?? 0;
 
+        const transformedOptions = options.map(option => {
+            const optionParts = option.option_type.split(', ');
+            
+            const optionTypeObj = optionParts.reduce((acc, part) => {
+                const [key, value] = part.split(': ');
+                acc[key.trim()] = value.trim();
+                return acc;
+            }, {});
+            
+            return {
+                id: option.id,
+                option_type: optionTypeObj,
+                stock: option.stock
+            };
+        });
+
         conn.release();
-        return {product: product[0], images: imageUrls};
+        return {product: product[0], options: transformedOptions, images: imageUrls};
         
     } catch (err) {
         throw new Error(status.PARAMETER_IS_WRONG)

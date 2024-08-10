@@ -17,7 +17,7 @@ export const galleryResponseDTO = (data, currentPage, totalPage) => {
     return {"products": products, "currentPage": currentPage, "totalPage" : totalPage};
 }
 
-export const productResponseDTO = (product, images) => {
+export const productResponseDTO = (product, options, images) => {
 
-    return {product, images };
+    return {product, options,  images };
 }
