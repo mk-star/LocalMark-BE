@@ -133,7 +133,7 @@ export const resetPassword = async (loginId, email) => {
         throw new BaseError(status.EMAIL_NOT_EXISTS);
     }
   
-    const result = await resetPasswordByEmail(email);
+    const result = await resetPasswordByEmail(email, user.nickname);
     if (result == -1) {
       throw new BaseError(status.EMAIL_SENDING_FAILED);
     }

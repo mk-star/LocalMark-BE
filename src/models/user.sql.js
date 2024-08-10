@@ -1,6 +1,6 @@
 export const confirmLoginId = "SELECT EXISTS(SELECT 1 FROM User WHERE loginId = ?) AS isExistLoginId";
 
-export const selectEmailSql = "SELECT email FROM User WHERE loginId = ?";
+export const selectUserSql = "SELECT nickname, email FROM User WHERE loginId = ?";
 
 export const updateActiveUserSql =
   "UPDATE User SET token = NULL, status = 'INACTIVE', inactive_date = NOW() WHERE id = ?";

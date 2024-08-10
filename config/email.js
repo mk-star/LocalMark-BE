@@ -6,14 +6,14 @@ dotenv.config();
 export const smtpTransport = nodemailer.createTransport({
   pool: true,
   maxConnections: 1,
-  service: process.env.NAVER_SERVICE,
-  host: process.env.NAVER_HOST,
-  port: process.env.NAVER_PORT,
+  service: process.env.NODEMAILER_SERVICE,
+  host: process.env.NODEMAILER_HOST,
+  port: process.env.NODEMAILER_PORT,
   secure: false,
   requireTLS: true,
   auth: {
-    user: process.env.NAVER_EMAIL,
-    pass: process.env.NAVER_PASSWORD,
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASS,
   },
   tls: {
     rejectUnauthorized: false,
