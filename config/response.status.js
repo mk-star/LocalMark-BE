@@ -176,5 +176,11 @@ export const status = {
     "code": "GALLERY4002", 
     "message": "존재하지 않는 카테고리입니다."
   },
+  PRODUCT_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4003", 
+    "message": "존재하지 않는 제품입니다."
+  },
 };
 

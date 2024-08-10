@@ -86,3 +86,9 @@ SELECT
     EXISTS(SELECT 1 FROM Category WHERE id = ?)
         as isExistCategory;
 `
+// 상품(제품) 존재 유무 확인
+export const confirmProduct = `
+SELECT
+    EXISTS(SELECT 1 FROM Product WHERE id = ?)
+        as isExistProduct;
+`

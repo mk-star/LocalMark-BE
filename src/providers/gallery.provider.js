@@ -23,6 +23,11 @@ export const getProducts = async (query) => {
 }
 
 export const getProductDetail = async (productId) => {
-    const { product, options, images } = await getProduct(productId);
-    return productResponseDTO(product, options, images);
+    const result = await getProduct(productId);
+    if (result == -1){
+        throw new BaseError(status.PRODUCT_NOT_EXIST);
+    } else{
+        const { product, options, images } = await getProduct(productId);
+        return productResponseDTO(product, options, images);
+    }
 }
