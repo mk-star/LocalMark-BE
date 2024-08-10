@@ -11,9 +11,9 @@ import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { userRouter } from "./src/routes/user.route.js";
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
-import { morelocalRouter } from './src/routes/morelocal.routes.js';
+import { morelocalRouter } from './src/routes/morelocal.route.js';
 import { brandRouter } from "./src/routes/brand.route.js";
-import { gelleryRouter } from "./src/routes/gallery.routes.js";
+import { gelleryRouter } from "./src/routes/gallery.route.js";
 import { reviewRouter } from "./src/routes/review.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
 
