@@ -10,4 +10,3 @@ postRouter.post('/', upload.array('images', 10), asyncHandler(createPost));
 postRouter.get('/:postId', asyncHandler(postDetail));
 postRouter.patch('/:postId', upload.array('images', 10), asyncHandler(modifyPost));
 postRouter.delete('/:postId', asyncHandler(removePost));
-
