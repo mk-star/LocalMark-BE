@@ -13,15 +13,15 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  examples: creator1
+                  examples: creatorId
                 email:
                   type: string
                   description: 이메일
-                  example: creator1@naver.com
+                  example: creator1@gmail.com
                 password:
                   type: string
                   description: 비밀번호
-                  example: password1
+                  example: creatorPassword
                 type:
                   type: string
                   description: 유저 타입(GENERAL, CREATOR)
@@ -111,15 +111,15 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  examples: general1
+                  examples: generalId
                 email:
                   type: string
                   description: 이메일
-                  example: general1@naver.com
+                  example: general1@gmail.com
                 password:
                   type: string
                   description: 비밀번호
-                  example: password1
+                  example: generalPassword
                 nickname:
                   type: string
                   description: 닉네임
