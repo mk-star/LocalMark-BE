@@ -1,30 +1,34 @@
-import { pool } from '../../config/database.js';
 import { status } from "../../config/response.status.js";
-import { createPost, uploadImages, getPostsByCategory, getPosts  } from './post.sql.js';
-import {BaseError} from "../../config/error.js";
+import { 
+    confirmPost, 
+    deletePostSql, 
+    getPostDetail, 
+    getPosts, 
+    getPostsByCategory, 
+    insertPost, 
+    updatePostSql } from "./post.sql.js";
+import { pool } from '../../config/database.js';
 
-export const addPost = async(userId, category, title, images, content)=> {
-  try{
+export const addPost = async(data)=> {
+  
+    try{
+
     const conn = await pool.getConnection();
-    // 게시글 저장
-    const [addPost] = await pool.query(createPost,[userId, category, title, content]);
-    const postId = addPost.insertId;
-      // 이미지 저장
-      if (images && images.length > 0) {
-          images.map(async (url) => {
-              await pool.query(uploadImages, [postId, url]);
-          });
-      }
-      conn.release();
-      return addPost
-  }catch(err){
-      throw new BaseError(status.BAD_REQUEST);
-  }
+    const [addPost] = await pool.query(insertPost, [data.userId, data.category, data.title, data.thumnail_filename, data.content]);
+    conn.release();
+
+    return addPost;
+    }catch(err){
+        console.log(`DB 저장 실패 ${err.message}`)
+    }
+    
 }
+
 
 export const getPreviewPostsByCategory = async(category, page) => {
 
     try {
+
         const conn = await pool.getConnection();
 
         const limit = 7;
@@ -32,16 +36,18 @@ export const getPreviewPostsByCategory = async(category, page) => {
 
         const [posts] = await pool.query(getPostsByCategory, [category, limit, offset]);
         conn.release();
+
         return posts;
+
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
-};
+}
 
 export const getPreviewPosts = async(page) => {
 
-
     try {
+
         const conn = await pool.getConnection();
 
         const limit = 7;
@@ -51,8 +57,79 @@ export const getPreviewPosts = async(page) => {
         conn.release();
 
         return posts;
+
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
 
-};
+}
+
+export const getPreviewPostDetail = async(postId) => {
+    try {
+        
+        const conn = await pool.getConnection();
+        const postDetail = await pool.query(getPostDetail, postId);
+
+        console.log("게시글 상세: ", postDetail[0]);
+        
+        conn.release();
+
+        return postDetail[0];
+
+    } catch (error) {
+        throw new BaseError(status.BAD_REQUEST);
+    }
+}
+
+export const updatePost = async(data) => {
+    try {
+
+        const conn = await pool.getConnection();
+
+        const [confirm] = await pool.query(confirmPost, postId);
+
+        if (!confirm[0].isExistPost) {
+            conn.release();
+            return -1;
+        }
+
+        const result = await pool.query(updatePostSql, [
+            data.title,
+            data.content,
+            data.category,
+            data.thumbnail_filename,
+            data.postId,
+        ]);
+      
+        conn.release();
+
+        return result[0].affectedRows;
+        
+    } catch (error) {
+        throw new BaseError(status.BAD_REQUEST);
+    }
+}
+
+
+export const deletePost = async (postId) => {
+    
+    try {
+      const conn = await pool.getConnection();
+  
+      const [confirm] = await pool.query(confirmPost, postId);
+  
+      if (!confirm[0].isExistPost) {
+        conn.release();
+        return -1;
+      }
+  
+      const result = await pool.query(deletePostSql, postId);
+      
+      conn.release();
+     
+      return result[0].affectedRows;
+    } catch (err) {
+        throw new BaseError(status.BAD_REQUEST);
+    }
+
+}

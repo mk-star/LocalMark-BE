@@ -1,6 +1,6 @@
 import { response } from "../../config/response.js";
 
-import { getProducts, getProductDetail } from "../proviers/gallery.provider.js";
+import { getProducts, getProductDetail } from "../providers/gallery.provider.js";
 import { status } from "../../config/response.status.js";
 
 export const galleryProducts = async (req, res, next) => {
