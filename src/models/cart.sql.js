@@ -20,7 +20,7 @@ export const getCartItem =
 "WHERE id = ?;";
 
 export const addCartItem =
-"INSERT INTO cart_item (cart_id, product_id, product_option_id, quantity, total_price)" +
+"INSERT INTO cart_item (cart_id, product_option_id, quantity, total_price)" +
 "VALUES (?, ?, ?, ?, ?);";
 
 export const updateCartItem = 

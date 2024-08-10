@@ -48,7 +48,7 @@ export const addCartItemInfo = async(data) =>  {
             return -1;
         }
 
-        const [cartItem] = await pool.query(addCartItem, [data.cartId, data.productId, data.productOptionId, data.quantity, data.totalPrice]);
+        const [cartItem] = await pool.query(addCartItem, [data.cartId, data.productOptionId, data.quantity, data.totalPrice]);
         conn.release();
 
         return cartItem.insertId;

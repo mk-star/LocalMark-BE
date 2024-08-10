@@ -32,7 +32,7 @@ export const addCartItemService = async(userId, body, productId) => {
         // 재고가 있으면 카트 정보 확인 후 아이템 추가
         const totalPrice = body.price * quantity;
         const cartId = await getCartInfo(userId);
-        const cartItemData = await addCartItemInfo({cartId, productId, productOptionId, quantity, totalPrice});
+        const cartItemData = await addCartItemInfo({cartId, productOptionId, quantity, totalPrice});
 
         return addCartItemResponseDTO(await getCartItemInfo(cartItemData));
     } catch (error) {

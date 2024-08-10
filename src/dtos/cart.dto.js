@@ -14,7 +14,6 @@ export const cartItemsResponseDTO = (data) => {
         cartItems.push({
             'cart_item_id': data[i].id,
             'cart_id': data[i].cart_id,
-            'product_id': data[i].product_id,
             'product_option_id': data[i].product_option_id,
             'quantity': data[i].quantity,
             'total_price': data[i].total_price
