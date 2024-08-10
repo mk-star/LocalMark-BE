@@ -15,6 +15,7 @@ import { morelocalRouter } from './src/routes/morelocal.routes.js';
 import { brandRouter } from "./src/routes/brand.route.js";
 import { gelleryRouter } from "./src/routes/gallery.routes.js";
 import { reviewRouter } from "./src/routes/review.route.js";
+import { healthRoute } from "./src/routes/health.route.js";
 
 //서버 가동
 dotenv.config();
@@ -45,6 +46,7 @@ app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
 app.use('/morelocal', morelocalRouter);
 app.use("/reviews", reviewRouter);
+app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
