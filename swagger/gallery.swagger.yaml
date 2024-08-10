@@ -152,6 +152,7 @@ paths:
                   },
                   "options": [
                     {
+                      "opt_comb_id": 1,
                       "option_type": {
                         "색상": "초록",
                         "사이즈": "S"
@@ -159,6 +160,7 @@ paths:
                       "stock": 10
                     },
                     {
+                      "opt_comb_id": 2,
                       "option_type": {
                         "색상": "초록",
                         "사이즈": "M"
@@ -166,6 +168,7 @@ paths:
                       "stock": 5
                     },
                     {
+                      "opt_comb_id": 3,
                       "option_type": {
                         "색상": "노랑",
                         "사이즈": "S"
@@ -173,6 +176,7 @@ paths:
                       "stock": 3
                     },
                     {
+                      "opt_comb_id": 4,
                       "option_type": {
                         "색상": "노랑",
                         "사이즈": "M"
