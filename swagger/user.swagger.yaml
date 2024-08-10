@@ -606,7 +606,7 @@ paths:
               email:
                 type: string
                 description: 이메일
-                example: general1@naver.com
+                example: general1@gmail.com
       responses:
         "200":
           description: 비밀번호 찾기 성공
