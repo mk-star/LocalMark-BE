@@ -68,6 +68,7 @@ WHERE p.id = ?;
 // 제품 갤러리 상세 페이지 조회 - 옵션 및 재고
 export const getProductOptionInfo = `
 SELECT
+    poc.id,
     poc.product_option_combination as option_type,
     stock
 FROM Product_Option_Comb poc

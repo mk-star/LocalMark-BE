@@ -158,7 +158,7 @@ export const getProduct = async (productId) => {
             }, {});
             
             return {
-                id: option.id,
+                opt_comb_id: option.id,
                 option_type: optionTypeObj,
                 stock: option.stock
             };
