@@ -10,13 +10,18 @@ import { response } from './config/response.js';
 import { status } from './config/response.status.js';
 import { postRouter } from "./src/routes/post.route.js";
 import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
+import { userRouter } from "./src/routes/user.route.js";
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
+import { morelocalRouter } from './src/routes/morelocal.route.js';
+import { brandRouter } from "./src/routes/brand.route.js";
+import { gelleryRouter } from "./src/routes/gallery.route.js";
+import { reviewRouter } from "./src/routes/review.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
+
 import { morelocalRouter } from './src/routes/morelocal.routes.js';
 import { brandRouter } from "./src/routes/brand.route.js"
 import {chatRouter} from "./src/routes/chat.route.js";
-
 
 
 //서버 가동
@@ -30,11 +35,17 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+// 정적 파일 제공
+// app.use('/uploads/images', express.static(path.join(__dirname, 'uploads/images')));
+
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(cookieParser());
 
+// router setting
+app.use('/gallery', gelleryRouter);
 app.use("/posts", postRouter);
 app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
@@ -42,12 +53,14 @@ app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
 app.use('/moreocal', morelocalRouter);
 app.use('/chatRooms',chatRouter)
+app.use("/reviews", reviewRouter);
 
 app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
+app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {
     // 템플릿 엔진 변수 설정
