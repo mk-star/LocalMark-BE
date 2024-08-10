@@ -62,3 +62,33 @@ FROM Product p
     JOIN Review r on p.id = r.product_id
 WHERE p.id = ?;
 `
+
+// 제품 갤러리 상세 페이지 조회 - 옵션 및 재고
+export const getProductOptionInfo = `
+SELECT
+    poc.product_option_combination as option_type,
+    stock
+FROM Product_Option_Comb poc
+JOIN Product_Stock ps on poc.id = ps.product_option_id
+WHERE product_id = ?;
+`
+
+// 지역 존재 유무 확인
+export const confirmRegion = `
+SELECT
+    EXISTS(SELECT 1 FROM Region WHERE id = ?)
+        as isExistRegion;
+`
+
+// 카테고리 존재 유무 확인
+export const confirmCategory = `
+SELECT
+    EXISTS(SELECT 1 FROM Category WHERE id = ?)
+        as isExistCategory;
+`
+// 상품(제품) 존재 유무 확인
+export const confirmProduct = `
+SELECT
+    EXISTS(SELECT 1 FROM Product WHERE id = ?)
+        as isExistProduct;
+`

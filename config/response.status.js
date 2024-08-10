@@ -161,5 +161,26 @@ export const status = {
     message:
       "쿼리 실행 시 전달되는 파라미터가 잘못되었습니다. 파라미터 개수 혹은 파라미터 형식을 확인해주세요.",
   },
+
+  
+  // gallery err
+  REGION_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4001", 
+    "message": "존재하지 않는 지역입니다."
+  },
+  CATEGORY_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4002", 
+    "message": "존재하지 않는 카테고리입니다."
+  },
+  PRODUCT_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4003", 
+    "message": "존재하지 않는 제품입니다."
+  },
 };
 
