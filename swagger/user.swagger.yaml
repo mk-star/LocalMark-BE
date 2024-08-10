@@ -13,15 +13,15 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  examples: creatorId
-                email:
-                  type: string
-                  description: 이메일
-                  example: creator1@gmail.com
+                  example: creatorId
                 password:
                   type: string
                   description: 비밀번호
                   example: creatorPassword
+                email:
+                  type: string
+                  description: 이메일
+                  example: creator1@gmail.com
                 type:
                   type: string
                   description: 유저 타입(GENERAL, CREATOR)
@@ -111,7 +111,7 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  examples: generalId
+                  example: generalId
                 email:
                   type: string
                   description: 이메일
@@ -209,6 +209,7 @@ paths:
           in: path
           schema:
             type: integer
+            example: 11
           required: true
       responses:
         201:
@@ -282,7 +283,7 @@ paths:
                 email:
                   type: string
                   description: 이메일
-                  example: user@naver.com
+                  example: user@gmail.com
       responses:
         201:
           description: 아이디 찾기 이메일 보내기 선공
@@ -361,6 +362,7 @@ paths:
           in: path
           schema:
             type: integer
+            example: 11
           required: true
         - name: updateUser
           in: body
@@ -370,18 +372,18 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  example: updatedid
+                  example: generalId
                 email:
                   type: string
                   description: 이메일
-                  example: updateUser@naver.com
+                  example: general1@gmail.com
                 nickname:
                   type: string
                   description: 닉네임
-                  example: updateNickname
+                  example: general1
       responses:
         201:
-          description: 회원정보수정하기 성공
+          description: 회원정보 수정하기 성공
           content:
             application/json:
               schema:
@@ -447,6 +449,7 @@ paths:
           in: path
           schema:
             type: integer
+            example: 11
           required: true
       responses:
         201:
@@ -525,7 +528,7 @@ paths:
                 password:
                   type: string
                   description: 비밀번호
-                  example: updatePassword
+                  example: generalPassword
       responses:
         201:
           description: 비밀번호 변경하기 성공
@@ -595,7 +598,7 @@ paths:
           in: body
           required: true
           schema:
-            properties: 
+            properties:
               loginId:
                 type: string
                 description: 로그인 ID
