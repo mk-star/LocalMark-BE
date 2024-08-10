@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, createCreator, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVICE,
@@ -27,8 +27,11 @@ export const registerUserService = async (userData, type) => {
         throw new Error('This email is already in use.');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-
-    await createUser(userData, hashedPassword, type);
+    if(type =='CREATOR'){
+        await createCreator(userData, hashedPassword, type);
+    }else{
+        await createUser(userData, hashedPassword, type);
+    }
     return { ...userData };
 };
 

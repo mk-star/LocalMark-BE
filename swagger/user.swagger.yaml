@@ -22,10 +22,6 @@ paths:
                   type: string
                   description: 비밀번호
                   example: password1
-                nickname:
-                  type: string
-                  description: 닉네임
-                  example: creator1
                 type:
                   type: string
                   description: 유저 타입(GENERAL, CREATOR)
