@@ -53,3 +53,7 @@ FROM CommentTree
 ORDER BY created_date;
 
 `
+
+export const commentNum = `
+    select count(*) as commentNum from comment where postId = ?
+`

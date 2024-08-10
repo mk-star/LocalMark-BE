@@ -58,12 +58,28 @@ export const selectCommentInfo = async(postId) =>{
     const conn = await pool.getConnection();
 
     // postId가 존재하는지 확인
+    const [postExist] = await pool.query(confirmPost, postId);
+    if (! postExist[0].isExistPost) {
+      conn.release();
+      return -1;
+    }
 
     const [comment] = await pool.query(selectComment,postId);
     conn.release();
     return comment;
     
   }catch(err){
+    console.log(`DB 호출 실패 ${err.message}`)
+  }
+}
+
+export const getCommentNum = async (postId) => {
+  try{
+    const conn = await pool.getConnection();
+    const num = await pool.query(getCommentNum, postId);
+    conn.release();
+    return num;
+  }catch (err){
     console.log(`DB 호출 실패 ${err.message}`)
   }
 }

@@ -25,3 +25,7 @@ insert into likes(comment_id,user_id) values(?,?);
 export const commentDeleteLike= `
 DELETE FROM likes WHERE comment_id = ? AND user_id = ?;
 `
+
+export const likeNum= `
+    select count(*) as likeNum from likes where post_id = ?
+`
