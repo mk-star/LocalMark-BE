@@ -43,6 +43,7 @@ app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
 app.use('/morelocal', morelocalRouter);
 app.use("/reviews", reviewRouter);
+app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
