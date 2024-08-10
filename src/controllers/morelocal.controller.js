@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList } from "../proviers/morelocal.provider.js";
+import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList } from "../providers/morelocal.provider.js";
 
 // 로컬레터 목록 조회
 export const letterList = async (req, res, next) => {

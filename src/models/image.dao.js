@@ -5,8 +5,8 @@ import {
     deleteImgsFileByPostId, 
     getImageFileById, 
     getImageFilesByPostId } from './image.sql.js';
-import { status } from '../../config/response.status';
-import { insertPostImagesyPostId } from './image.sql';
+import { status } from '../../config/response.status.js';
+import { insertPostImagesyPostId } from './image.sql.js';
 
 export const saveImagesByPostId = async (postId, imagekeys) => {
 

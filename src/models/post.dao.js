@@ -159,7 +159,7 @@ export const getCreatorByBrandId = async(brandId) => {
     }
 }
 
-export const getPostsByCreatorId = async(creatorId) => {
+export const getPostsByCreator = async(creatorId) => {
 
     try {
         

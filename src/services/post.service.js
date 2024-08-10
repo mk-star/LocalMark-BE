@@ -6,7 +6,7 @@ import {
     deletePost, 
     addPost,
     getCreatorByBrandId, 
-    getPostsByCreatorId,
+    getPostsByCreator,
     modifyPostById,
     getPreviewPostDetail} from "../models/post.dao.js";
     
@@ -71,7 +71,7 @@ export const getPostsByCreatorService = async(brandId) => {
     if (creatorId == -1) {
          throw new BaseError(status.LOGINID_NOT_EXISTS);
     } else {
-        return postsResponseDTO(await getPostsByCreatorId(creatorId));
+        return postsResponseDTO(await getPostsByCreator(creatorId));
     }    
 
 }

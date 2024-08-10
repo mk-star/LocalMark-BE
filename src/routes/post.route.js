@@ -8,6 +8,7 @@ import {
     addPost,
     postsByCreator } from '../controllers/post.controller.js';
 import { imageUploader } from "../middleware/image.uploader.js";
+import { jwtMiddleware } from '../../config/userJwtMiddleWare.js';
 
 
 export const postRouter = express.Router({mergeParams: true});

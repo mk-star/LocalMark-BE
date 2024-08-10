@@ -11,10 +11,11 @@ import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { userRouter } from "./src/routes/user.route.js";
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
-import { morelocalRouter } from './src/routes/morelocal.routes.js';
+import { morelocalRouter } from './src/routes/morelocal.route.js';
 import { brandRouter } from "./src/routes/brand.route.js";
-import { gelleryRouter } from "./src/routes/gallery.routes.js";
+import { gelleryRouter } from "./src/routes/gallery.route.js";
 import { reviewRouter } from "./src/routes/review.route.js";
+import { healthRoute } from "./src/routes/health.route.js";
 
 //서버 가동
 dotenv.config();
@@ -26,10 +27,6 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-
-// 정적 파일 제공
-app.use('/uploads/images', express.static(path.join(__dirname, 'uploads/images')));
 
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
@@ -45,6 +42,7 @@ app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
 app.use('/morelocal', morelocalRouter);
 app.use("/reviews", reviewRouter);
+app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
