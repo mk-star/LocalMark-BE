@@ -25,4 +25,3 @@ postRouter.patch('/:postId',
     asyncHandler(modifyPost));
 postRouter.delete('/:postId', asyncHandler(removePost));
 postRouter.get('/:brandId/posts', asyncHandler(postsByCreator));
-
