@@ -75,6 +75,14 @@ JOIN Product_Stock ps on poc.id = ps.product_option_id
 WHERE product_id = ?;
 `
 
+// 제품 갤러리 대표 사진 조회
+export const getProductThumbnail = `
+SELECT
+    thumbnail_url
+FROM Product p
+WHERE p.id = ?;
+`
+
 // 지역 존재 유무 확인
 export const confirmRegion = `
 SELECT
