@@ -13,8 +13,10 @@ import {
 
 export const findByID = async(userId) => {
     const sql = `SELECT * FROM User WHERE id = ?`;
+    const conn = await pool.getConnection();
     try {
         const [results] = await pool.query(sql, [userId]);
+        conn.release();
         return results[0];
     } catch (error) {
         throw error;
@@ -23,8 +25,10 @@ export const findByID = async(userId) => {
 
 export const findByLoginID = async (loginId) => {
     const sql = `SELECT * FROM User WHERE loginId = ?`;
+    const conn = await pool.getConnection();
     try {
         const [results] = await pool.query(sql, [loginId]);
+        conn.release();
         return results[0];
     } catch (error) {
         throw error;
@@ -34,8 +38,10 @@ export const findByLoginID = async (loginId) => {
 
 export const findByEmail = async (email) => {
     const sql = `SELECT * FROM User WHERE email = ?`;
+    const conn = await pool.getConnection();
     try{
         const [results] = await pool.query(sql, [email]);
+        conn.release()
         return results[0];
     } catch (error) {
         throw error;
