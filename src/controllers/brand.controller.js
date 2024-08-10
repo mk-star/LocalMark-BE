@@ -2,7 +2,7 @@ import { response, errResponse } from '../../config/response.js';
 import { status } from "../../config/response.status.js";
 
 import { createBrandService, updateBrandService } from '../services/brand.service.js';
-import { getBrandInformation, getBrandProducts } from "../proviers/brand.providers.js";
+import { getBrandInformation, getBrandProducts } from "../providers/brand.provider.js";
 
 // 브랜드 정보 조회
 export const brandInfo = async (req, res, next) => {
