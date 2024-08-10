@@ -12,13 +12,12 @@ import { imageUploader } from "../middleware/image.uploader.js";
 
 export const postRouter = express.Router({mergeParams: true});
 
-postRouter.post('/signin', asyncHandler(addPost));
-postRouter.get('/posts', asyncHandler(posts));
-postRouter.post('/', 
+postRouter.get('/', asyncHandler(posts));
+postRouter.post('/signin', 
     jwtMiddleware,
     imageUploader.array("image", 10), 
     asyncHandler(addPost));
-postRouter.get('/:postId', asyncHandler(postDetail));
+postRouter.get('/post/:postId', asyncHandler(postDetail));
 postRouter.patch('/:postId', 
     jwtMiddleware,
     imageUploader.array("image", 10), 

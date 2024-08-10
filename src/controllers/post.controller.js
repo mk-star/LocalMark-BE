@@ -62,7 +62,6 @@ export const modifyPost = async(req, res) => {
                 }
         }
         
-
         res.send(response(status.SUCCESS,  
                 await modifyPostDetail(postId, req.body, imagekeys)));
 
