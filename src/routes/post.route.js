@@ -4,6 +4,7 @@ import { addPost, postsByCreator } from '../controllers/post.controller.js';
 import { modifyPost, postDetail, posts, removePost, uploadPost } from '../controllers/post.controller.js';
 import { upload } from '../proviers/image.provider.js';
 
+
 export const postRouter = express.Router({mergeParams: true});
 
 postRouter.post('/signin', asyncHandler(addPost));
