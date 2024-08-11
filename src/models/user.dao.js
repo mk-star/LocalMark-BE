@@ -145,7 +145,7 @@ export const getUsernameByEmail = async (email) => {
     try{
         const results = await pool.query(sql, [email]);
         conn.release();
-        return results[0]
+        return results[0];
     } catch(error){
         conn.release();
         throw error;

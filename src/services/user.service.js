@@ -65,11 +65,11 @@ export const findUsernameByEmailService = async (email) => {
             const mailOptions = {
                 from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
                 to: email, //사용자가 입력한 이메일 -> 목적지 주소 이메일
-                subject: `[LOCAL MARK] ${user.nickname} 님의 아이디를 안내드립니다.`,
-                html: `<p>안녕하세요 ${user.nickname} 님</p>
-                <p>${user.nickname} 님의 아이디는 다음과 같습니다:</p>
-                <p>아이디: ${user.loginId}</p>
-                <p>${user.nickname} 님이 요청하지 않은 아이디 찾기라면, localmark.team@gmail.com로 연락 부탁드립니다.</p>`,
+                subject: `[LOCAL MARK] ${user[0].nickname} 님의 아이디를 안내드립니다.`,
+                html: `<p>안녕하세요 ${user[0].nickname} 님</p>
+                <p>${user[0].nickname} 님의 아이디는 다음과 같습니다:</p>
+                <p>아이디: ${user[0].loginId}</p>
+                <p>${user[0].nickname} 님이 요청하지 않은 아이디 찾기라면, localmark.team@gmail.com로 연락 부탁드립니다.</p>`,
               };
             await transporter.sendMail(mailOptions);
             return user;
