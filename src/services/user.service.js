@@ -83,6 +83,7 @@ export const findUsernameByEmailService = async (email) => {
 export const getOrdersService = async (user_id) => {
     try {
         const orders = await getOrdersByID(user_id);
+        console.log(orders);
         return orders;
     } catch (error) {
         throw error;

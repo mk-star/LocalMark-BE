@@ -171,7 +171,7 @@ export const getOrdersByID = async (userId) => {
 };
 
 export const getOrderItemNumberByIDs = async (ids) => {
-    const placeholders = ids.ma(()=>'?').join(',');
+    const placeholders = ids.map(()=>'?').join(',');
     const sql = `SELECT product_id FROM Order_Item WHERE order_id IN (${placeholders})`;
     try{
         const [results] = await pool.query(sql, ids)

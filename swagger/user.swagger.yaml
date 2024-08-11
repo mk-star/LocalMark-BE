@@ -199,18 +199,11 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}/orders:
+  /users/orders:
     get:
       tags:
         - Mypage
       summary: 최근 주문 내역 불러오기
-      parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-            example: 11
-          required: true
       responses:
         201:
           description: 최근 주문 내역 불러오기 성공
@@ -352,18 +345,12 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}:
+  /users:
     patch:
       tags:
         - Mypage
-      summary: 회원 비밀번호 수정하기
+      summary: 회원 정보 수정하기
       parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-            example: 11
-          required: true
         - name: updateUser
           in: body
           required: true
@@ -383,7 +370,7 @@ paths:
                   example: general1
       responses:
         201:
-          description: 회원정보 수정하기 성공
+          description: 회원 정보 수정하기 성공
           content:
             application/json:
               schema:
@@ -439,18 +426,11 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}/change-password-email:
+  /users/change-password-email:
     post:
       tags:
         - Mypage
       summary: 비밀번호 변경을 위한 이메일 보내기
-      parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-            example: 11
-          required: true
       responses:
         201:
           description: 비밀번호 변경하기 성공
@@ -509,17 +489,12 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}/change-password:
+  /users/change-password:
     patch:
       tags:
         - Mypage
-      summary: 회원정보 수정하기
+      summary: 회원 비밀번호 수정하기
       parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-          required: true
         - name: updatePassword
           in: body
           required: true
@@ -626,20 +601,11 @@ paths:
                 type: string
                 example: "비밀번호 찾기 메일 전송에 성공하였습니다."
 
-  /users/{userId}/status:
+  /users/status:
     patch:
       tags:
         - User
       summary: 탈퇴 신청/취소
-      parameters:
-        - name: userId
-          type: integer
-          in: path
-          schema:
-            type: integer
-            example: 1
-            description: 유저 ID
-          required: true
       responses:
         "200":
           description: 탈퇴 신청/취소 성공
