@@ -1,4 +1,5 @@
-export const CommentTreeDTO = (comments)=> {
+export const CommentTreeDTO = (comments) => {
+    console.log(comments);
 
     const commentMap = new Map();
     const rootComments = [];
@@ -7,25 +8,31 @@ export const CommentTreeDTO = (comments)=> {
         // CommentDTO 형태로 변환
         const dto = {
             id: comment.id,
-            postId: comment.postId,
-            userId: comment.userId,
+            postId: comment.post_id,
+            userId: comment.user_id,
             content: comment.content,
-            createdDate: formatDate(comment.created_date), // 문자열을 Date 객체로 변환
-            parentId: comment.parentId,
+            createdDate: formatDate(comment.created_at), // 문자열을 Date 객체로 변환
+            parentId: comment.parent_id,
             children: []
         };
 
         // 댓글 ID를 키로 사용하여 Map에 저장
-        commentMap.set(dto.id, dto);
+        if (!commentMap.has(dto.id)) {
+            commentMap.set(dto.id, dto);
+        }
 
         // 부모 댓글이 없는 경우 (최상위 댓글) 루트 목록에 추가
         if (dto.parentId === null) {
-            rootComments.push(dto);
+            if (!rootComments.some(root => root.id === dto.id)) {
+                rootComments.push(dto);
+            }
         } else {
             // 자식 댓글이 있는 경우, 부모 댓글의 children에 추가
             const parentComment = commentMap.get(dto.parentId);
             if (parentComment) {
-                parentComment.children.push(dto);
+                if (!parentComment.children.some(child => child.id === dto.id)) {
+                    parentComment.children.push(dto);
+                }
             }
         }
     });

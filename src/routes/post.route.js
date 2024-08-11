@@ -1,7 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import {modifyPost, postDetail, posts, removePost, createPost} from '../controllers/post.controller';
-import {upload} from '../proviers/image.provider';
+import {createPost, modifyPost, postDetail, posts, removePost} from '../controllers/post.controller.js';
+import {upload} from "../providers/image.provider.js";
 
 export const postRouter = express.Router({mergeParams: true});
 

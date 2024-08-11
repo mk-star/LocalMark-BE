@@ -1,7 +1,7 @@
-import fs from 'fs';
 import path from 'path';
-import { deleteImageById, getImageById, saveImageByPostId } from "../models/image.dao"
-import { deleteImageFileIndir } from '../proviers/image.provider';
+import { deleteImageById, getImageById, saveImageByPostId } from "../models/image.dao.js"
+import {deleteImageFileIndir} from "../providers/image.provider.js";
+
 
 // 게시글 등록 시 이미지 등록
 export const uploadFileToS3AndSave = async(postId, filePath) => {

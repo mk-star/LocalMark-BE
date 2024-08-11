@@ -1,8 +1,9 @@
 import { response } from "express";
-import { path } from "path";
+import path from 'path';
 import { status } from "../../config/response.status.js";
 import {createPostInfo, deletePostById, updatePostDetail} from "../services/post.service.js";
 import { removeImageById, uploadFileToS3AndSave } from "../services/image.service.js";
+import {getPostDetail, getPosts} from "../providers/post.provider.js";
 
 export const createPost = async(req, res) => {
 

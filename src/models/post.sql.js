@@ -1,5 +1,5 @@
 export const insertPost=
-"INSERT INTO post (userId, category, title, thumnail_filename, content)" +
+"INSERT INTO Post (user_Id, category, title, thumnail_filename, content)" +
 "VALUES (?, ?, ?, ?, ?)"
 
 export const getPostsByCategory =`
@@ -8,16 +8,16 @@ SELECT
     COALESCE(comment_count,0) AS commentNum,
     COALESCE(like_count,0) AS likeNum
 FROM
-    post p
+    Post p
 LEFT JOIN (
     SELECT
-        postId,
+        post_id,
         COUNT(DISTINCT id) AS comment_count
     FROM
         localmart.comment
     GROUP BY
-        postId
-) c ON p.id = c.postId
+        post_id
+) c ON p.id = c.post_id
 LEFT JOIN (
     SELECT
         post_id,
@@ -26,28 +26,28 @@ LEFT JOIN (
         localmart.likes
     GROUP BY
         post_id
-) l ON c.postId = l.post_id
+) l ON c.post_id = l.post_id
 WHERE
     p.category = 1
 ORDER BY
-    p.created_date DESC
+    p.created_at DESC
 LIMIT 7 OFFSET 5;
 `
 
 export const getPosts = 
-"SELECT * FROM post" +
+"SELECT * FROM Post" +
 "LIMIT ? OFFSET ?;";
 
 export const getPostDetail = 
-"SELECT * FROM post" +
+"SELECT * FROM Post" +
 "WHERE id = ?;";
 
 export const updatePostSql = 
-"UPDATE post SET title = ?, content = ?, category = ?, thumbnail_filename = ?" +
+"UPDATE Post SET title = ?, content = ?, category = ?, thumbnail_filename = ?" +
 "WHERE id = ?;";
 
 export const deletePostSql =
-"DELETE FROM post WHERE id = ?;";
+"DELETE FROM Post WHERE id = ?;";
 
-export const confirmPost =
-"SELECT EXISTS(SELECT 1 FROM post WHERE id = ?) as isExistPost;";
+export const confirmPost =`
+SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;`
