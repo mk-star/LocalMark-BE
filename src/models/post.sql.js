@@ -50,9 +50,9 @@ export const deletePostSql =
 "DELETE FROM Post WHERE id = ?;";
 
 export const confirmPost =
-"SELECT EXISTS(SELECT 1 FROM post WHERE id = ?) as isExistPost;";
+"SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;";
 
 export const getPostsByCreatorId =
-"SELECT * FROM post" +
+"SELECT * FROM Post" +
 "WHERE user_id = ?";
 

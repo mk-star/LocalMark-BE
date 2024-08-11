@@ -3,9 +3,9 @@ import {status} from "../../config/response.status.js";
 import { response } from "../../config/response.js";
 
 export const postLike = async(req,res,next)=>{
-  return res.send(response(status.SUCCESS, await postLikeService(req.params.postId,req.body)));
+  return res.send(response(status.SUCCESS, await postLikeService(req.params.postId,req.currentId)));
 }
 
 export const commentLike = async(req,res,next)=>{
-  return res.send(response(status.SUCCESS, await commentLikeService(req.params.commentId, req.body)));
+  return res.send(response(status.SUCCESS, await commentLikeService(req.params.commentId, req.currentId)));
 }
