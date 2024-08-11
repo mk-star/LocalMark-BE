@@ -275,7 +275,7 @@ paths:
         - User
       summary: 이메일로 아이디 보내주기
       parameters:
-        - name:
+        - name: findUsername
           in: body
           required: true
           schema:
