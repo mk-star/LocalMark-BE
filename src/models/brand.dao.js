@@ -90,33 +90,33 @@ export const getBrandInfoByUserId = async(userId) =>{
 }
 
 export const createBrandDAO = async(userId, brandData) =>{
+    const conn = await pool.getConnection();
     const sql = `
             INSERT INTO Brand (
-                user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact
+                user_id, region_id, brand_name, brand_url, description, brand_image, business_name, business_registration_number, contact
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
-            userId, brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+            userId, brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
             brandData.brand_image, brandData.business_name, brandData.business_registration_number, brandData.contact
         ];
-        const conn = await pool.getConnection();
-        try{
-            await pool.query(sql, values);
-            conn.release();
-            console.log(brandData);
-            return brandData;
-        }catch(error){
-            throw error;
-        }
+    try{
+        await pool.query(sql, values);
+        conn.release();
+        console.log(brandData);
+        return brandData;
+    }catch(error){
+        throw error;
+    }
 }
 export const updateBrandDAO = async(brandId, brandData) => {
     const sql = `
         UPDATE Brand SET
-            region_id = ?, name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
+            region_id = ?, brand_name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ? AND user_id = ?
     `;
     const values = [
-        brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+        brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
         brandData.brand_image, brandData.business_name, brandData.business_registration_number,
         brandData.contact, brandId, brandData.user_id
     ];

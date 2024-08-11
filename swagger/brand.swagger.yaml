@@ -1,9 +1,11 @@
-paths: 
+paths:
   /brand:
     post:
       tags:
         - Brand
       summary: 브랜드 등록
+      security:
+        - bearerAuth: []
       parameters:
         - name: createBrand
           in: body

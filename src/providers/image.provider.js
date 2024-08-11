@@ -1,7 +1,12 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid'; // UUID 생성기
+
+// Resolve __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const uploadDir = path.join(__dirname, '../../uploads/images');
 
@@ -20,14 +25,11 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage: storage });
 
-
-export const deleteImageFileIndir = async(filename) => {
-
+export const deleteImageFileIndir = async (filename) => {
     const filePath = path.join(uploadDir, filename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     } else {
         throw new Error(`파일을 찾을 수 없습니다: ${filename}`);
     }
-
-}
+};
