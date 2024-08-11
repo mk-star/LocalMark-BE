@@ -9,6 +9,10 @@ paths:
           in: query
           required: false
           type: string
+        - name: page
+          in: query
+          required: true
+          type: integer
       responses:
         '200':
           description: 게시글 조회 성공
@@ -30,7 +34,7 @@ paths:
               data:
                 type: array
                 example: {
-                  "postData": [
+                  "postsData": [
                     {
                       "post_id": 1,
                       "user_id": 1,
@@ -128,7 +132,7 @@ paths:
                       "created_date": "2024.07.20",
                       "modified_date":  "2024.07.21"
                     },
-                    "images": [
+                    "imagesData": [
                         "image1.png",
                         "image2.png",
                         "image3.png"
@@ -175,9 +179,21 @@ paths:
         summary: 게시글 상세 수정
         parameters:
           - name: postId
-            in: query
+            in: path
             required: true
             type: integer
+          - name: title
+            in: query
+            required: true
+            type: string
+          - name: category
+            in: query
+            required: true
+            type: string
+          - name: content
+            in: query
+            required: true
+            type: string
         responses:
           '200':
             description: 게시글 수정 성공
@@ -200,167 +216,150 @@ paths:
                     type: array
                     example: {
                       "post": {
-                        "post_id": 1,
-                        "user_id": 1,
+                        "postId": 1,
+                        "userId": 1,
                         "category": "잡담",
                         "title": "swagger-test-1",
-                        "thumbnail_filename": "swagger-test-1-url",
+                        "thumbnailFilename": "swagger-test-1-url",
                         "content": "swagger-test-1-content",
-                        "created_date": "2024.07.20",
-                        "modified_date":  "2024.07.21"
+                        "createdAt": "2024.07.20",
+                        "modifiedAt":  "2024.07.21"
                       },
                       "images": [
                           "image1.png",
                           "image2.png",
                           "image3.png"
                       ]
-                    }             
+                    }  
+  /posts/signin:
+      post: 
+        tags: 
+          - Posts
+        summary: 게시글 등록      
+        consumes:
+        - multipart/form-data
+        parameters:
+          - name: directory
+            in: query
+            required: required
+            type: string
+          - name: category
+            in: formData
+            required: true
+            type: string
+          - name: title
+            in: formData
+            required: true
+            type: string   
+          - name: content
+            in: formData
+            required: true
+            type: string
+          - in: formData
+            name: image
+            type: file
+            description: 파일 업로드
+        responses:
+          '200':
+            description: 게시글 조회 성공
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 200
+                isSuccess:
+                  type: boolean
+                  example: true
+                code:
+                  type: integer
+                  example: 2000
+                message:
+                  type: string
+                  example: success!
+                data:
+                  type: object
+                  example: {
+                    "post":
+                      {
+                        "postId": 1,
+                        "userId": 1,
+                        "category": "정보공유",
+                        "title": "swagger-test-1",
+                        "thumbnailFilename": "swagger-test-1-url",
+                        "content": "swagger-test-1-content",
+                        "createdAt": "2024.07.20",
+                        "modifiedAt":  "2024.07.21"
+                      },                     
+                      "imagesData": [
+                              "image1.png",
+                              "image2.png",
+                              "image3.png"
+                          ]
+                  }
+          '400':
+            description: 잘못된 요청
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 400
+                isSuccess:
+                  type: boolean
+                  example: false
+                code:
+                  type: integer
+                  example: COMMON001
+                message:
+                  type: string
+                  example: 잘못된 요청입니다
+          '500':
+            description: 서버 에러
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 500
+                isSuccess:
+                  type: boolean
+                  example: false
+                code:
+                  type: integer
+                  example: COMMON000
+                message:
+                  type: string
+                  example: 서버 에러, 관리자에게 문의 바랍니다.
+              
 /posts/{postId}:
-  delete:
-    tags:
-      - Posts
-    summary: 게시글 삭제
-    parameters:
-      - name: postId
-        in: query
-        required: true
-        type: integer
-    responses:
-      '200':
-        description: 게시글 삭제 성공
-        schema:
-          type: object
-          properties:
-            status:
-              type: integer
-              example: 200
-            isSuccess:
-              type: boolean
-              example: true
-            code:
-              type: integer
-              example: 2000
-            message:
-              type: string
-              example: success!
-            data:
-                type: array
-                example: {
-                  "post": {
-                    "post_id": 1,
-                    "user_id": 1,
-                    "category": "정보공유",
-                    "title": "swagger-test-1",
-                    "thumbnail_url": "swagger-test-1-url",
-                    "content": "swagger-test-1-content",
-                    "created_date": "2024.07.20",
-                    "modified_date":  "2024.07.21"
-                  },
-                  "images": [
-                      "image1.png",
-                      "image2.png",
-                      "image3.png"
-                  ]
-                }             
-/posts:
- post: 
-  tags: 
-    - Posts
-  summary: 게시글 등록      
-  consumes:
-    - multipart/form-data
-  parameters:
-    - name: category
-      in: query
-      required: true
-      type: string
-    - name: title
-      in: query
-      required: true
-      type: string   
-    - name: content
-      in: query
-      required: true
-      type: string
-    - in: formData
-      name: image
-      type: file
-      description: 파일 업로드
-  responses:
-    '200':
-      description: 게시글 조회 성공
-      schema:
-        type: object
-        properties:
-          status:
-            type: integer
-            example: 200
-          isSuccess:
-            type: boolean
-            example: true
-          code:
-            type: integer
-            example: 2000
-          message:
-            type: string
-            example: success!
-          data:
-            type: array
-            example: {
-              "postData": [
-                {
-                  "post_id": 1,
-                  "user_id": 1,
-                  "category": "정보공유",
-                  "title": "swagger-test-1",
-                  "thumbnail_url": "swagger-test-1-url",
-                  "content": "swagger-test-1-content",
-                  "created_date": "2024.07.20",
-                  "modified_date":  "2024.07.21"
-                },{
-                  "post_id": 2,
-                  "user_id": 1,
-                  "category": "잡담",
-                  "title": "swagger-test-2",
-                  "thumbnail_url": "swagger-test-2-url",
-                  "content": "swagger-test-2-content",
-                  "created_date": "2024.07.20",
-                  "modified_date":  "2024.07.21"
-                }
-              ]
-            }
-    '400':
-      description: 잘못된 요청
-      schema:
-        type: object
-        properties:
-          status:
-            type: integer
-            example: 400
-          isSuccess:
-            type: boolean
-            example: false
-          code:
-            type: integer
-            example: COMMON001
-          message:
-            type: string
-            example: 잘못된 요청입니다
-
-    '500':
-      description: 서버 에러
-      schema:
-        type: object
-        properties:
-          status:
-            type: integer
-            example: 500
-          isSuccess:
-            type: boolean
-            example: false
-          code:
-            type: integer
-            example: COMMON000
-          message:
-            type: string
-            example: 서버 에러, 관리자에게 문의 바랍니다.
+    delete:
+      tags:
+        - Posts
+      summary: 게시글 삭제
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: 게시글 삭제 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              result:
+                type: string
+                example: "리뷰가 성공적으로 삭제되었습니다."            

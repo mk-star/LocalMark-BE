@@ -6,20 +6,24 @@ export const modifyPostResponseDTO = ({post, images}) => {
     return { post, images };
 }
 
-export const postsResponseDTO = (posts, images) => {
+export const deletePostResponseDTO = ({post, images}) => {
+    return { post, images };
+}
+
+export const postsResponseDTO = (posts) => {
     const postsData = [];
 
     for (let i = 0; i < posts.length; i++) {
 
         postsData.push({
-            "post_id": posts[i].id,
-            "user_id": posts[i].user_id,
+            "postId": posts[i].id,
+            "userId": posts[i].user_id,
             "category": posts[i].category,
             "title": posts[i].title,
-            "thumbnail_filename": posts[i].thumbnail_filename,
+            "thumbnailFilename": posts[i].thumbnail_filename,
             "content": posts[i].content,
-            "created_date": formatDate(posts[i].created_date),
-            "modified_date": formatDate(posts[i].modified_date)
+            "createdAt": formatDate(posts[i].created_at),
+            "modifiedAt": formatDate(posts[i].updated_at)
         })
     }
 
@@ -27,22 +31,21 @@ export const postsResponseDTO = (posts, images) => {
 
 }
 
-export const postDetailResponseDTO = (postDetail, images) => {
+export const postDetailResponseDTO = ({ post, images }) => {
 
-    console.log("post detail:", postDetail[0]);
+    console.log("post detail:", post);
     console.log("images:", images);
-    postDetail[0].created_at = formatDate(postDetail[0].created_at);
+    post.created_at = formatDate(post[0].created_at);
 
     const imagesData = [];
 
     for (let i = 0; i < images.length; i++) {
         imagesData.push({
-            "images_id": images[i].id,
-            "filename": images[i].filename,
+            "filename": images[i].filename
         }) 
     }
 
-    return { "post": postDetail[0], 
+    return { "post": post, 
              "imagesData": imagesData }; 
 }
 
