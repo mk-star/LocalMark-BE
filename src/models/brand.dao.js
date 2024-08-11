@@ -76,7 +76,7 @@ export const getBrandGalleryList = async (brandId, page, sort) => {
 }
 
 // 내 브랜드 주문 수집
-export const getBrandMyOrder = async (userId) => {
+export const getBrandMyOrder = async (userId, sort) => {
     try {
         const conn = await pool.getConnection();
 
@@ -85,7 +85,23 @@ export const getBrandMyOrder = async (userId) => {
           conn.release();
           return -1;
         }
-        const [orders] = await pool.query(getBrandOrder, userId);
+
+        // // 정렬 순서
+        let sortKeyword = 'o.order_date DESC'; // 주문일 순
+        if(sort != "undefined" && typeof sort != "undefined" && sort != null){ 
+            if (sort == 1){ // 주문 번호 순
+                sortKeyword = 'o.id DESC'; 
+            } else if (sort == 2){  // 주문 수량 순
+                sortKeyword = 'oi.quantity DESC'; 
+            } else if (sort == 3){  // 주문 금액 순
+                sortKeyword = 'o.total_price DESC';
+            } else if (sort == 4){  // 옵션 순
+                sortKeyword = 'poc.product_option_combination DESC';
+            }
+        }
+
+        const orderQuery = `${getBrandOrder} ORDER BY ${sortKeyword};`;
+        const [orders] = await pool.query(orderQuery, userId);
         
         conn.release();
         return orders;

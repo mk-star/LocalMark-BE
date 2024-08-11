@@ -27,9 +27,9 @@ export const getBrandProducts = async (brandId, page, sort) => {
 }
 
 // 내 브랜드 주문 수집
-export const getBrandOrders = async (userId) => {
+export const getBrandOrders = async (userId, sort) => {
 
-    const result = await getBrandMyOrder(userId);
+    const result = await getBrandMyOrder(userId, sort);
     if (result == -1){
         throw new BaseError(status.USER_IS_NOT_CREATOR);
     } else {

@@ -66,7 +66,7 @@ JOIN Product_Option_Comb poc on poc.id = oi.product_option_id
 JOIN Product p on p.id = oi.product_id
 JOIN Brand b on b.id = p.brand_id
 JOIN User u on u.id = b.user_id
-WHERE u.id = ?;
+WHERE u.id = ?
 `
 
 // 내 브랜드 주문 수집 전 크리에이터 유무 확인
