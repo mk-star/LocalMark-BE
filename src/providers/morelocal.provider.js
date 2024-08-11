@@ -10,11 +10,12 @@ export const getLetterLists = async () => {
 
 // 로컬레터 상세 조회
 export const getLetter = async (letterId) => {
-    const letter = await getLetterDetail(letterId);
-    if (letter == -1){
+    const result = await getLetterDetail(letterId);
+    if (result == -1){
         throw new BaseError(status.LETTER_NOT_EXIST);
     } else {
-        return letterResponseDTO(letter);
+        const {letter, images} = await getLetterDetail(letterId);
+        return letterResponseDTO(letter, images);
     }
 }
 
@@ -30,11 +31,12 @@ export const getEventLists = async () => {
 
 // 이벤트 상세 조회
 export const getEvent = async (eventId) => {
-    const event = await getEventDetail(eventId);
-    if (event == -1){
+    const result = await getEventDetail(eventId);
+    if (result == -1){
         throw new BaseError(status.EVENT_NOT_EXIST);
     } else {
-        return eventResponseDTO(await getEventDetail(eventId));
+        const {event, images} = await getEventDetail(eventId);
+        return eventResponseDTO(event, images);
     }
 }
 

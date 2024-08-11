@@ -124,7 +124,12 @@ paths:
                     "thumbnail_url": "https://image.png",
                     "created_at": "2024.08.02",
                     "content": "내용"
-                  }
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/more+local_%E1%84%83%E1%85%A2%E1%84%91%E1%85%AD+%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/cat.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/b2610009.jpg"
+                  ]
                 }
         '400':
           description: 파라미터 오류 (존재하지 않는 id값)
@@ -304,7 +309,12 @@ paths:
                     "start_date": "2024.08.02",
                     "end_date": "2024.10.02",
                     "content": "내용"
-                  }
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/00501111_20190121.jpg",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/5220564.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/8e3353bb9aad0.jpg"
+                  ]
                 }
         '400':
           description: 파라미터 오류 (존재하지 않는 id값)
