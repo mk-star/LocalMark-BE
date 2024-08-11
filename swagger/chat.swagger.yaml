@@ -1,0 +1,222 @@
+paths:
+  /chatRooms:
+    get:
+      tags:
+        - Chat
+      summary: Get chat room list
+      description: Retrieve the list of chat rooms for a user.
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            description: The ID of the user requesting the chat room list
+            example: 1
+      responses:
+        200:
+          description: Successfully retrieved chat room list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "Chat room list retrieved successfully"
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        room_id:
+                          type: integer
+                          example: 1
+                        recentMessage:
+                          type: string
+                          example: "Hello, how are you?"
+                        recentMessageSenderId:
+                          type: integer
+                          example: 2
+                        unreadMessageCount:
+                          type: integer
+                          example: 5
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 4000
+                  message:
+                    type: string
+                    example: "Bad request"
+
+    post:
+      tags:
+        - Chat
+      summary: Create a new chat room
+      parameters:
+        - name: createChatRoom
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              user1:
+                type: integer
+                description: The ID of the first user
+                example: 1
+              user2:
+                type: integer
+                description: The ID of the second user
+                example: 2
+
+
+      responses:
+        200:
+          description: Successfully created chat room
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "Chat room created successfully"
+                  result:
+                    type: object
+                    properties:
+                      roomId:
+                        type: integer
+                        example: 1
+            example:
+              status: 200
+              isSuccess: true
+              code: 2000
+              message: "Chat room created successfully"
+              result:
+                roomId: 1
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 4000
+                  message:
+                    type: string
+                    example: "Bad request"
+            example:
+              status: 400
+              isSuccess: false
+              code: 4000
+              message: "Bad request"
+
+  /chatRooms/{roomId}/messages:
+    get:
+      tags:
+        - Chat
+      summary: Get chat messages
+      description: Retrieve the list of messages in a specific chat room.
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: The ID of the chat room
+      responses:
+        200:
+          description: Successfully retrieved chat messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "Messages retrieved successfully"
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        sender_id:
+                          type: integer
+                          example: 2
+                        content:
+                          type: string
+                          example: "Hello, how are you?"
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: "2023-08-11T13:45:30Z"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 4000
+                  message:
+                    type: string
+                    example: "Bad request"

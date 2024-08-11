@@ -1,7 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import swaggerUi from "swagger-ui-express";
+import * as http from "http";
+import {socketServer} from "./src/middleware/socket.js";
+import swaggerUi, {serve} from "swagger-ui-express";
 import specs from "./config/swagger.config.js";
 import cookieParser from "cookie-parser";
 import { response } from './config/response.js';
@@ -11,11 +13,13 @@ import { authRouter } from "./src/routes/auth.route.js"; // .js 확장자 추가
 import { userRouter } from "./src/routes/user.route.js";
 import { likeRouter } from "./src/routes/Like.route.js";
 import { commentRouter } from "./src/routes/comment.route.js";
-import { morelocalRouter } from './src/routes/morelocal.route.js';
 import { brandRouter } from "./src/routes/brand.route.js";
 import { gelleryRouter } from "./src/routes/gallery.route.js";
 import { reviewRouter } from "./src/routes/review.route.js";
 import { healthRoute } from "./src/routes/health.route.js";
+import {chatRouter} from "./src/routes/chat.route.js";
+import {morelocalRouter} from "./src/routes/morelocal.route.js";
+
 
 //서버 가동
 dotenv.config();
@@ -40,8 +44,10 @@ app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
 app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
-app.use('/morelocal', morelocalRouter);
+app.use('/moreocal', morelocalRouter);
+app.use('/chatRooms',chatRouter)
 app.use("/reviews", reviewRouter);
+
 app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {
@@ -58,6 +64,11 @@ app.use((err, req, res, next) => {
     res.status(err.data.status || status.INTERNAL_SERVER_ERROR).send(response(err.data));
 });
 
-app.listen(app.get('port'), () => {
+const server = http.createServer(app);
+
+// Socket.io 서버 설정
+socketServer(server);
+
+server.listen(app.get('port'), () => {
     console.log(`Example app listening on port ${app.get('port')}`);
 });

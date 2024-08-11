@@ -11,7 +11,7 @@ import {
     getPreviewPostDetail} from "../models/post.dao.js";
     
 export const addPostInfo = async(userId, body, imagekeys) => {
-  
+
     const thumbnail_filename = encodeURIComponent(imagekeys[0]);
  
     const postId = await addPost({
