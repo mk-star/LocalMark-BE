@@ -85,15 +85,15 @@ export const createBrandDAO = async(brandData) =>{
             brandData.user_id, brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
             brandData.brand_image, brandData.business_name, brandData.business_registration_number, brandData.contact
         ];
-        return new Promise((resolve, reject) => {
-            pool.query(sql, values, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        const conn = await pool.getConnection();
+        try{
+            const [results] = await pool.query(sql, values);
+            conn.release();
+            console.log(results);
+            return results;
+        }catch(error){
+            throw error;
+        }
 }
 export const updateBrandDAO = async(brandId, brandData) => {
     const sql = `
@@ -106,13 +106,13 @@ export const updateBrandDAO = async(brandId, brandData) => {
         brandData.brand_image, brandData.business_name, brandData.business_registration_number,
         brandData.contact, brandId, brandData.user_id
     ];
-    return new Promise((resolve, reject) => {
-        pool.query(sql, values, (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
-    });
+    const conn = await pool.getConnection();
+    try{
+        const results = await pool.query(sql, values);
+        conn.release();
+        console.log(results);
+        return results;
+    }catch(error){
+        throw error;
+    }
 }

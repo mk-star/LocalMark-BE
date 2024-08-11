@@ -38,8 +38,8 @@ export const updateBrand = async(req, res, next) => {
         const brandData = req.body;
         // brandData.user_id = req.userId;
         brandData.user_id = 1; // Replace with actual user ID logic
-        const updatedBrand = await updateBrandService(brandId, brandData);
-        return res.status(200).json(response({ isSuccess: true, code: 200, message: 'Brand updated successfully' }, updatedBrand));
+        await updateBrandService(brandId, brandData);
+        return res.status(200).json(response({ isSuccess: true, code: 200, message: 'Brand updated successfully' }));
     } catch (error) {
         return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
     }
