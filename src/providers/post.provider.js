@@ -4,6 +4,8 @@ import {
     getPreviewPostDetail, 
     getPreviewPosts, 
     getPreviewPostsByCategory } from "../models/post.dao.js";
+import {getCommentNum} from "../models/comment.dao.js";
+import {getLikeNum} from "../models/Like.dao.js";
 
 export const getPosts = async(category, page) => {
 
@@ -18,9 +20,9 @@ export const getPosts = async(category, page) => {
 export const getPostDetail = async(postId) => {
 
     const postDetail = await getPreviewPostDetail(postId);
-    const imagefileNames = [];
+    let imagefileNames = [];
     imagefileNames = await getImagesByPostId(postId);
 
-    return postDetailResponseDTO(postDetail, imagefileNames); 
+    return postDetailResponseDTO(postDetail, imagefileNames, await getCommentNum(), await getLikeNum());
 }
 

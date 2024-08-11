@@ -1,44 +1,18 @@
 import { response } from "express";
-import { path } from "path";
-import { StatusCodes } from 'http-status-codes';
+import path from 'path';
 import { status } from "../../config/response.status.js";
-import { 
-        addPostInfo,
-        createPost, 
-        deletePostById, 
-        getPostDetail, 
-        getPosts, 
-        updatePostDetail } from "../services/post.service.js";
+import {createPostInfo, deletePostById, updatePostDetail} from "../services/post.service.js";
 import { removeImageById, uploadFileToS3AndSave } from "../services/image.service.js";
+import {getPostDetail, getPosts} from "../providers/post.provider.js";
 
-
-export const addPost = async(req,res,next)=>{
-  await addPostInfo(req.body)
-  return res.send(StatusCodes.OK)
-}
-
-// 커뮤니티 게시글 전체 및 카테고리별 게시글 목록 조회
-export const posts = async(req, res) => {
-
-        const querys = req.query;
-        console.log(querys);
-
-        const category = querys.category;
-        console.log(category);
-        const page = parseInt(querys.page);
-
-        res.send(response(status.SUCCESS, await getPosts(category, page)));
-
-}
-
-export const uploadPost = async(req, res) => {
+export const createPost = async(req, res) => {
 
         try {
                 console.log("body: ", req.body);
                 const files = req.files;
 
-                const postId = await createPost(req.body);
-                
+                const postId = await createPostInfo(req.body);
+
                 const imageUrls = [];
                 if (files && files.length > 0) {
                         for (const file of files) {
@@ -51,10 +25,25 @@ export const uploadPost = async(req, res) => {
                 }
 
                 res.send(response(status.SUCCESS, imageUrls));
-                
+
         } catch (error) {
                 throw new Error(`오류 발생: ${error.message}`);
         }
+
+}
+
+
+// 커뮤니티 게시글 전체 및 카테고리별 게시글 목록 조회
+export const posts = async(req, res) => {
+
+        const querys = req.query;
+        console.log(querys);
+
+        const category = querys.category;
+        console.log(category);
+        const page = parseInt(querys.page);
+
+        res.send(response(status.SUCCESS, await getPosts(category, page)));
 
 }
 

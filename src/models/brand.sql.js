@@ -26,7 +26,7 @@ SELECT
 FROM Product p
 JOIN Brand b on b.id = p.brand_id
 JOIN Subregion s on s.id = p.subregion_id
-WHERE b.id = ?;
+WHERE b.id = ? AND p.status = 'SELL';
 `
 
 // 브랜드 프로필 - 제품 갤러리
@@ -42,5 +42,5 @@ SELECT
 FROM Product p
 JOIN Brand b on b.id = p.brand_id
 JOIN Subregion s on s.id = p.subregion_id
-WHERE b.id = ?
+WHERE b.id = ? AND p.status = 'SELL'
 `
