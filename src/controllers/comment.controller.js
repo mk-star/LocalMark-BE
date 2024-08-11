@@ -10,7 +10,7 @@ export const deleteCommentInfo = async(req,res,next)=>{
 }
 
 export const getCommentInfo = async(req,res,next) =>{
-  const postId = req.params;
+  const postId = req.params.postId;
   res.send(response(status.SUCCESS, await getComment(postId)));
 }
 

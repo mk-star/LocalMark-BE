@@ -1,5 +1,12 @@
-import { confirmImage, confirmImageByPostId, deleteImgFileById, deleteImgsFileByPostId, getImageFileById, getImageFilesByPostId, getImageUrlById, getImagesUrlByPostId, saveImgeFileByPostId } from './image.query';
-import { status } from '../../config/response.status';
+
+import { status } from '../../config/response.status.js';
+import {
+    confirmImage, confirmImageByPostId,
+    deleteImgFileById, deleteImgsFileByPostId,
+    getImageFileById,
+    getImageFilesByPostId,
+    saveImgeFileByPostId
+} from "./image.sql.js";
 
 export const saveImageByPostId = async (postId, filename) => {
 
