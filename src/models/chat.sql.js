@@ -4,45 +4,32 @@ INSERT INTO ChatRoom (consumer, manager) VALUES (1, 2);
 
 export const getRoomAll= `
     SELECT
-        cr.id AS roomId,
-        LEFT(m.message, 50) AS recentMessage,
-        m.senderId AS recentMessageSenderId,
+        cr.id AS room_id,
+        LEFT(m.content, 50) AS recentMessage,
+        m.sender_id AS recentMessageSenderId,
         unreadCounts.unreadMessageCount
     FROM
-        chatRoom cr
+        ChatRoom cr
         JOIN
-        (SELECT
-        roomId,
-        message,
-        timestamp,
-        senderId
-        FROM
-        message
-        WHERE
-        (roomId, timestamp) IN (
-        SELECT
-        roomId, MAX(timestamp)
-        FROM
-        message
-        GROUP BY
-        roomId
-        )
+        (SELECT room_id, content, timestamp,sender_id
+        FROM Message
+        WHERE (room_id, timestamp) IN (SELECT room_id, MAX(timestamp) FROM Message GROUP BY room_id)
         ) m
     ON
-        cr.id = m.roomId
+        cr.id = m.room_id
         LEFT JOIN
         (SELECT
-        roomId,
+        room_id,
         COUNT(id) AS unreadMessageCount
         FROM
-        message
+        Message
         WHERE
         isRead = FALSE
         GROUP BY
-        roomId
+        room_id
         ) unreadCounts
         ON
-        cr.id = unreadCounts.roomId
+        cr.id = unreadCounts.room_id
     WHERE
         cr.consumer = ? OR cr.manager = ?;
 `
@@ -50,15 +37,15 @@ export const getRoomAll= `
 export const getMessageAll =`
     SELECT
         id,
-        senderId,
-        message,
+        sender_id,
+        content,
         timestamp
     FROM
-        message
+        Message
     WHERE
-        roomId = ?  
+        room_id = ?  
     ORDER BY
         timestamp ASC;  
 `
 export const insertNewMessage= `
-INSERT INTO message (roomId, senderId, message) VALUES (?, ?, ?)`
+INSERT INTO Message (room_id, sender_id, content) VALUES (?, ?, ?)`
