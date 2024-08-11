@@ -4,8 +4,6 @@ paths:
       tags:
         - Brand
       summary: 브랜드 등록
-      security:
-        - bearerAuth: []
       parameters:
         - name: createBrand
           in: body
@@ -16,11 +14,7 @@ paths:
                   type: integer
                   description: 지역 id
                   example: 1
-                user_id:
-                  type: integer
-                  description: 회원 id
-                  example: 1
-                name:
+                brand_name:
                   type: string
                   description: 브랜드명
                   example: lodge

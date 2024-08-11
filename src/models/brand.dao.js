@@ -90,6 +90,7 @@ export const getBrandInfoByUserId = async(userId) =>{
 }
 
 export const createBrandDAO = async(userId, brandData) =>{
+    console.log(userId);
     const conn = await pool.getConnection();
     const sql = `
             INSERT INTO Brand (
