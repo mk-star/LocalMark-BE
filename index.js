@@ -44,7 +44,7 @@ app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
 app.use("/auth", authRouter);
 app.use('/brand', brandRouter);
-app.use('/moreocal', morelocalRouter);
+app.use('/morelocal', morelocalRouter);
 app.use('/chatRooms',chatRouter)
 app.use("/reviews", reviewRouter);
 
