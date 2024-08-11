@@ -49,11 +49,7 @@ export const findUsername = async (req, res) => {
 
 export const getOrderItems = async (req, res) => {
     const userId = req.currentId;
-    const paramId = req.params.userId;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '접근할 권한이 없습니다.' }));
-        }
         const ids = await getOrdersService(userId);
         if (ids) {
             const itemNumber = await getOrderItemNumberService(ids);
@@ -69,12 +65,8 @@ export const getOrderItems = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const userId = req.currentId;
-    const paramId = req.params.userId;
     const userData = req.body;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '수정할 권한이 없습니다.' }));
-        }
         await updateUserService(userId, userData);
         return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User updated successfully' }));
     } catch (error) {
@@ -84,12 +76,8 @@ export const updateUser = async (req, res) => {
 
 export const updatePassword = async (req, res) => {
     const userId = req.currentId;
-    const paramId = req.params.userId;
     const newPassword = req.body;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '수정할 권한이 없습니다.' }));
-        }
         await updatePasswordService(userId, newPassword);
         return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User password updated successfully' }));
     } catch (error) {
@@ -99,11 +87,7 @@ export const updatePassword = async (req, res) => {
 
 export const updatePasswordEmail = async (req, res)=>{
     const userId = req.currentId;
-    const paramId = req.params.userId;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '수정할 권한이 없습니다.' }));
-        }
         const respon = await updatePasswordEmailService(userId);
         if(respon){
             return res.status(201).json(response({ isSuccess: true, code: 201, message: 'The page to change the password has been sent to your email' }));
@@ -126,7 +110,7 @@ export const findPassword = async (req, res, next) => {
 };
 
 export const removeUser = async (req, res, next) => {
-    const result = await deleteUser(req.params.userId);
+    const result = await deleteUser(req.currentId);
     if (result == 1) {
         req.headers["Authorization"] = null;
         res.clearCookie("refreshToken");
