@@ -18,7 +18,7 @@ export const updateBrandService = async(brandId, userId, brandData) =>{
         throw new Error('이 사용자는 브랜드가 없습니다.');
     }
     if(brandId== isBrandUser.id){
-        const updatedBrand = await updateBrandDAO(brandId, brandData);
+        const updatedBrand = await updateBrandDAO(brandId, userId, brandData);
         return updatedBrand;
     }
     else{

@@ -126,7 +126,7 @@ paths:
           required: true
           schema:
             properties:
-                name:
+                brand_name:
                   type: string
                   description: 브랜드명
                   example: updatedExample444

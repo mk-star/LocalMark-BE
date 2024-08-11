@@ -90,7 +90,6 @@ export const getBrandInfoByUserId = async(userId) =>{
 }
 
 export const createBrandDAO = async(userId, brandData) =>{
-    console.log(userId);
     const conn = await pool.getConnection();
     const sql = `
             INSERT INTO Brand (
@@ -110,16 +109,18 @@ export const createBrandDAO = async(userId, brandData) =>{
         throw error;
     }
 }
-export const updateBrandDAO = async(brandId, brandData) => {
+
+export const updateBrandDAO = async(brandId, userId, brandData) => {
     const sql = `
         UPDATE Brand SET
             region_id = ?, brand_name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ? AND user_id = ?
     `;
+
     const values = [
         brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
         brandData.brand_image, brandData.business_name, brandData.business_registration_number,
-        brandData.contact, brandId, brandData.user_id
+        brandData.contact, brandId, userId
     ];
     const conn = await pool.getConnection();
     try{
