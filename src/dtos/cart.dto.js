@@ -3,7 +3,7 @@ export const addCartItemResponseDTO = (cartItem) => {
 }
 
 export const modifyCartItemResponseDTO = (cartItem) => {
-    return {"modify cartItem": cartItem};
+    return {"cartItem": cartItem};
 }
 
 export const cartItemsResponseDTO = (data) => {

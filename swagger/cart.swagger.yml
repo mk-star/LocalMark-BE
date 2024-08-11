@@ -1,0 +1,42 @@
+paths:
+  /cart/{productId}:
+    post:
+      tags:
+        - Cart
+      summary: 장바구니 상품 추가
+      parameters:
+        - name: category
+          in: path
+          required: false
+          type: string
+      responses:
+        '200':
+          description: 게시글 조회 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              data:
+                type: array
+                example: {
+                  "cartItem":
+                    {
+                      'cart_item_id': 1,
+                      'cart_id': 1,
+                      'product_option_id': 2,
+                      'quantity': 3,
+                      'total_price': 28000
+                    }
+                  
+                }

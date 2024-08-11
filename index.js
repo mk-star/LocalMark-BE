@@ -15,6 +15,7 @@ import { morelocalRouter } from './src/routes/morelocal.routes.js';
 import { brandRouter } from "./src/routes/brand.route.js";
 import { gelleryRouter } from "./src/routes/gallery.routes.js";
 import { reviewRouter } from "./src/routes/review.route.js";
+import { cartRouter } from "./src/routes/cart.route.js";
 
 //서버 가동
 dotenv.config();
@@ -35,7 +36,8 @@ app.use(cookieParser());
 
 // router setting
 app.use('/gallery', gelleryRouter);
-app.use("/posts", postRouter);
+app.use('/posts', postRouter);
+app.use('/cart', cartRouter);
 app.use("/comments", commentRouter);
 app.use("/likes", likeRouter);
 app.use("/auth", authRouter);

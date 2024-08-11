@@ -1,15 +1,18 @@
 import { status } from "../../config/response.status.js";
-import { addCartItemResponseDTO, cartItemsResponseDTO, modifyCartItemResponseDTO } from "../dtos/cart.dto.js";
 import { 
-  addCartItemInfo, 
-  getCartInfo, 
-  getCartItemInfo, 
-  getCartItemsInfo, 
-  getProductOption,
-  removeCartItem,
-  updateCartItemInfo} from "../models/cart.dao.js";
+    addCartItemResponseDTO, 
+    cartItemsResponseDTO, 
+    modifyCartItemResponseDTO } from "../dtos/cart.dto.js";
+import { 
+    addCartItemInfo, 
+    getCartInfo, 
+    getCartItemInfo, 
+    getCartItemsInfo, 
+    getProductOption, 
+    updateCartItemInfo } from "../models/cart.dao.js";
 import { getProduct } from "../models/gallery.dao.js";
 import { confirmStock } from "../models/stock.dao.js";
+
 
 export const addCartItemService = async(userId, body, productId) => {
 
