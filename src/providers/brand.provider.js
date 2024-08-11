@@ -1,7 +1,7 @@
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
-import { brandInfoResponseDTO, brandGalleryResponseDTO } from "../dtos/brand.dto.js";
-import { getBrandInfos, getBrandGalleryList } from "../models/brand.dao.js";
+import { brandInfoResponseDTO, brandGalleryResponseDTO, brandOrderResponseDTO } from "../dtos/brand.dto.js";
+import { getBrandInfos, getBrandGalleryList, getBrandMyOrder } from "../models/brand.dao.js";
 
 // 브랜드 정보 조회
 export const getBrandInformation = async (brandId) => {
@@ -23,5 +23,16 @@ export const getBrandProducts = async (brandId, page, sort) => {
         throw new BaseError(status.PAGE_PARAMETER_NOT_EXIST);
     } else {
         return brandGalleryResponseDTO(result.products, result.currentPage, result.totalPage);
+    }
+}
+
+// 내 브랜드 주문 수집
+export const getBrandOrders = async (userId) => {
+
+    const result = await getBrandMyOrder(userId);
+    if (result == -1){
+        throw new BaseError(status.USER_IS_NOT_CREATOR);
+    } else {
+        return brandOrderResponseDTO(result);
     }
 }

@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getBrandInfo, confirmBrand, getBrandGallery, getProductCnt } from "./brand.sql.js";
+import { getBrandInfo, confirmBrand, getBrandGallery, getProductCnt, getBrandOrder, confirmCreator } from "./brand.sql.js";
 
 // 브랜드 정보 조회
 export const getBrandInfos = async (brandId) => {
@@ -70,6 +70,25 @@ export const getBrandGalleryList = async (brandId, page, sort) => {
         
         conn.release();
         return {"products": products, "currentPage": parseInt(page), totalPage};
+    } catch (err) {
+        throw new Error(status.PARAMETER_IS_WRONG)
+    }
+}
+
+// 내 브랜드 주문 수집
+export const getBrandMyOrder = async (userId) => {
+    try {
+        const conn = await pool.getConnection();
+
+        const [confirmC] = await pool.query(confirmCreator, userId);
+        if (!confirmC[0].isCreator) {
+          conn.release();
+          return -1;
+        }
+        const [orders] = await pool.query(getBrandOrder, userId);
+        
+        conn.release();
+        return orders;
     } catch (err) {
         throw new Error(status.PARAMETER_IS_WRONG)
     }

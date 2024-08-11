@@ -76,6 +76,12 @@ export const status = {
     "isSuccess": false, 
     "code": "BRAND4002", 
     "message": "페이지 파라미터를 입력해야 합니다."
+  },   
+  USER_IS_NOT_CREATOR: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "BRAND4003", 
+    "message": "크리에이터가 아닌 일반 유저입니다."
   },
 
 
@@ -127,7 +133,7 @@ export const status = {
     message: "토큰이 존재하지 않습니다.",
   },
   TOKEN_UNAUTHORIZED: {
-    status: StatusCodes.BAD_REQUEST,
+    status: StatusCodes.UNAUTHORIZED,
     isSuccess: false,
     code: "USER4007",
     message: "유효하지 않은 토큰입니다.",

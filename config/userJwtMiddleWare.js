@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { getAccessToken } from "../src/services/auth.service.js";
 import { status } from "../config/response.status.js";
 import { response } from "../config/response.js";
+import { BaseError } from "../config/error.js";
 
 export const jwtMiddleware = async (req, res, next) => {
   // request 헤더로부터 access 토큰, 쿠키에서 refreshToken을
@@ -12,7 +13,7 @@ export const jwtMiddleware = async (req, res, next) => {
   if (!authHeader || authHeader === "null") {
     console.log("Authorization 토큰: 권한 없음");
 
-    res.send(response(status.TOKEN_UNAUTHORIZED));
+    return next(new BaseError(status.TOKEN_UNAUTHORIZED));
   }
   const authToken = authHeader.split(" ")[1];
 
@@ -37,10 +38,10 @@ export const jwtMiddleware = async (req, res, next) => {
 
         next(); // 인증 성공, 다음 미들웨어로 제어 넘김
       } catch (refreshError) {
-        res.send(response(status.TOKEN_UNAUTHORIZED));
+        return next(new BaseError(status.TOKEN_UNAUTHORIZED));
       }
     } else {
-      res.send(response(status.TOKEN_UNAUTHORIZED));
+      return next(new BaseError(status.TOKEN_UNAUTHORIZED));
     }
   }
 };
