@@ -43,18 +43,19 @@ export const postDetail = async(req, res, next) => {
         
         console.log("게시글 상세 조회 요청");
         const params = req.params;
-        console.log("params(postId): ", params);
+        console.log("params(postId): ", params.postId);
 
-        return res.send(response(status.SUCCESS, await getPostDetail(params)));
+        return res.send(response(status.SUCCESS, await getPostDetail(params.postId)));
 
 }
 
 export const modifyPost = async(req, res) => {
 
         console.log("게시글 수정 요청");
-        const postId = req.params.post_id;
+        const postId = req.body.postId;
         console.log("req.body: ", req.body);
         const newImages = req.files;
+        console.log(newImages);
 
         const imagekeys = [];
         if (newImages && newImages.length > 0) {
@@ -70,10 +71,10 @@ export const modifyPost = async(req, res) => {
 
 export const removePost = async(req, res) => {
         console.log("게시글 삭제 요청");
-        const params = req.params;
-        console.log("params(postId): ", params);
+        const postId = req.params.postId;
+        console.log("params(postId): ", postId);
 
-        return res.send(response(status.SUCCESS, await deletePostById(params)));
+        return res.send(response(status.SUCCESS, await deletePostById(postId)));
 }
 
 

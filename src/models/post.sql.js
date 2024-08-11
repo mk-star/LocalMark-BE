@@ -1,4 +1,24 @@
 export const insertPost=
+ `INSERT INTO Post (user_id, category, title, thumbnail_filename, content)
+VALUES (?, ?, ?, ?, ?) `
+
+export const getPosts = 
+`SELECT * FROM Post LIMIT ? OFFSET ?;`
+
+export const getPostDetail = `
+SELECT * 
+FROM Post 
+WHERE id = ?;
+`
+
+export const updatePostSql = `
+UPDATE Post SET category = ?, title = ?, thumbnail_filename = ?, content = ?
+WHERE id = ?;
+`
+
+export const deletePostSql = `
+DELETE FROM Post WHERE id = ?;
+`
 "INSERT INTO Post (user_Id, category, title, thumnail_filename, content)" +
 "VALUES (?, ?, ?, ?, ?)"
 
@@ -34,25 +54,21 @@ ORDER BY
 LIMIT 7 OFFSET 5;
 `
 
-export const getPosts = 
-"SELECT * FROM Post" +
-"LIMIT ? OFFSET ?;";
-
-export const getPostDetail = 
-"SELECT * FROM Post" +
-"WHERE id = ?;";
-
-export const updatePostSql = 
-"UPDATE Post SET title = ?, content = ?, category = ?, thumbnail_filename = ?" +
-"WHERE id = ?;";
-
-export const deletePostSql =
-"DELETE FROM Post WHERE id = ?;";
-
 export const confirmPost =
-"SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;";
+ `SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;`
 
 export const getPostsByCreatorId =
-"SELECT * FROM Post" +
-"WHERE user_id = ?";
+ `SELECT * FROM Post
+WHERE user_id = ?; `
+
+export const getImageFilesByPostId = 
+`SELECT filename FROM Post_Image WHERE post_id = ?`
+
+export const insertPostImagesyPostId =
+`INSERT INTO Post_Image (post_id, filename) VALUES (?, ?);`
+
+
+export const deleteImgsFileByPostId =
+`DELETE FROM Post_Image WHERE post_id = ?`
+
 
