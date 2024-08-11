@@ -4,12 +4,13 @@ import "dotenv/config";
 import { logger } from "./winston.js";
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: "localmarkdb.cdya2gkiu98h.ap-northeast-2.rds.amazonaws.com",
+  user: "root",
+  port: 3306,
+  password: "lmark1234",
+  database: "localmark",
 });
+
 
 pool.on("connection", (connection) => {
   logger.info("DB: connection!");
