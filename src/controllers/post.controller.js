@@ -1,4 +1,3 @@
-
 import { status } from "../../config/response.status.js";
 import { getPostDetail, getPosts } from "../providers/post.provider.js";
 import { response } from "../../config/response.js";
@@ -8,6 +7,24 @@ import {
         getPostsByCreatorService,  
         modifyPostDetail } from "../services/post.service.js";
         
+export const addPost = async(req, res) => {
+
+        console.log("body: ", req.body);
+        const postImages = req.files;
+        
+        const imagekeys = [];
+        if (postImages && postImages.length > 0) {
+                for (const postImage of postImages) {
+                        imagekeys.push(postImage.key);
+                }
+
+        }
+
+        res.send(response(status.SUCCESS, await addPostInfo(req.currentId, req.body, imagekeys)));
+                
+}
+
+
 // 커뮤니티 게시글 전체 및 카테고리별 게시글 목록 조회
 export const posts = async(req, res) => {
 
@@ -20,22 +37,6 @@ export const posts = async(req, res) => {
 
         res.send(response(status.SUCCESS, await getPosts(category, page)));
 
-}
-
-export const addPost = async(req, res) => {
-
-        console.log("body: ", req.body);
-        const postImages = req.files;
-        
-        const imagekeys = [];
-        if (postImages && postImages.length > 0) {
-                for (const postImage of postImages) {
-                        imagekeys.push(postImage.key);
-                }
-        }
-
-        res.send(response(status.SUCCESS, await addPostInfo(req.currentId, req.body, imagekeys)));
-                
 }
 
 export const postDetail = async(req, res, next) => {

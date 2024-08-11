@@ -6,10 +6,6 @@ export const modifyPostResponseDTO = ({post, images}) => {
     return { post, images };
 }
 
-export const deletePostResponseDTO = ({post, images}) => {
-    return { post, images };
-}
-
 export const postsResponseDTO = (posts) => {
     const postsData = [];
 
@@ -23,7 +19,9 @@ export const postsResponseDTO = (posts) => {
             "thumbnailFilename": posts[i].thumbnail_filename,
             "content": posts[i].content,
             "createdAt": formatDate(posts[i].created_at),
-            "modifiedAt": formatDate(posts[i].updated_at)
+            "modifiedAt": formatDate(posts[i].updated_at),
+            "commentNum":posts[i].commentNum,
+            "likeNum": posts[i].likeNum,
         })
     }
 
@@ -31,7 +29,8 @@ export const postsResponseDTO = (posts) => {
 
 }
 
-export const postDetailResponseDTO = ({ post, images }) => {
+
+export const postDetailResponseDTO = ({ post, images }, commentNum, likeNum) => {
 
     console.log("post detail:", post);
     console.log("images:", images);
@@ -45,8 +44,12 @@ export const postDetailResponseDTO = ({ post, images }) => {
         }) 
     }
 
-    return { "post": post, 
-             "imagesData": imagesData }; 
+    return {
+        "post": post,
+        "commentNum": commentNum,
+        "likeNum": likeNum,
+        "imagesData": imagesData
+    };
 }
 
 const formatDate = (date) => {

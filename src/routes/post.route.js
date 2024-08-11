@@ -10,7 +10,6 @@ import {
 import { imageUploader } from "../middleware/image.uploader.js";
 import { jwtMiddleware } from '../../config/userJwtMiddleWare.js';
 
-
 export const postRouter = express.Router({mergeParams: true});
 
 postRouter.get('/', asyncHandler(posts));
