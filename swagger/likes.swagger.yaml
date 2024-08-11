@@ -5,8 +5,6 @@ paths:
         - Like
       summary: Like a post
       description: Like a specific post by its ID.
-      security:
-        - bearerAuth: [ ]
       parameters:
         - name: postId
           in: path
@@ -61,8 +59,6 @@ paths:
         - Like
       summary: Like a comment
       description: Like a specific comment by its ID.
-      security:
-        - bearerAuth: [ ]
       parameters:
         - name: commentId
           in: path
