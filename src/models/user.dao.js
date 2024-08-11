@@ -82,6 +82,25 @@ export const createUser = async (userData, hashedPassword, type) => {
     }
 };
 
+export const changeIsEmailVerified = async (userId) => {
+    const sql = `
+        UPDATE User SET
+            is_email_verified = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+    `;
+    const values = [1, userId];
+    const conn = await pool.getConnection();
+    try {
+        const [results] = await pool.query(sql, values);
+        await conn.commit();
+        conn.release();
+        return results;
+    } catch (error) {
+        conn.release();
+        throw error;
+    }
+};
+
 export const updateUser = async (userId, userData) => {
     const sql = `
         UPDATE User SET
@@ -91,11 +110,13 @@ export const updateUser = async (userId, userData) => {
     const values = [
         userData.loginId, userData.email, userData.nickname, userId
     ];
+    const conn = await pool.getConnection();
     try{
         const [results] = await pool.query(sql, values);
+        conn.release();
         return results[0];
     } catch (error) {
-        console.error('SQL Error:', error);
+        conn.release();
         throw error;
     }
 };
@@ -110,23 +131,23 @@ export const updatePassword = async(userId, newHashedPassword) =>{
     ];
     try{
         const [results] = await pool.query(sql, values);
-        console.log('3333',results)
         return results;
     } catch(error) {
-        console.error('SQL Error:', error);
         throw error;
     }
 }
 
 export const getUsernameByEmail = async (email) => {
     const sql=`
-        SELECT id, nickname, name FROM User WHERE email = ?
-    `
+        SELECT id, nickname FROM User WHERE email = ?
+    `;
+    const conn = await pool.getConnection();
     try{
         const results = await pool.query(sql, [email]);
+        conn.release();
         return results[0]
     } catch(error){
-        console.error('SQL Error:', error);
+        conn.release();
         throw error;
     }
 };
@@ -134,7 +155,7 @@ export const getUsernameByEmail = async (email) => {
 export const getOrdersByID = async (userId) => {
     const sql = `
         SELECT id FROM Orders WHERE user_id = ? AND status = "COMPLETE"
-    `
+    `;
     try{
         const [results] = await pool.query(sql, [userId]);
         if(results.length>0){

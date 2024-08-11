@@ -2,18 +2,20 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, createCreator, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, createCreator, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_SERVICE,
-    port: process.env.EMAIL_PORT,
+    service: process.env.NODEMAILER_SERVICE,
+    host: process.env.NODEMAILER_HOST,
+    port: process.env.NODEMAILER_PORT,
     secure: false,
+    requireTLS: true,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS,
     },
     tls: {
-        rejectUnauthorized: false,
+      rejectUnauthorized: false,
     },
 });
 
@@ -32,9 +34,29 @@ export const registerUserService = async (userData, type) => {
     }else{
         await createUser(userData, hashedPassword, type);
     }
-    return { ...userData };
+    // 회원에 대한 정보 db에 저장 후 확인 이메일 보내기
+    const mailOptions = {
+        from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
+        to: userData.email,
+        subject: `[LOCAL MARK] 이메일 인증`,
+        html: `<p>안녕하세요 ${userData.loginId} 님</p>
+        <p>이메일 인증을 위해 아래 링크를 눌러주세요.</p>
+        <p><a href="http://localhost:3000/users/verify-email/?email=${encodeURIComponent(userData.email)}">Verify email</a></p>
+        <p>감사합니다.</p>
+        <p>LOCAL MARK</p>`,
+        };
+    await transporter.sendMail(mailOptions);
+    return { userData };
 };
-
+export const verifyUserEmail = async (email) => {
+    try{
+        const user = await getUsernameByEmail(email);
+        const result = await changeIsEmailVerified(user[0].id);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 
 export const findUsernameByEmailService = async (email) => {
     try {
