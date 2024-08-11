@@ -7,7 +7,8 @@ const options = {
       version: '1.0.0',
       description: 'LOCAL MARK API with express, API 설명',
     },
-    host: 'localhost:3000',
+    // host: 'localhost:3000',
+    host: 'umc.localmark.stor',
     basePath: '/', // basePath는 '/'로 설정하는 것이 일반적입니다.
     securityDefinitions: {
       Authorization: {

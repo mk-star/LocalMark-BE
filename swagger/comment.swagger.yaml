@@ -118,21 +118,24 @@ paths:
           schema:
             type: integer
             description: The ID of the post
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: integer
-                  description: User ID
-                  example: 1
-                content:
-                  type: string
-                  description: Comment content
-                  example: "This is a new comment."
+        - name: createComment
+          in: body
+          required: true
+          schema:
+            properties:
+              userId:
+                type: integer
+                description: User ID
+                example: 1
+              parentId:
+                type: integer
+                description: 부모 댓글
+                example: 1
+              content:
+                type: string
+                description: Comment content
+                example: "This is a new comment."
+
       responses:
         201:
           description: Comment created successfully
