@@ -32,10 +32,6 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-// 정적 파일 제공
-//app.use('/uploads/images', express.static(path.join(__dirname, 'uploads/images')));
-
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 

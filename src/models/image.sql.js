@@ -6,9 +6,9 @@ export const getImageFileById =
 "SELECT * FROM post_image" +
 "WHERE id = ?;";
 
-export const saveImgeFileByPostId =
-"INSERT INTO post_image (post_id, filename, created_at, updated_at)" + 
-"VALUES (?, ?, now(), now());";
+export const insertPostImagesyPostId =
+"INSERT INTO post_image (post_id, filename)" + 
+"VALUES ?;";
 
 export const deleteImgFileById =
 "DELETE FROM post_image" +
