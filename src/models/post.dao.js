@@ -5,19 +5,22 @@ import {
     getPostDetail, 
     getPosts, 
     getPostsByCategory, 
+    getPostsByCreatorId, 
     insertPost, 
     updatePostSql } from "./post.sql.js";
 import { pool } from '../../config/database.js';
+import { confirmBrand, getCreatorIdByBrandId } from "./brand.sql.js";
+import { getImageFilesByPostId } from "./image.sql.js";
 
 export const addPost = async(data)=> {
   
     try{
 
-    const conn = await pool.getConnection();
-    const [addPost] = await pool.query(insertPost, [data.userId, data.category, data.title, data.thumnail_filename, data.content]);
-    conn.release();
+        const conn = await pool.getConnection();
+        const [addPost] = await pool.query(insertPost, [data.userId, data.category, data.title, data.thumnail_filename, data.content]);
+        conn.release();
 
-    return addPost;
+        return addPost;
     }catch(err){
         console.log(`DB 저장 실패 ${err.message}`)
     }
@@ -68,20 +71,22 @@ export const getPreviewPostDetail = async(postId) => {
     try {
         
         const conn = await pool.getConnection();
-        const postDetail = await pool.query(getPostDetail, postId);
+        const [postDetail] = await pool.query(getPostDetail, postId);
 
-        console.log("게시글 상세: ", postDetail[0]);
+        console.log("게시글 상세: ", postDetail);
         
+        const [images] = await pool.query(getImageFilesByPostId, postId);
+
         conn.release();
 
-        return postDetail[0];
+        return { postDetail, images };
 
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
 }
 
-export const updatePost = async(data) => {
+export const modifyPostById = async(data) => {
     try {
 
         const conn = await pool.getConnection();
@@ -124,7 +129,6 @@ export const deletePost = async (postId) => {
       }
   
       const result = await pool.query(deletePostSql, postId);
-      
       conn.release();
      
       return result[0].affectedRows;
@@ -132,4 +136,40 @@ export const deletePost = async (postId) => {
         throw new BaseError(status.BAD_REQUEST);
     }
 
+}
+
+export const getCreatorByBrandId = async(brandId) => {
+
+    try {
+        const conn = await pool.getConnection();
+
+        const [confirm] = await pool.query(confirmBrand, brandId);
+
+        if (!confirm[0].isExistBrand) {
+            conn.release();
+            return -1;
+        }
+
+        const creatorId = await pool.query(getCreatorIdByBrandId, brandId);
+        conn.release();
+
+        return creatorId[0];
+    } catch (error) {
+        throw new BaseError(status.BAD_REQUEST);
+    }
+}
+
+export const getPostsByCreator = async(creatorId) => {
+
+    try {
+        
+        const conn = await pool.getConnection();
+
+        const [result] = await pool.query(getPostsByCreatorId, creatorId);
+        conn.release();
+
+        return result;
+    } catch (error) {
+        throw new BaseError(status.BAD_REQUEST);
+    }
 }

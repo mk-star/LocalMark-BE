@@ -1,16 +1,20 @@
 paths:
-  /posts/{postId}/likes:
+  /likes/{postId}/posts:
     post:
       tags:
         - Like
       summary: Like a post
+      description: Like a specific post by its ID.
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: postId
           in: path
           required: true
           schema:
             type: integer
-            description: The ID of the post
+            example: 1
+          description: The ID of the post to like
       responses:
         200:
           description: Successfully liked the post
@@ -46,23 +50,27 @@ paths:
                     example: false
                   code:
                     type: integer
-                    example: 400
+                    example: 4000
                   message:
                     type: string
                     example: "Bad request"
 
-  /comments/{commentId}/likes:
+  /likes/{commentId}/comments:
     post:
       tags:
         - Like
       summary: Like a comment
+      description: Like a specific comment by its ID.
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: commentId
           in: path
           required: true
           schema:
             type: integer
-            description: The ID of the comment
+            example: 1
+          description: The ID of the comment to like
       responses:
         200:
           description: Successfully liked the comment
@@ -98,7 +106,7 @@ paths:
                     example: false
                   code:
                     type: integer
-                    example: 400
+                    example: 4000
                   message:
                     type: string
                     example: "Bad request"

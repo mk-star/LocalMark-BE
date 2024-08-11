@@ -1,35 +1,57 @@
-
+import { 
+    confirmImage, 
+    confirmImageByPostId, 
+    deleteImgFileById, 
+    deleteImgsFileByPostId, 
+    getImageFileById, 
+    getImageFilesByPostId } from './image.sql.js';
 import { status } from '../../config/response.status.js';
-import {
-    confirmImage, confirmImageByPostId,
-    deleteImgFileById, deleteImgsFileByPostId,
-    getImageFileById,
-    getImageFilesByPostId,
-    saveImgeFileByPostId
-} from "./image.sql.js";
+import { insertPostImagesyPostId } from './image.sql.js';
 
-export const saveImageByPostId = async (postId, filename) => {
+export const saveImagesByPostId = async (postId, imagekeys) => {
 
     try {
 
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmImage, imageId);
+        const imageRecords = imagekeys.map((key) => {
+            const encodedKey = encodeURIComponent(key);
+            return [postId, encodedKey];
+          });
 
-        if(confirm[0].isExistImage) {
-            conn.release();
-            return -1;
-        }
-
-        const [result] = await pool.query(saveImgeFileByPostId, [postId, filename]);
+        await pool.query(insertPostImagesyPostId, [imageRecords]);
 
         conn.release();
-
-        return result[0].insertId;
 
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
+}
+
+export const updatePostImages = async(postId, imagekeys) => {
+    try {
+
+        const conn = await pool.getConnection();
+        const [rows] = await pool.query(getImageFileById, postId);
+        const currentImages = rows.map((row) => row.filename);
+    
+        for (const filename of currentImages) {
+            await deletePostImages(filename);
+        }
+
+        
+        await pool.query(deleteImgsFileByPostId, postId);
+
+        if (imagekeys && imagekeys.length > 0) {
+            await saveImagesByPostId(reviewId, imageKey);
+        }
+        
+        conn.release();
+        
+    } catch (error) {
+        throw new BaseError(status.BAD_REQUEST);
+    }
+
 
 }
 
@@ -47,7 +69,7 @@ export const getImageById = async (imageId) => {
             return -1;
         }
 
-        const [result] = await pool.query(getImageFileById, imageId);
+        const [result] = await pool.query(getImageFilesByPostId, imageId);
         
         conn.release();
 
@@ -135,3 +157,22 @@ export const deleteImageByPostId = async (postId, filename) => {
     }
 
 }
+
+export const deletePostImages = async (filename) => {
+    const params = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: decodeURIComponent(filename),
+    };
+  
+    try {
+      s3.deleteObject(params, function (error, data) {
+        if (error) {
+          console.log("err: ", error, error.stack);
+        } else {
+          console.log(data, " 정상 삭제 되었습니다.");
+        }
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
