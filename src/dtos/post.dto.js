@@ -30,11 +30,11 @@ export const postsResponseDTO = (posts) => {
 }
 
 
-export const postDetailResponseDTO = ({ post, images }, commentNum, likeNum) => {
+export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
 
-    console.log("post detail:", post);
+    console.log("post detail:", post[0]);
     console.log("images:", images);
-    post.created_at = formatDate(post[0].created_at);
+    post[0].created_at = formatDate(post[0].created_at);
 
     const imagesData = [];
 
@@ -45,7 +45,7 @@ export const postDetailResponseDTO = ({ post, images }, commentNum, likeNum) => 
     }
 
     return {
-        "post": post,
+        "post": post[0],
         "commentNum": commentNum,
         "likeNum": likeNum,
         "imagesData": imagesData

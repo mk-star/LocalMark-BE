@@ -183,17 +183,24 @@ paths:
             required: true
             type: integer
           - name: title
-            in: query
+            in: formData
             required: true
             type: string
           - name: category
-            in: query
+            in: formData
             required: true
             type: string
           - name: content
-            in: query
+            in: formData
             required: true
             type: string
+          - name: image
+            in: formData
+            type: array
+            items:
+              type: file
+              format: binary
+              description: 파일 업로드 (최소 0개, 최대 20개)
         responses:
           '200':
             description: 게시글 수정 성공
@@ -255,13 +262,16 @@ paths:
             in: formData
             required: true
             type: string
-          - in: formData
-            name: image
-            type: file
-            description: 파일 업로드
+          - name: image
+            in: formData
+            type: array
+            items:
+              type: file
+              format: binary
+              description: 파일 업로드 (최소 0개, 최대 20개)
         responses:
           '200':
-            description: 게시글 조회 성공
+            description: 게시글 작성 성공
             schema:
               type: object
               properties:

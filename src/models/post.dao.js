@@ -92,7 +92,7 @@ export const getPreviewPostDetail = async (postId) => {
         const [images] = await pool.query(getImageFilesByPostId, [postId]);
 
         conn.release();
-
+        console.log({ post, images });
         return { post, images };
 
     } catch (error) {
@@ -101,24 +101,30 @@ export const getPreviewPostDetail = async (postId) => {
 }
 
 export const modifyPostById = async (data) => {
+    
     try {
 
         const conn = await pool.getConnection();
+        
+        const postId = data.post_id;
 
-        const [confirm] = await pool.query(confirmPost, postId);
+        const [confirm] = await pool.query(confirmPost, [postId]);
+
+        console.log(confirm[0]);
 
         if (!confirm[0].isExistPost) {
             conn.release();
             return -1;
         }
 
-        const result = await pool.query(updatePostSql, [
-            data.title,
-            data.content,
+        const [result] = await pool.query(updatePostSql, [
             data.category,
+            data.title,
             data.thumbnail_filename,
-            data.postId,
+            data.content,
+            postId,
         ]);
+        console.log(result[0]);
       
         conn.release();
 

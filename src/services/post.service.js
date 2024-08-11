@@ -42,23 +42,27 @@ export const addPostInfo = async (userId, body, imagekeys) => {
 export const modifyPostDetail = async(postId, body, imagekeys) => {
 
     try {
+        let thumbnail_filename = null;
 
-        const thumbnail_filename = encodeURIComponent(imagekeys[0]);
-
-        await modifyPostById(
-            postId, 
-            body.title, 
-            body.content, 
-            body.category, 
-            thumbnail_filename
-        );
-        
-        await updatePostImages(postId, imagekeys);
-
+        if (imagekeys.length > 0) {
+            thumbnail_filename = encodeURIComponent(imagekeys[0]);
+        }
+        await modifyPostById({
+            postId: postId, 
+            title: body.title, 
+            content: body.content, 
+            category: body.category, 
+            thumbnail_filename: thumbnail_filename
+        });
+        console.log("수정완료");
+        if (imagekeys.length > 0) {
+            await updatePostImages(postId, imagekeys);
+            console.log("이미지 수정완료");
+        }
         return modifyPostResponseDTO(await getPreviewPostDetail(postId));
         
     } catch (error) {
-        throw err;
+        throw error.message;
     }
 }
 

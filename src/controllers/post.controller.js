@@ -52,9 +52,10 @@ export const postDetail = async(req, res, next) => {
 export const modifyPost = async(req, res) => {
 
         console.log("게시글 수정 요청");
-        const postId = req.params.postId;
+        const postId = req.body.postId;
         console.log("req.body: ", req.body);
         const newImages = req.files;
+        console.log(newImages);
 
         const imagekeys = [];
         if (newImages && newImages.length > 0) {

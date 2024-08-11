@@ -11,8 +11,8 @@ FROM Post
 WHERE id = ?;
 `
 
-export const updatePostSql =  `
-UPDATE Post SET title = ?, content = ?, category = ?, thumbnail_filename = ?
+export const updatePostSql = `
+UPDATE Post SET category = ?, title = ?, thumbnail_filename = ?, content = ?
 WHERE id = ?;
 `
 
