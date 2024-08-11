@@ -123,10 +123,6 @@ paths:
           required: true
           schema:
             properties:
-              userId:
-                type: integer
-                description: User ID
-                example: 1
               parentId:
                 type: integer
                 description: 부모 댓글
