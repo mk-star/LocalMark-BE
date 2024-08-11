@@ -179,7 +179,7 @@ paths:
     delete:
       tags:
         - Comment
-      summary: Delete comments for a post
+      summary: Delete comments (다중 삭제 기능 제공)
       parameters:
         - name: postId
           in: path
@@ -187,6 +187,14 @@ paths:
           schema:
             type: integer
             description: The ID of the post
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: string
+            description: 삭제할 댓글의 id값을 입력하세요.
+            example: "1,2,3"
+
       responses:
         200:
           description: Comments deleted successfully
