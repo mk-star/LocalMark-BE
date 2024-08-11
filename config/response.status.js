@@ -89,42 +89,60 @@ export const status = {
 
 
   // user
-  LOGINID_NOT_EXISTS: {
+  USER_NOT_EXISTS: {
     status: StatusCodes.BAD_REQUEST,
     isSuccess: false,
     code: "USER4001",
+    message: "존재하지 않는 회원입니다.",
+  },
+  LOGINID_NOT_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "USER4002",
     message: "가입되지 않은 아이디입니다.",
+  },
+  EMAIL_NOT_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "USER4003",
+    message: "가입되지 않은 이메일입니다.",
   },
   PASSWORD_NOT_MATCHED: {
     status: StatusCodes.BAD_REQUEST,
     isSuccess: false,
-    code: "USER4002",
+    code: "USER4004",
     message: "비밀번호가 일치하지 않습니다.",
   },
+
   TOKEN_UPDATE_FAILED: {
     status: StatusCodes.BAD_REQUEST,
     isSuccess: false,
-    code: "USER4003",
+    code: "USER4005",
     message: "토큰 저장에 실패했습니다.",
   },
   TOKEN_NOT_EXISTS: {
     status: StatusCodes.BAD_REQUEST,
     isSuccess: false,
-    code: "USER4004",
+    code: "USER4006",
     message: "토큰이 존재하지 않습니다.",
   },
   TOKEN_UNAUTHORIZED: {
     status: StatusCodes.BAD_REQUEST,
     isSuccess: false,
-    code: "USER4005",
+    code: "USER4007",
     message: "유효하지 않은 토큰입니다.",
   },
-
   FORBIDDEN_APPOROACH: {
     status: StatusCodes.FORBIDDEN,
     isSuccess: false,
-    code: "USER4007",
+    code: "USER4008",
     message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
+  },
+  ACCOUNT_CANCELED: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "USER4009",
+    message: "계정 탈퇴를 신청한 사용자입니다.",
   },
 
   //review
@@ -150,6 +168,27 @@ export const status = {
     code: "DATABASE4001",
     message:
       "쿼리 실행 시 전달되는 파라미터가 잘못되었습니다. 파라미터 개수 혹은 파라미터 형식을 확인해주세요.",
+  },
+
+  
+  // gallery err
+  REGION_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4001", 
+    "message": "존재하지 않는 지역입니다."
+  },
+  CATEGORY_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4002", 
+    "message": "존재하지 않는 카테고리입니다."
+  },
+  PRODUCT_NOT_EXIST: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "GALLERY4003", 
+    "message": "존재하지 않는 제품입니다."
   },
 };
 

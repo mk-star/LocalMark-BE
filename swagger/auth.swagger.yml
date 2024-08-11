@@ -13,11 +13,11 @@ paths:
               loginId:
                 type: string
                 description: 아이디
-                example: localmarkId
+                example: generalId
               password:
                 type: string
                 description: 비밀번호
-                example: localmarkPassword
+                example: generalPassword
       responses:
         "200":
           description: 로그인 성공
@@ -36,6 +36,7 @@ paths:
               result:
                 type: array
                 example: { "accessToken": "토근값" }
+
 
   /auth/logout:
     post:
