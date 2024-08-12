@@ -1,12 +1,11 @@
 import express from "express";
-import { registerGeneral, registerCreator, verifyEmail, findUsername, getOrderItems, updateUser, updatePassword, updatePasswordEmail, findPassword, removeUser } from "../controllers/user.controller.js";
+import { registerUser, verifyEmail, findUsername, getOrderItems, updateUser, updatePassword, updatePasswordEmail, findPassword, removeUser } from "../controllers/user.controller.js";
 import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
 import asyncHandler from "express-async-handler";
 
 export const userRouter = express.Router();
 
-userRouter.post('/signup/creator', registerCreator);
-userRouter.post('/signup/general', registerGeneral);
+userRouter.post('/signup', registerUser);
 userRouter.post('/find-username', findUsername);
 userRouter.get('/verify-email', verifyEmail); // 회원가입시 이메일 인증
 userRouter.get('/orders', jwtMiddleware, getOrderItems);

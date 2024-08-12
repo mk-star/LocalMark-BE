@@ -2,22 +2,10 @@ import { registerUserService, verifyUserEmail, findUsernameByEmailService, getOr
 import { response, errResponse } from '../../config/response.js';
 import { status } from "../../config/response.status.js";
 
-export const registerGeneral = async (req, res, next) => {
+export const registerUser = async (req, res, next) => {
     try {
         const userData = req.body;
-        const type = "GENERAL";
-        const newUser = await registerUserService(userData, type);
-        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'User registered successfully' }, newUser));
-    } catch (error) {
-        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
-    }
-};
-
-export const registerCreator = async (req, res, next) => {
-    try {
-        const userData = req.body;
-        const type = "CREATOR";
-        const newUser = await registerUserService(userData, type);
+        const newUser = await registerUserService(userData);
         return res.status(201).json(response({ isSuccess: true, code: 201, message: 'User registered successfully' }, newUser));
     } catch (error) {
         return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
