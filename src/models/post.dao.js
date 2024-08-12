@@ -14,6 +14,7 @@ import {
 import { confirmBrand, getCreatorIdByBrandId } from "./brand.sql.js";
 import { BaseError } from "../../config/error.js";
 import { pool } from "../../config/db.config.js";
+import { getImageFileById } from "./image.sql.js";
 
 export const addPost = async (data) => {
   
@@ -106,7 +107,7 @@ export const modifyPostById = async (data) => {
 
         const conn = await pool.getConnection();
         
-        const postId = data.post_id;
+        const postId = data.postId;
 
         const [confirm] = await pool.query(confirmPost, [postId]);
 
@@ -225,14 +226,13 @@ export const updatePostImages = async(postId, imagekeys) => {
     try {
 
         const conn = await pool.getConnection();
-        const [rows] = await pool.query(getImageFileById, postId);
+        const [rows] = await pool.query(getImageFilesByPostId, postId);
         const currentImages = rows.map((row) => row.filename);
     
         for (const filename of currentImages) {
             await deletePostImages(filename);
         }
 
-        
         await pool.query(deleteImgsFileByPostId, postId);
 
         if (imagekeys && imagekeys.length > 0) {

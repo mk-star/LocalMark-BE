@@ -59,14 +59,13 @@ export const confirmPost =
 
 export const getPostsByCreatorId =
  `SELECT * FROM Post
-WHERE user_id = ?; `
+WHERE user_id = ?;`
 
 export const getImageFilesByPostId = 
 `SELECT filename FROM Post_Image WHERE post_id = ?`
 
 export const insertPostImagesyPostId =
 `INSERT INTO Post_Image (post_id, filename) VALUES (?, ?);`
-
 
 export const deleteImgsFileByPostId =
 `DELETE FROM Post_Image WHERE post_id = ?`

@@ -25,9 +25,6 @@ export const addPostInfo = async (userId, body, imagekeys) => {
         "thumnail_filename": thumbnail_filename //null 이 될 수 있음. (이미지 첨부를 아무것도 하지 않았을 때)
     })
 
-    console.log(postId);
-    console.log(imagekeys);
-
     if (imagekeys && imagekeys.length > 0) {
         for (let i = 0; i < imagekeys.length; i++) {
             console.log(imagekeys[i]);
@@ -59,8 +56,8 @@ export const modifyPostDetail = async(postId, body, imagekeys) => {
             await updatePostImages(postId, imagekeys);
             console.log("이미지 수정완료");
         }
+
         return modifyPostResponseDTO(await getPreviewPostDetail(postId));
-        
     } catch (error) {
         throw error.message;
     }
@@ -75,7 +72,6 @@ export const deletePostById = async(postId) => {
     if (deleteResult == -1) {
         throw new BaseError(status.POST_NOT_FOUND);
     } else { 
-
         return { isSuccess: true, message: "게시글이 성공적으로 삭제되었습니다." };
     }
 
