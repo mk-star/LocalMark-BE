@@ -47,23 +47,7 @@ export const findByEmail = async (email) => {
         throw error;
     }
 };
-export const createCreator = async(userData, hashedPassword, type) =>{
-    const sql = `
-        INSERT INTO User (loginId, email, password, type, status, created_at, updated_at, is_email_verified)
-        VALUES (?, ?, ?, ?, ?, NOW(), NOW(), ?)
-    `;
-    const values = [userData.loginId, userData.email, hashedPassword, type, userData.status, 0];
-    const conn = await pool.getConnection();
-    console.log(conn.config);
-    try{
-        const [results] = await pool.query(sql, values);
-        conn.release();
-        return results[0];
-    } catch (error) {
-        conn.release();
-        throw error;
-    }
-}
+
 export const createUser = async (userData, hashedPassword, type) => {
     const sql = `
         INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at, is_email_verified)
@@ -73,7 +57,6 @@ export const createUser = async (userData, hashedPassword, type) => {
     const conn = await pool.getConnection();
     try{
         const [results] = await pool.query(sql, values);
-        console.log(results[0]);
         conn.release();
         return results[0];
     } catch (error) {
