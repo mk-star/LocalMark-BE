@@ -48,12 +48,12 @@ export const findByEmail = async (email) => {
     }
 };
 
-export const createUser = async (userData, hashedPassword, type) => {
+export const createUser = async (userData, hashedPassword) => {
     const sql = `
         INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at, is_email_verified)
         VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)
     `;
-    const values = [userData.loginId, userData.email, hashedPassword, userData.nickname, type, userData.status, 0];
+    const values = [userData.loginId, userData.email, hashedPassword, userData.nickname, userData.type, userData.status, 0];
     const conn = await pool.getConnection();
     try{
         const [results] = await pool.query(sql, values);
