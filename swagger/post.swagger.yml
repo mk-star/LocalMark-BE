@@ -54,7 +54,8 @@ paths:
                       "created_date": "2024.07.20",
                       "modified_date":  "2024.07.21"
                     }
-                  ]
+                  ],
+                  "totalPage": 3
                 }
         '400':
           description: 잘못된 요청

@@ -10,7 +10,8 @@ import {
     updatePostSql,
     getImageFilesByPostId,
     deleteImgsFileByPostId,
-    insertPostImagesyPostId} from "./post.sql.js";
+    insertPostImagesyPostId,
+    totalPosts} from "./post.sql.js";
 import { confirmBrand, getCreatorIdByBrandId } from "./brand.sql.js";
 import { BaseError } from "../../config/error.js";
 import { pool } from "../../config/db.config.js";
@@ -31,26 +32,7 @@ export const addPost = async (data) => {
 }
 
 
-export const getPreviewPostsByCategory = async (category, page) => {
-
-    try {
-
-        const conn = await pool.getConnection();
-
-        const limit = 7;
-        const offset = (page - 1) * limit;
-
-        const [posts] = await pool.query(getPostsByCategory, [category, limit, offset]);
-        conn.release();
-
-        return posts;
-
-    } catch (error) {
-        throw new BaseError(status.BAD_REQUEST);
-    }
-}
-
-export const getPreviewPosts = async (page) => {
+export const getPreviewPosts = async (category, page) => {
 
     try {
 
@@ -61,10 +43,34 @@ export const getPreviewPosts = async (page) => {
         const limit = 7;
         const offset = (page - 1) * limit;
     
-        const [posts] = await pool.query(getPosts, [limit, offset]);
+        //전체 게시글 수 조회 및 페이지 수
+        const [totalPost] = await pool.query(totalPosts);
+        const totalPostCount = totalPost[0].totalPosts;
+
+        console.log(totalPostCount);
+
+        let totalPage;
+        if(totalPostCount < limit) {
+            totalPage = 1;
+        } else if(totalPostCount % limit > 0) {
+            totalPage = totalPostCount / 7 + 1;
+        } else {
+            totalPage = totalPostCount / 7;
+        } 
+
+        console.log(category);
+        let posts = [];
+        if (!category) {
+            [posts] = await pool.query(getPosts, [limit, offset]);
+        } else {
+            [posts] = await pool.query(getPostsByCategory, [category, limit, offset]);
+        }
         conn.release();
 
-        return posts;
+        console.log(posts[0]);
+        console.log(totalPage);
+
+        return { posts, totalPage };
 
     } catch (error) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
@@ -106,17 +112,16 @@ export const modifyPostById = async (data) => {
 
         const conn = await pool.getConnection();
         
-        const postId = data.post_id;
+        const postId = data.postId;
 
         const [confirm] = await pool.query(confirmPost, [postId]);
 
-        console.log(confirm[0]);
 
         if (!confirm[0].isExistPost) {
             conn.release();
             return -1;
         }
-
+    
         const [result] = await pool.query(updatePostSql, [
             data.category,
             data.title,
@@ -124,11 +129,10 @@ export const modifyPostById = async (data) => {
             data.content,
             postId,
         ]);
-        console.log(result[0]);
-      
+
         conn.release();
 
-        return result[0].affectedRows;
+        return result.affectedRows;
         
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
@@ -225,14 +229,13 @@ export const updatePostImages = async(postId, imagekeys) => {
     try {
 
         const conn = await pool.getConnection();
-        const [rows] = await pool.query(getImageFileById, postId);
+        const [rows] = await pool.query(getImageFilesByPostId, postId);
         const currentImages = rows.map((row) => row.filename);
     
         for (const filename of currentImages) {
             await deletePostImages(filename);
         }
 
-        
         await pool.query(deleteImgsFileByPostId, postId);
 
         if (imagekeys && imagekeys.length > 0) {
