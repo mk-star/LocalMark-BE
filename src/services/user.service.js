@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, createCreator, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
     service: process.env.NODEMAILER_SERVICE,
@@ -29,11 +29,7 @@ export const registerUserService = async (userData, type) => {
         throw new Error('This email is already in use.');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    if(type =='CREATOR'){
-        await createCreator(userData, hashedPassword, type);
-    }else{
-        await createUser(userData, hashedPassword, type);
-    }
+    await createUser(userData, hashedPassword, type);
     // 회원에 대한 정보 db에 저장 후 확인 이메일 보내기
     const mailOptions = {
         from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
