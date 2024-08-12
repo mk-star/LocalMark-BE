@@ -1,19 +1,15 @@
 import { postDetailResponseDTO, postsResponseDTO } from "../dtos/post.dto.js";
 import { 
     getPreviewPostDetail, 
-    getPreviewPosts, 
-    getPreviewPostsByCategory } from "../models/post.dao.js";
+    getPreviewPosts } from "../models/post.dao.js";
 import {getCommentNum} from "../models/comment.dao.js";
 import {getLikeNum} from "../models/Like.dao.js";
 
 export const getPosts = async(category, page) => {
 
+    const result = await getPreviewPosts(category, page)
 
-    if(category) {
-        return postsResponseDTO(await getPreviewPostsByCategory(category, page));
-    } else {
-        return postsResponseDTO(await getPreviewPosts(page));
-    }
+    return postsResponseDTO(result.posts, result.totalPage);
 
 }
 

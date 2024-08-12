@@ -39,6 +39,8 @@ export const addPostInfo = async (userId, body, imagekeys) => {
 export const modifyPostDetail = async(postId, body, imagekeys) => {
 
     try {
+
+        console.log(postId);
         let thumbnail_filename = null;
 
         if (imagekeys.length > 0) {

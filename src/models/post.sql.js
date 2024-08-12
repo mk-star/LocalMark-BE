@@ -3,7 +3,40 @@ export const insertPost=
 VALUES (?, ?, ?, ?, ?) `
 
 export const getPosts = 
-`SELECT * FROM Post LIMIT ? OFFSET ?;`
+`SELECT
+    p.*,
+    COALESCE(comment_count,0) AS commentNum,
+    COALESCE(like_count,0) AS likeNum
+FROM
+    Post p
+LEFT JOIN (
+    SELECT
+        post_id,
+        COUNT(DISTINCT id) AS comment_count
+    FROM
+        localmark.Comment
+    GROUP BY
+        post_id
+) c ON p.id = c.post_id
+LEFT JOIN (
+    SELECT
+        post_id,
+        COUNT(id) AS like_count
+    FROM
+        localmark.Likes
+    GROUP BY
+        post_id
+) l ON c.post_id = l.post_id
+ORDER BY
+    p.created_at DESC
+LIMIT ? OFFSET ?;`
+
+export const totalPostsByCategory = 
+`SELECT COUNT(*) AS totalPosts FROM Post WHERE category = ?;`
+
+export const totalPosts = 
+`SELECT COUNT(*) AS totalPosts FROM Post;`
+
 
 export const getPostDetail = `
 SELECT * 
@@ -34,7 +67,7 @@ LEFT JOIN (
         post_id,
         COUNT(DISTINCT id) AS comment_count
     FROM
-        localmart.comment
+        localmark.Comment
     GROUP BY
         post_id
 ) c ON p.id = c.post_id
@@ -43,15 +76,15 @@ LEFT JOIN (
         post_id,
         COUNT(id) AS like_count
     FROM
-        localmart.likes
+        localmark.Likes
     GROUP BY
         post_id
 ) l ON c.post_id = l.post_id
 WHERE
-    p.category = 1
+    p.category = ?
 ORDER BY
     p.created_at DESC
-LIMIT 7 OFFSET 5;
+LIMIT ? OFFSET ?;
 `
 
 export const confirmPost =

@@ -6,7 +6,7 @@ export const modifyPostResponseDTO = ({post, images}) => {
     return { post, images };
 }
 
-export const postsResponseDTO = (posts) => {
+export const postsResponseDTO = (posts, totalPage) => {
     const postsData = [];
 
     for (let i = 0; i < posts.length; i++) {
@@ -25,7 +25,12 @@ export const postsResponseDTO = (posts) => {
         })
     }
 
-    return {"postData": postsData};
+    console.log(totalPage);
+
+    return {
+        "postData": postsData,
+        "totalPage": totalPage
+    };
 
 }
 
