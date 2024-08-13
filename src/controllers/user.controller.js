@@ -1,4 +1,4 @@
-import { registerUserService, verifyUserEmail, findUsernameByEmailService, getOrdersService, getOrderItemNumberService, getOrderItemsService, updateUserService, updatePasswordService, updatePasswordEmailService, resetPassword, deleteUser } from '../services/user.service.js';
+import { registerUserService, verifyUserEmail, getUserInfo, findUsernameByEmailService, getOrdersService, getOrderItemNumberService, getOrderItemsService, updateUserService, updatePasswordService, updatePasswordEmailService, resetPassword, deleteUser } from '../services/user.service.js';
 import { response, errResponse } from '../../config/response.js';
 import { status } from "../../config/response.status.js";
 

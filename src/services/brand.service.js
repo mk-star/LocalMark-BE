@@ -1,4 +1,5 @@
 import { createBrandDAO, updateBrandDAO, getBrandInfoByUserId } from '../models/brand.dao.js';
+import { changeIsBrandRegistered } from '../models/user.dao.js';
 
 export const createBrandService = async(userId, brandData)=>{
     // 로그인된 아이디로 브랜드 만들었는지 확인
@@ -8,6 +9,7 @@ export const createBrandService = async(userId, brandData)=>{
     }
     else{
         const newBrand = await createBrandDAO(userId, brandData);
+        await changeIsBrandRegistered(userId); // User의 is_brand_registered 1로 update
         return newBrand;
     }
 }

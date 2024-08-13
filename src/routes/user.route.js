@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, verifyEmail, findUsername, getOrderItems, updateUser, updatePassword, updatePasswordEmail, findPassword, removeUser } from "../controllers/user.controller.js";
+import { registerUser, verifyEmail, getInfo, findUsername, getOrderItems, updateUser, updatePassword, updatePasswordEmail, findPassword, removeUser } from "../controllers/user.controller.js";
 import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
 import asyncHandler from "express-async-handler";
 
