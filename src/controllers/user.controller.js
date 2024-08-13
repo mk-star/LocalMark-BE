@@ -21,6 +21,17 @@ export const verifyEmail = async (req, res) => {
     }
 };
 
+export const getInfo = async (req, res) => {
+    const userId = req.currentId;
+    try{
+        const userData = await getUserInfo(userId);
+        const user = {id: userData.id, email: userData.email, nickname: userData.nickname, type: userData.type, is_brand_registered: userData.is_brand_registered };
+        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Get user info successfully!' }, user));
+    }catch (error) {
+        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+    }
+}
+
 export const findUsername = async (req, res) => {
     const { email } = req.body;
     try {

@@ -52,7 +52,16 @@ export const verifyUserEmail = async (email) => {
     } catch (error) {
         throw error;
     }
-}
+};
+
+export const getUserInfo = async (userId) =>{
+    try{
+        const userData = await findByID(userId);
+        return userData;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const findUsernameByEmailService = async (email) => {
     try {
