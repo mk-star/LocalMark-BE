@@ -4,7 +4,6 @@ import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
 
 import { brandInfo, brandProductList, brandOrderList } from "../controllers/brand.controller.js";
 import { createBrand, updateBrand } from '../controllers/brand.controller.js';
-import { jwtMiddleware } from "../../config/userJwtMiddleWare.js";
 
 export const brandRouter = express.Router();
 
