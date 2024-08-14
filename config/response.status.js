@@ -150,6 +150,30 @@ export const status = {
     code: "USER4009",
     message: "계정 탈퇴를 신청한 사용자입니다.",
   },
+  LOGINID_ALREADY_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,  // 409
+    isSuccess: false,
+    code: "USER4010",
+    message: "이미 존재하는 로그인 ID입니다.",
+  },
+  EMAIL_ALREADY_EXISTS: {
+    status: StatusCodes.CONFLICT,  // 409
+    isSuccess: false,
+    code: "USER4011",
+    message: "이미 존재하는 이메일입니다.",
+  },
+  NICKNAME_ALREADY_EXISTS: {
+    status: StatusCodes.CONFLICT,  // 409
+    isSuccess: false,
+    code: "USER4012",
+    message: "이미 존재하는 닉네임입니다.",
+  },
+  EMAIL_SENDING_FAILED: {
+    status: StatusCodes.SERVICE_UNAVAILABLE,  // 503
+    isSuccess: false,
+    code: "USER4013",
+    message: "이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
+  },
 
   //review
   REVIEW_NOT_EXISTS: {
