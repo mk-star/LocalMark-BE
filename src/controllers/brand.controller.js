@@ -25,7 +25,6 @@ export const createBrand = async(req, res, next) => {
     try {
         const brandData = req.body;
         const userId = req.currentId;
-        console.log("엥" + userId);
         const newBrand = await createBrandService(userId, brandData);
         return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Brand created successfully' }, newBrand));
     } catch (error) {

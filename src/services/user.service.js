@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export const registerUserService = async (userData, type) => {
+export const registerUserService = async (userData) => {
     const existingUserByID = await findByLoginID(userData.loginId);
     if (existingUserByID) {
         throw new Error('This id is already in use.');
@@ -29,7 +29,7 @@ export const registerUserService = async (userData, type) => {
         throw new Error('This email is already in use.');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    await createUser(userData, hashedPassword, type);
+    await createUser(userData, hashedPassword);
     // 회원에 대한 정보 db에 저장 후 확인 이메일 보내기
     const mailOptions = {
         from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
@@ -52,7 +52,16 @@ export const verifyUserEmail = async (email) => {
     } catch (error) {
         throw error;
     }
-}
+};
+
+export const getUserInfo = async (userId) =>{
+    try{
+        const userData = await findByID(userId);
+        return userData;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const findUsernameByEmailService = async (email) => {
     try {
