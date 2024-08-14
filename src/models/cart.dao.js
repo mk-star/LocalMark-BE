@@ -6,7 +6,6 @@ import {
     addCartItem, 
     confirmCart, 
     confirmCartItem, 
-    confirmProduct, 
     deleteCartItemsById, 
     getCart, 
     getCartItem, 

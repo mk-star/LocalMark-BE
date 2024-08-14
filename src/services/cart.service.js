@@ -10,7 +10,6 @@ import {
     getCartInfo, 
     getCartItemInfo, 
     getCartItemsInfo, 
-    getProductByOption, 
     getProductOption, 
     getProductOptionCombById, 
     getProductPrice, 
