@@ -149,7 +149,7 @@ export const getProduct = async (productId) => {
         product[0].review_cnt = review[0]?.reviewCnt ?? 0;
 
         const transformedOptions = options.map(option => {
-            const optionParts = option.option_type.split(', ');
+            const optionParts = option.option_type.split(',');
             
             const optionTypeObj = optionParts.reduce((acc, part) => {
                 const [key, value] = part.split(':');
