@@ -35,8 +35,8 @@ export const postsResponseDTO = (posts, totalPage) => {
 }
 
 
-export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
-    console.log("comment:", commentNum[0])
+export const postDetailResponseDTO = (post, images, commentNum, likeNum, brandInfo) => {
+    console.log("brandInfo:", brandInfo)
     console.log("images:", images);
     post[0].created_at = formatDate(post[0].created_at);
 
@@ -47,18 +47,24 @@ export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
             "filename": images[i].filename
         }) 
     }
+    const filteredBrandInfo = brandInfo ? {
+        brandName: brandInfo.brand_name,
+        brandUrl: brandInfo.brand_url,
+        description: brandInfo.description
+    } : {};
 
     return {
-        "postId": post[0].postId,
-        "userId": post[0].userId,
+        "postId": post[0].id,
+        "userId": post[0].user_id,
         "category": post[0].category,
         "title": post[0].title,
         "thumbnailFilename": post[0].thumbnailFilename,
         "content": post[0].content,
-        "createdAt": post[0].createdAt,
+        "createdAt": post[0].created_at,
         "commentNum": commentNum[0][0].commentNum,
         "likeNum": likeNum[0][0].likeNum,
-        "imagesData": imagesData
+        "imagesData": imagesData,
+        "brand": filteredBrandInfo
     };
 }
 
