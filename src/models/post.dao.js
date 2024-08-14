@@ -25,8 +25,8 @@ export const addPost = async (data) => {
         conn.release();
 
         return addPost.insertId;
-    }catch(err){
-        console.log(`DB 저장 실패 ${err.message}`);
+    } catch (error) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
     
 }
@@ -35,10 +35,7 @@ export const addPost = async (data) => {
 export const getPreviewPosts = async (category, page) => {
 
     try {
-
         const conn = await pool.getConnection();
-
-        console.log(page);
 
         const limit = 7;
         const offset = (page - 1) * limit;
@@ -46,8 +43,6 @@ export const getPreviewPosts = async (category, page) => {
         //전체 게시글 수 조회 및 페이지 수
         const [totalPost] = await pool.query(totalPosts);
         const totalPostCount = totalPost[0].totalPosts;
-
-        console.log(totalPostCount);
 
         let totalPage;
         if(totalPostCount < limit) {
@@ -58,7 +53,6 @@ export const getPreviewPosts = async (category, page) => {
             totalPage = totalPostCount / 7;
         } 
 
-        console.log(category);
         let posts = [];
         if (!category) {
             [posts] = await pool.query(getPosts, [limit, offset]);
@@ -66,9 +60,6 @@ export const getPreviewPosts = async (category, page) => {
             [posts] = await pool.query(getPostsByCategory, [category, limit, offset]);
         }
         conn.release();
-
-        console.log(posts[0]);
-        console.log(totalPage);
 
         return { posts, totalPage };
 
@@ -81,7 +72,6 @@ export const getPreviewPosts = async (category, page) => {
 export const getPreviewPostDetail = async (postId) => {
 
     try {
-        
         const conn = await pool.getConnection();
 
         const [confirm] = await pool.query(confirmPost, [postId]);
@@ -92,15 +82,12 @@ export const getPreviewPostDetail = async (postId) => {
         }
 
         const [post] = await pool.query(getPostDetail, [postId]);
-
-        console.log("게시글 상세: ", post);
         
         const [images] = await pool.query(getImageFilesByPostId, [postId]);
 
         conn.release();
-        console.log({ post, images });
-        return { post, images };
 
+        return { post, images };
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
@@ -133,7 +120,6 @@ export const modifyPostById = async (data) => {
         conn.release();
 
         return result.affectedRows;
-        
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
@@ -147,8 +133,6 @@ export const deletePost = async (postId) => {
   
       const [confirm] = await pool.query(confirmPost, [postId]);
 
-      console.log(confirm[0].isExistPost);
-  
       if (!confirm[0].isExistPost) {
         conn.release();
         return -1;
@@ -158,7 +142,6 @@ export const deletePost = async (postId) => {
       const images = row.map((row) => row.filename);
 
       for (const imageFilename of images) {
-        console.log(imageFilename);
         await deletePostImages(imageFilename);
       }
 

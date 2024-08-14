@@ -40,7 +40,6 @@ export const modifyPostDetail = async(postId, body, imagekeys) => {
 
     try {
 
-        console.log(postId);
         let thumbnail_filename = null;
 
         if (imagekeys.length > 0) {
@@ -53,6 +52,7 @@ export const modifyPostDetail = async(postId, body, imagekeys) => {
             category: body.category, 
             thumbnail_filename: thumbnail_filename
         });
+
         console.log("수정완료");
         if (imagekeys.length > 0) {
             await updatePostImages(postId, imagekeys);
@@ -66,9 +66,7 @@ export const modifyPostDetail = async(postId, body, imagekeys) => {
 }
 
 export const deletePostById = async(postId) => {
-
-    console.log(postId);
-
+    
     const deleteResult = await deletePost(postId);
 
     if (deleteResult == -1) {
