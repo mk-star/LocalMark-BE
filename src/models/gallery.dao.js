@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, getProductOptionInfo, confirmRegion, confirmCategory, confirmProduct, getProductThumbnail } from "./gallery.sql.js";
+import { getGalleryCnt, getGalleryList, getProductInfo, getProductImage, getProductReviewInfo, getProductOptionInfo, confirmRegion, confirmCategory, confirmProduct, getProductThumbnail, getProductContentImages } from "./gallery.sql.js";
 
 // 제품 갤러리 목록 조회/검색
 export const getGellery = async (regionId, categoryId, page, sort, keyword) => {
@@ -134,6 +134,7 @@ export const getProduct = async (productId) => {
         const [thumbnail] = await pool.query(getProductThumbnail, productId);
         const [review] = await pool.query(getProductReviewInfo, productId);
         const [options] = await pool.query(getProductOptionInfo, productId);
+        const [contents] = await pool.query(getProductContentImages, productId);
 
         const [confirmP] = await pool.query(confirmProduct, productId);
         if (!confirmP[0].isExistProduct) {
@@ -141,6 +142,9 @@ export const getProduct = async (productId) => {
             return -1;
         }
 
+        const contentImageUrls = contents.map(image => image.filename);
+        product[0].description = contentImageUrls;
+        
         const imageUrls = images.map(image => image.image_url);
         if (thumbnail[0] && thumbnail[0].thumbnail_url) {
             imageUrls.unshift(thumbnail[0].thumbnail_url);
