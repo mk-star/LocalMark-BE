@@ -1,3 +1,3 @@
 export const confirmProductStock = 
-"SELECT stock FROM product_stock" +
-"WHERE product_option_combination_id = ?;";
+`SELECT stock FROM Product_Stock 
+WHERE product_option_id = ?;`

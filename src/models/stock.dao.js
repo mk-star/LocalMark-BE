@@ -1,6 +1,7 @@
 import { pool } from "../../config/database.js"
 import { status } from "../../config/response.status.js";
 import { confirmProductStock } from "./stock.sql.js";
+import { BaseError } from "../../config/error.js";
 
 export const confirmStock = async(productOptionId) => {
 

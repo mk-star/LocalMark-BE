@@ -6,19 +6,18 @@ export const modifyCartItemResponseDTO = (cartItem) => {
     return {"cartItem": cartItem};
 }
 
-export const cartItemsResponseDTO = (data) => {
+export const cartItemsResponseDTO = (cartItemInfo) => {
 
     const cartItems = [];
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < cartItemInfo.length; i++) {
         cartItems.push({
-            'cart_item_id': data[i].id,
-            'cart_id': data[i].cart_id,
-            'product_option_id': data[i].product_option_id,
-            'quantity': data[i].quantity,
-            'total_price': data[i].total_price
+            'cartItemId': cartItemInfo[i].id,
+            'cartId': cartItemInfo[i].cart_id,
+            'quantity': cartItemInfo[i].quantity,
+            'totalPrice': cartItemInfo[i].total_price,
+            'options': cartItemInfo[i].options
         })
-
     }
 
     return {"cartItems" : cartItems};

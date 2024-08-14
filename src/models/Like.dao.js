@@ -1,5 +1,5 @@
 import { pool } from '../../config/database.js';
-import { postLikeWhether,postAddLike,postDeleteLike, commentLikeWhether,commentAddLike,commentDeleteLike } from './Like.sql.js';
+import { postLikeWhether,postAddLike,postDeleteLike, commentLikeWhether,commentAddLike,commentDeleteLike, likeNum } from './Like.sql.js';
 import {confirmCommend} from "./comment.sql.js";
 import {confirmPost} from "./post.sql.js";
 
@@ -60,5 +60,16 @@ export const commentLike = async (user_id, comment_id) => {
 
   }catch(err){
     console.log(`좋아요 저장 실패 ${err.message}`)
+  }
+}
+
+export const getLikeNum  = async (post_id) =>{
+  try{
+    const conn = await pool.getConnection();
+    conn.release(); // 연결 해제
+    const num = await pool.query(likeNum, post_id);
+    return num;
+  }catch (err){
+    console.log(`좋아요 갯수 조회 실패 ${err.message}`)
   }
 }

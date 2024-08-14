@@ -13,19 +13,19 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  examples: creator1
-                email:
-                  type: string
-                  description: 이메일
-                  example: creator1@naver.com
+                  example: creatorId
                 password:
                   type: string
                   description: 비밀번호
-                  example: password1
+                  example: creatorPassword
                 nickname:
                   type: string
                   description: 닉네임
                   example: creator1
+                email:
+                  type: string
+                  description: 이메일
+                  example: creator1@gmail.com
                 type:
                   type: string
                   description: 유저 타입(GENERAL, CREATOR)
@@ -115,15 +115,15 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  examples: general1
+                  example: generalId
                 email:
                   type: string
                   description: 이메일
-                  example: general1@naver.com
+                  example: general1@gmail.com
                 password:
                   type: string
                   description: 비밀번호
-                  example: password1
+                  example: generalPassword
                 nickname:
                   type: string
                   description: 닉네임
@@ -203,20 +203,14 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}/orders:
+  /users/orders:
     get:
       tags:
         - Mypage
       summary: 최근 주문 내역 불러오기
-      parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-          required: true
       responses:
         201:
-          description: 최근 주문 내역 불러오기 선공
+          description: 최근 주문 내역 불러오기 성공
           content:
             application/json:
               schema:
@@ -275,10 +269,10 @@ paths:
   /users/find-username:
     post:
       tags:
-        - Mypage
+        - User
       summary: 이메일로 아이디 보내주기
       parameters:
-        - name:
+        - name: findUsername
           in: body
           required: true
           schema:
@@ -286,7 +280,7 @@ paths:
                 email:
                   type: string
                   description: 이메일
-                  example: user@naver.com
+                  example: user@gmail.com
       responses:
         201:
           description: 아이디 찾기 이메일 보내기 선공
@@ -355,17 +349,12 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}:
+  /users:
     patch:
       tags:
         - Mypage
-      summary: 회원 비밀번호 수정하기
+      summary: 회원 정보 수정하기
       parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-          required: true
         - name: updateUser
           in: body
           required: true
@@ -374,18 +363,18 @@ paths:
                 loginId:
                   type: string
                   description: 아이디
-                  example: updatedid
+                  example: generalId
                 email:
                   type: string
                   description: 이메일
-                  example: updateUser@naver.com
+                  example: general1@gmail.com
                 nickname:
                   type: string
                   description: 닉네임
-                  example: updateNickname
+                  example: general1
       responses:
         201:
-          description: 회원정보수정하기 성공
+          description: 회원 정보 수정하기 성공
           content:
             application/json:
               schema:
@@ -441,17 +430,11 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}/change-password-email:
+  /users/change-password-email:
     post:
       tags:
         - Mypage
       summary: 비밀번호 변경을 위한 이메일 보내기
-      parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-          required: true
       responses:
         201:
           description: 비밀번호 변경하기 성공
@@ -510,17 +493,12 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
-  /users/{userId}/change-password:
+  /users/change-password:
     patch:
       tags:
         - Mypage
-      summary: 회원정보 수정하기
+      summary: 회원 비밀번호 수정하기
       parameters:
-        - name: userId
-          in: path
-          schema:
-            type: integer
-          required: true
         - name: updatePassword
           in: body
           required: true
@@ -529,7 +507,7 @@ paths:
                 password:
                   type: string
                   description: 비밀번호
-                  example: updatePassword
+                  example: generalPassword
       responses:
         201:
           description: 비밀번호 변경하기 성공
@@ -599,7 +577,7 @@ paths:
           in: body
           required: true
           schema:
-            properties: 
+            properties:
               loginId:
                 type: string
                 description: 로그인 ID
@@ -607,7 +585,7 @@ paths:
               email:
                 type: string
                 description: 이메일
-                example: general1@naver.com
+                example: general1@gmail.com
       responses:
         "200":
           description: 비밀번호 찾기 성공
@@ -627,20 +605,11 @@ paths:
                 type: string
                 example: "비밀번호 찾기 메일 전송에 성공하였습니다."
 
-  /users/{userId}/status:
+  /users/status:
     patch:
       tags:
         - User
       summary: 탈퇴 신청/취소
-      parameters:
-        - name: userId
-          type: integer
-          in: path
-          schema:
-            type: integer
-            example: 1
-            description: 유저 ID
-          required: true
       responses:
         "200":
           description: 탈퇴 신청/취소 성공

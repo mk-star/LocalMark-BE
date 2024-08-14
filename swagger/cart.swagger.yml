@@ -5,13 +5,28 @@ paths:
         - Cart
       summary: 장바구니 상품 추가
       parameters:
-        - name: category
+        - name: productId
           in: path
-          required: false
-          type: string
+          required: true
+          type: integer
+        - name: options
+          in: body
+          schema:
+            type: object
+            properties:
+              options:
+                type: object
+                additionalProperies:
+                  type: string
+                example:
+                  color: "red"
+                  size: "M"  
+              quantity: 
+                type: integer
+                example: 5     
       responses:
         '200':
-          description: 게시글 조회 성공
+          description: 장바구니 상품 추가 완료
           schema:
             type: object
             properties:
@@ -28,7 +43,7 @@ paths:
                 type: string
                 example: success!
               data:
-                type: array
+                type: object
                 example: {
                   "cartItem":
                     {
@@ -37,6 +52,213 @@ paths:
                       'product_option_id': 2,
                       'quantity': 3,
                       'total_price': 28000
-                    }
-                  
+                    },
+                  "productId": 1 
                 }
+  /cart/{cartItemId}:
+    patch:
+      tags:
+      - Cart
+      summary: 장바구니 아이템 옵션 수정
+      parameters:
+        - name: cartItemId
+          in: path
+          required: ture
+          type: integer   
+        - name: options
+          in: body
+          schema:
+            type: object
+            properties:
+              options:
+                type: object
+                additionalProperies:
+                  type: string
+                example:
+                  color: "red"
+                  size: "M"  
+              quantity: 
+                type: integer
+                example: 5   
+      responses:
+          '200':
+            description: 장바구니 아이템 수정 완료
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 200
+                isSuccess:
+                  type: boolean
+                  example: true
+                code:
+                  type: integer
+                  example: 2000
+                message:
+                  type: string
+                  example: success!
+                data:
+                  type: array
+                  example: {
+                    "cartItem":
+                      {
+                        'cart_item_id': 1,
+                        'cart_id': 1,
+                        'product_option_id': 2,
+                        'quantity': 3,
+                        'total_price': 28000
+                      }
+                    
+                  }
+          '400':
+            description: 잘못된 요청
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 400
+                isSuccess:
+                  type: boolean
+                  example: false
+                code:
+                  type: integer
+                  example: COMMON001
+                message:
+                  type: string
+                  example: 잘못된 요청입니다
+          '500':
+            description: 서버 에러
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 500
+                isSuccess:
+                  type: boolean
+                  example: false
+                code:
+                  type: integer
+                  example: COMMON000
+                message:
+                  type: string
+                  example: 서버 에러, 관리자에게 문의 바랍니다.
+  /cart/cartItems:
+    get:
+      tags: 
+      - Cart
+      summary: 장바구니 아이템 조회
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: 장바구니 아이템 조회 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              data:
+                type: object
+                properties:
+                  cartItems:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        cartItemId:
+                          type: integer
+                        cartId:
+                          type: integer
+                        quantity:
+                          type: integer
+                        totalPrice:
+                          type: integer
+                        options:
+                          type: object
+                          properties:
+                            색상:
+                              type: string
+                            사이즈:
+                              type: string
+                example:
+                  cartItems:
+                    - cartItemId: 1
+                      cartId: 101
+                      quantity: 2
+                      totalPrice: 20000
+                      options:
+                        색상: "초록"
+                        사이즈: "s"
+                    - cartItemId: 2
+                      cartId: 101
+                      quantity: 1
+                      totalPrice: 10000
+                      options:
+                        색상: "파랑"
+                        사이즈: "m"
+
+/cart/cartItems:
+  delete:
+      tags: 
+      - Cart
+      summary: 장바구니 아이템 삭제
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          type: integer
+        - name: cartItemIds
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+            example: [1, 13, 5]
+      responses:
+      '200': 
+        description: 장바구니 아이템 조회 성공
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            isSuccess:
+              type: boolean
+              example: true
+            code:
+              type: integer
+              example: 2000
+            message:
+              type: string
+              example: success!
+            data:
+              type: array
+              example: {
+                "cartItems":
+                  {
+                    'cart_item_id': 1,
+                    'cart_id': 1,
+                    'product_option_id': 2,
+                    'quantity': 3,
+                    'total_price': 21000
+                  } 
+              }
+

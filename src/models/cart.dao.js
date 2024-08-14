@@ -1,6 +1,8 @@
-import { pool } from "../../config/database.js"
+import { pool } from "../../config/db.config.js";
+import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { 
+    addCartInfo,
     addCartItem, 
     confirmCart, 
     confirmCartItem, 
@@ -9,8 +11,65 @@ import {
     getCart, 
     getCartItem, 
     getCartItems, 
+    getProductByOptionSql, 
     getProductOptionCombination, 
+    getProductOptionCombinationById, 
+    getProductPriceSql, 
     updateCartItem } from "./cart.sql.js";
+
+
+export const getProductByOption = async(productOptionId) => {
+        try{       
+
+            const conn = await pool.getConnection();
+
+            const [productId] = await pool.query(getProductByOptionSql, [productOptionId]);
+
+            console.log(productId[0].productId);
+
+            return productId[0].productId;
+        
+        } catch (error) {
+            throw new BaseError(status.PARAMETER_IS_WRONG);
+        }
+}
+
+export const getProductPrice = async(productId) => {
+    try {
+
+        const conn = await pool.getConnection();
+
+        const [product] = await pool.query(getProductPriceSql, [productId]);
+
+        console.log(product[0].price);
+
+        const price = product[0].price;
+
+        return price;
+    
+    } catch (error) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+}
+
+
+export const getProductOptionCombById = async(productOptionCombId) => {
+    try {
+
+        const conn = await pool.getConnection();
+        const [result] = await pool.query(getProductOptionCombinationById, 
+                                                [productOptionCombId]);
+
+        conn.release();
+
+        console.log(result[0]);
+
+        return result[0].productOptionComb;
+        
+    } catch (error) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+}
 
 
 export const getProductOption = async(productId, optionCombination) => {
@@ -18,19 +77,21 @@ export const getProductOption = async(productId, optionCombination) => {
     try {
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmProduct, productId);
+        const [confirm] = await pool.query(confirmProduct, [productId]);
 
         if(!confirm[0].isExistProduct) {
             conn.release();
             return -1;
         }
 
-        const [productOptionCombination] = await pool.query(getProductOptionCombination, 
+        const [result] = await pool.query(getProductOptionCombination, 
                                                         [productId, optionCombination]);
 
-        return productOptionCombination;
-    } catch (error) {
+        const productOptionCombId = result[0].id;
 
+        return productOptionCombId;
+    } catch (error) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 
 
@@ -41,14 +102,18 @@ export const addCartItemInfo = async(data) =>  {
     try {
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmCart, data.cartId);
+        console.log(data.cartId, data.quantity, data.totalPrice, data.productOptionId);
+
+        const [confirm] = await pool.query(confirmCart, [data.cartId]);
 
         if(!confirm[0].isExistCart) {
             conn.release();
             return -1;
         }
 
-        const [cartItem] = await pool.query(addCartItem, [data.cartId, data.productOptionId, data.quantity, data.totalPrice]);
+        const [cartItem] = await pool.query(addCartItem, [data.cartId, data.quantity, data.price, data.totalPrice, data.productOptionId]);
+        
+        console.log(cartItem);
         conn.release();
 
         return cartItem.insertId;
@@ -64,17 +129,29 @@ export const updateCartItemInfo = async(data) => {
        
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmCart, data.cartId);
-
-        if(!confirm[0].isExistCart) {
-            conn.release();
-            return -1;
-        }
-
-        const [cartItem] = await pool.query(updateCartItem, [data.productOptionId, data.quantity, data.totalPrice, data.cartItemId]);
+        const [cartItem] = await pool.query(updateCartItem, [data.newQuantity, 
+                                                            data.totalPrice, 
+                                                            data.newProductOptionId, 
+                                                            data.cartItemId,
+                                                            data.cartId]);
         conn.release();
         
-        return cartItem.affectedRow;
+        console.log(cartItem.affectedRows);
+        return cartItem.affectedRows;
+    } catch (error) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+}
+
+export const addCart = async(userId) => {
+    try {
+
+        const conn = await pool.getConnection();
+
+        const [result] = await pool.query(addCartInfo, [userId]);
+        
+        conn.release();
+        return result.insertId;
     } catch (error) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     }
@@ -85,16 +162,23 @@ export const getCartInfo = async(userId) => {
     try {
         const conn = await pool.getConnection();
 
-        const [cartId] = await pool.query(getCart, userId);
+        console.log(userId);
+
+        const [result] = await pool.query(getCart, [userId]);
+
+        if(result.length === 0) {
+            conn.release();
+            return -1;
+        }
 
         conn.release();
-
-        return cartId;
+        return result[0].id;
     } catch (error) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 
 }
+
 
 export const getCartItemInfo = async(cartItemId) => {
 
@@ -102,14 +186,16 @@ export const getCartItemInfo = async(cartItemId) => {
 
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmCartItem, cartItemId);
+        const [confirm] = await pool.query(confirmCartItem, [cartItemId]);
         if (!confirm[0].isExistCartItem) {
             conn.release();
             return -1;
         }
 
-        const [cartItemInfo] = await pool.query(getCartItem, cartItemId);
+        const [cartItemInfo] = await pool.query(getCartItem, [cartItemId]);
         conn.release();
+
+        console.log(cartItemInfo[0]);
 
         return cartItemInfo[0];
     } catch (error) {
@@ -123,15 +209,17 @@ export const getCartItemsInfo = async(cartId) => {
         
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmCart, data.cartId);
+        const [confirm] = await pool.query(confirmCart, [cartId]);
 
         if(!confirm[0].isExistCart) {
             conn.release();
             return -1;
         }
 
-        const [cartItems] = await pool.query(getCartItems, cartId);
+        const [cartItems] = await pool.query(getCartItems, [cartId]);
         conn.release();
+
+        console.log(cartItems);
 
         return cartItems;
     } catch (error) {
@@ -139,24 +227,25 @@ export const getCartItemsInfo = async(cartId) => {
     }
 }
 
+
 export const removeCartItem = async(cartId, cartItemId) => {
 
     try {
         
         const conn = await pool.getConnection();
 
-        const [confirm] = await pool.query(confirmCartItem, cartItemId);
+        const [confirm] = await pool.query(confirmCartItem, [cartItemId]);
 
         if(!confirm[0].isExistCartItem) {
             conn.release();
             return -1;
         }
 
-        const result = await pool.query(deleteCartItemsById, [cartItemId, cartId]);
+        const [result] = await pool.query(deleteCartItemsById, [cartItemId, cartId]);
         
         conn.release();
         
-        return result[0].affectedRows;
+        return result.affectedRows;
     } catch (error) {
         
     }

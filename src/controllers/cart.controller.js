@@ -1,4 +1,4 @@
-import { response } from "express";
+import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 import { 
     addCartItemService, 
@@ -27,11 +27,13 @@ export const modifyCartItem = async(req, res) => {
 
 export const cartItems = async(req, res) => {
 
-    res.send(response(status.SUCCESS, 
+    res.json(response(status.SUCCESS, 
         await getCartItemsService(req.currentId)));
 }
 
 export const deleteCartItem = async(req, res) => {
+
+    console.log(req.body);
 
     res.send(response(status.SUCCESS, 
         await removeCartItemService(req.currentId, req.body)));
