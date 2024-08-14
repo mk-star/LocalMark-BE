@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getEventList, confirmEvent, getEventInfo, recentEvents } from "./morelocal.sql.js";
+import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -27,9 +27,11 @@ export const getLetterDetail = async (letterId) => {
         }
         
         const letter = await pool.query(getLetterInfo, letterId);
+        const [images] = await pool.query(getLetterInfoImage, letterId);
+        const imageUrls = images.map(image => image.filename);
 
         conn.release();
-        return letter[0];
+        return {letter: letter[0], images: imageUrls};
         
     } catch (err) {
         throw new Error(status.PARAMETER_IS_WRONG)
@@ -78,9 +80,10 @@ export const getEventDetail = async (eventId) => {
         }
 
         const event = await pool.query(getEventInfo, eventId);
-
+        const [images] = await pool.query(getEventInfoImage, eventId);
+        const imageUrls = images.map(image => image.filename);
         conn.release();
-        return event[0];
+        return {event: event[0], images: imageUrls};
         
     } catch (err) {
         throw new Error(status.PARAMETER_IS_WRONG)

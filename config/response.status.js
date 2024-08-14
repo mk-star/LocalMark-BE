@@ -89,8 +89,8 @@ export const status = {
   COMMENT_NOT_FOUND:{
     status: StatusCodes.NOT_FOUND,
     isSuccess: false,
-    code: "COMMENT001",
-    message: "댓글이 없습니다."
+    code: "COMMENT4001",
+    message:"댓글이 없습니다."
   },
 
 
@@ -136,7 +136,7 @@ export const status = {
     status: StatusCodes.UNAUTHORIZED,
     isSuccess: false,
     code: "USER4007",
-    message: "유효하지 않은 토큰입니다.",
+    message: "유효하지 않은 로그인 토큰입니다.",
   },
   FORBIDDEN_APPOROACH: {
     status: StatusCodes.FORBIDDEN,
@@ -159,6 +159,12 @@ export const status = {
     message: "존재하지 않는 리뷰입니다.",
   },
 
+  // socket error
+  CONNECT_IS_WRONG: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: "SOCKET5001"
+  },
   // db error
   PARAMETER_IS_WRONG: {
     status: StatusCodes.BAD_REQUEST,

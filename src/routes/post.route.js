@@ -1,17 +1,26 @@
-// const upload = multer({ storage });
-// const uploadMiddleware = upload.array("images",10);
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-// import { addPost } from '../controllers/post.controller';
-// import { modifyPost, postDetail, posts, removePost, uploadPost } from '../controllers/post.controller';
-// import { upload } from '../proviers/image.provider';
+import { 
+    modifyPost, 
+    postDetail, 
+    posts, 
+    removePost, 
+    addPost,
+    postsByCreator } from '../controllers/post.controller.js';
+import { imageUploader } from "../middleware/image.uploader.js";
+import { jwtMiddleware } from '../../config/userJwtMiddleWare.js';
 
 export const postRouter = express.Router({mergeParams: true});
 
-// postRouter.post('/signin', asyncHandler(addPost));
-// postsRouter.get('/', asyncHandler(posts));
-// postsRouter.post('/', upload.array('images', 10), asyncHandler(uploadPost));
-// postsRouter.get('/:postId', asyncHandler(postDetail));
-// postsRouter.patch('/:postId', upload.array('images', 10), asyncHandler(modifyPost));
-// postsRouter.delete('/:postId', asyncHandler(removePost));
-
+postRouter.get('/', asyncHandler(posts));
+postRouter.post('/signin', 
+    jwtMiddleware,
+    imageUploader.array("image", 10), 
+    asyncHandler(addPost));
+postRouter.get('/post/:postId', asyncHandler(postDetail));
+postRouter.patch('/:postId', 
+    jwtMiddleware,
+    imageUploader.array("image", 10), 
+    asyncHandler(modifyPost));
+postRouter.delete('/:postId', asyncHandler(removePost));
+postRouter.get('/:brandId/posts', asyncHandler(postsByCreator));

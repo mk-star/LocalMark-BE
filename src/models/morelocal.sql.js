@@ -30,6 +30,14 @@ FROM Letter
 WHERE id = ?;
 `
 
+// 로컬레터 상세 조회 - 이미지
+export const getLetterInfoImage = `
+SELECT
+    filename
+FROM Letter_Image
+WHERE letter_id = ?;
+`
+
 // 로컬레터 최근 업데이트글 6개
 export const recentLetters = `
 SELECT
@@ -78,6 +86,14 @@ SELECT
 FROM Event e
 JOIN Subregion s on s.id = e.subregion_id
 WHERE e.id = ?;
+`
+
+// 로컬레터 상세 조회 - 이미지
+export const getEventInfoImage = `
+SELECT
+    filename
+FROM Event_Image
+WHERE event_id = ?;
 `
 
 // 이벤트 최근 업데이트글 6개

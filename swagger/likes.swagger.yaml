@@ -1,0 +1,108 @@
+paths:
+  /likes/{postId}/posts:
+    post:
+      tags:
+        - Like
+      summary: Like a post
+      description: Like a specific post by its ID.
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: The ID of the post to like
+      responses:
+        200:
+          description: Successfully liked the post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "Post liked successfully"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 4000
+                  message:
+                    type: string
+                    example: "Bad request"
+
+  /likes/{commentId}/comments:
+    post:
+      tags:
+        - Like
+      summary: Like a comment
+      description: Like a specific comment by its ID.
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: The ID of the comment to like
+      responses:
+        200:
+          description: Successfully liked the comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "Comment liked successfully"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 4000
+                  message:
+                    type: string
+                    example: "Bad request"

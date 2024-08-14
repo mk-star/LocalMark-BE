@@ -2,22 +2,24 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_SERVICE,
-    port: process.env.EMAIL_PORT,
+    service: process.env.NODEMAILER_SERVICE,
+    host: process.env.NODEMAILER_HOST,
+    port: process.env.NODEMAILER_PORT,
     secure: false,
+    requireTLS: true,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS,
     },
     tls: {
-        rejectUnauthorized: false,
+      rejectUnauthorized: false,
     },
 });
 
-export const registerUserService = async (userData, type) => {
+export const registerUserService = async (userData) => {
     const existingUserByID = await findByLoginID(userData.loginId);
     if (existingUserByID) {
         throw new Error('This id is already in use.');
@@ -27,22 +29,53 @@ export const registerUserService = async (userData, type) => {
         throw new Error('This email is already in use.');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-
-    await createUser(userData, hashedPassword, type);
-    return { ...userData };
+    await createUser(userData, hashedPassword);
+    // 회원에 대한 정보 db에 저장 후 확인 이메일 보내기
+    const mailOptions = {
+        from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
+        to: userData.email,
+        subject: `[LOCAL MARK] 이메일 인증`,
+        html: `<p>안녕하세요 ${userData.loginId} 님</p>
+        <p>이메일 인증을 위해 아래 링크를 눌러주세요.</p>
+        <p><a href="http://localhost:3000/users/verify-email/?email=${encodeURIComponent(userData.email)}">Verify email</a></p>
+        <p>감사합니다.</p>
+        <p>LOCAL MARK</p>`,
+        };
+    await transporter.sendMail(mailOptions);
+    return { userData };
+};
+export const verifyUserEmail = async (email) => {
+    try{
+        const user = await getUsernameByEmail(email);
+        const result = await changeIsEmailVerified(user[0].id);
+        return result;
+    } catch (error) {
+        throw error;
+    }
 };
 
+export const getUserInfo = async (userId) =>{
+    try{
+        const userData = await findByID(userId);
+        return userData;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const findUsernameByEmailService = async (email) => {
     try {
         const user = await getUsernameByEmail(email);
         if (user) {
             const mailOptions = {
-                from: process.env.EMAIL_USER,
-                to: email,
-                subject: 'Your Account Username',
-                text: `Your username is: ${user.id}`,
-            };
+                from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
+                to: email, //사용자가 입력한 이메일 -> 목적지 주소 이메일
+                subject: `[LOCAL MARK] ${user[0].nickname} 님의 아이디를 안내드립니다.`,
+                html: `<p>안녕하세요 ${user[0].nickname} 님</p>
+                <p>${user[0].nickname} 님의 아이디는 다음과 같습니다:</p>
+                <p>아이디: ${user[0].loginId}</p>
+                <p>${user[0].nickname} 님이 요청하지 않은 아이디 찾기라면, localmark.team@gmail.com로 연락 부탁드립니다.</p>`,
+              };
             await transporter.sendMail(mailOptions);
             return user;
         }
@@ -55,6 +88,7 @@ export const findUsernameByEmailService = async (email) => {
 export const getOrdersService = async (user_id) => {
     try {
         const orders = await getOrdersByID(user_id);
+        console.log(orders);
         return orders;
     } catch (error) {
         throw error;

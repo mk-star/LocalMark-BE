@@ -1,4 +1,4 @@
-paths: 
+paths:
   /brand:
     post:
       tags:
@@ -14,11 +14,7 @@ paths:
                   type: integer
                   description: 지역 id
                   example: 1
-                user_id:
-                  type: integer
-                  description: 회원 id
-                  example: 1
-                name:
+                brand_name:
                   type: string
                   description: 브랜드명
                   example: lodge
@@ -130,7 +126,7 @@ paths:
           required: true
           schema:
             properties:
-                name:
+                brand_name:
                   type: string
                   description: 브랜드명
                   example: updatedExample444

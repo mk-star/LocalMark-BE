@@ -17,11 +17,11 @@ export const letterlistResponseDTO = (data) => {
 }
 
 // 로컬레터 상세 조회
-export const letterResponseDTO = (data) => {
+export const letterResponseDTO = (letter, images) => {
 
-    data[0].created_at = formatDate(data[0].created_at)
+    letter[0].created_at = formatDate(letter[0].created_at)
 
-    return {"letter": data[0]};
+    return {"letter": letter[0], images};
 }
 
 // 로컬레터 최근 업데이트글 6개
@@ -68,13 +68,13 @@ export const eventlistResponseDTO = (data) => {
 }
 
 // 이벤트 상세 조회
-export const eventResponseDTO = (data) => {
+export const eventResponseDTO = (event, images) => {
 
-    data[0].created_at = formatDate(data[0].created_at)
-    data[0].start_date = formatDate(data[0].start_date)
-    data[0].end_date = formatDate(data[0].end_date)
+    event[0].created_at = formatDate(event[0].created_at)
+    event[0].start_date = formatDate(event[0].start_date)
+    event[0].end_date = formatDate(event[0].end_date)
 
-    return {"event": data[0]};
+    return {"event": event[0], images};
 }
 
 // 이벤트 최근 업데이트글 6개

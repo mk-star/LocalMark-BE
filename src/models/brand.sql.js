@@ -78,4 +78,9 @@ SELECT
     END AS isCreator
 FROM User
 WHERE id = ?;
+
+// 브랜드 크리에이터 정보 조회
+export const getCreatorIdByBrandId = `
+SELECT user_id FROM brand
+WHERE id = ?
 `

@@ -8,7 +8,7 @@ export const login = async (req, res, next) => {
   console.log(req.body);
 
   const result = await userLogin(req.body);
-  
+
   if (result.inactiveDate) {
     res.send(response(status.ACCOUNT_CANCELED, { id: result.userId, inactive_date: result.inactiveDate}));
   } else {
@@ -22,7 +22,7 @@ export const login = async (req, res, next) => {
       secure: true,
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3일
     });
-    res.send(response(status.SUCCESS, { accessToken: result.accessToken }));
+    res.send(response(status.SUCCESS, { accessToken: result.accessToken, is_brand_registered: result.is_brand_registered }));
   }
 };
 

@@ -110,44 +110,60 @@ export const getBrandMyOrder = async (userId, sort) => {
     }
 }
 
-export const createBrandDAO = async(brandData) =>{
+export const getBrandInfoByUserId = async(userId) =>{
+    const sql = `
+        SELECT * FROM Brand WHERE user_id = ?
+    `;
+    const conn = await pool.getConnection();
+    try{
+        const [results] = await pool.query(sql, [userId]);
+        conn.release();
+        return results[0];
+    }catch(error){
+        throw error;
+    }
+}
+
+export const createBrandDAO = async(userId, brandData) =>{
+    const conn = await pool.getConnection();
     const sql = `
             INSERT INTO Brand (
-                user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact
+                user_id, region_id, brand_name, brand_url, description, brand_image, business_name, business_registration_number, contact
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
-            brandData.user_id, brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+            userId, brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
             brandData.brand_image, brandData.business_name, brandData.business_registration_number, brandData.contact
         ];
-        return new Promise((resolve, reject) => {
-            pool.query(sql, values, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+    try{
+        await pool.query(sql, values);
+        conn.release();
+        console.log(brandData);
+        return brandData;
+    }catch(error){
+        throw error;
+    }
 }
-export const updateBrandDAO = async(brandId, brandData) => {
+
+export const updateBrandDAO = async(brandId, userId, brandData) => {
     const sql = `
         UPDATE Brand SET
-            region_id = ?, name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
+            region_id = ?, brand_name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ? AND user_id = ?
     `;
+
     const values = [
-        brandData.region_id, brandData.name, brandData.brand_url, brandData.description,
+        brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
         brandData.brand_image, brandData.business_name, brandData.business_registration_number,
-        brandData.contact, brandId, brandData.user_id
+        brandData.contact, brandId, userId
     ];
-    return new Promise((resolve, reject) => {
-        pool.query(sql, values, (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
-    });
+    const conn = await pool.getConnection();
+    try{
+        const results = await pool.query(sql, values);
+        conn.release();
+        console.log(results);
+        return results;
+    }catch(error){
+        throw error;
+    }
 }

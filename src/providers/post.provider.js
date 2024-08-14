@@ -1,26 +1,25 @@
 import { postDetailResponseDTO, postsResponseDTO } from "../dtos/post.dto.js";
-import { getImagesByPostId } from "../models/image.dao.js";
 import { 
     getPreviewPostDetail, 
-    getPreviewPosts, 
-    getPreviewPostsByCategory } from "../models/post.dao.js";
+    getPreviewPosts } from "../models/post.dao.js";
+import {getCommentNum} from "../models/comment.dao.js";
+import {getLikeNum} from "../models/Like.dao.js";
 
 export const getPosts = async(category, page) => {
 
-    if(category) {
-        return postsResponseDTO(await getPreviewPostsByCategory(category, page));
-    } else {
-        return postsResponseDTO(await getPreviewPosts(page));
-    }
+    const result = await getPreviewPosts(category, page)
+
+    return postsResponseDTO(result.posts, result.totalPage);
 
 }
 
 export const getPostDetail = async(postId) => {
 
-    const postDetail = await getPreviewPostDetail(postId);
-    const imagefileNames = [];
-    imagefileNames = await getImagesByPostId(postId);
+    console.log(postId);
 
-    return postDetailResponseDTO(postDetail, imagefileNames); 
+    const { post , images } = await getPreviewPostDetail(postId);
+    console.log("post detail:", post);
+    console.log("images:", images);
+    return postDetailResponseDTO(post, images, await getCommentNum(), await getLikeNum());
 }
 

@@ -1,28 +1,37 @@
-import { registerUserService, findUsernameByEmailService, getOrdersService, getOrderItemNumberService, getOrderItemsService, updateUserService, updatePasswordService, updatePasswordEmailService, resetPassword, deleteUser } from '../services/user.service.js';
+import { registerUserService, verifyUserEmail, getUserInfo, findUsernameByEmailService, getOrdersService, getOrderItemNumberService, getOrderItemsService, updateUserService, updatePasswordService, updatePasswordEmailService, resetPassword, deleteUser } from '../services/user.service.js';
 import { response, errResponse } from '../../config/response.js';
 import { status } from "../../config/response.status.js";
 
-export const registerGeneral = async (req, res, next) => {
+export const registerUser = async (req, res, next) => {
     try {
         const userData = req.body;
-        const type = "GENERAL";
-        const newUser = await registerUserService(userData, type);
+        const newUser = await registerUserService(userData);
         return res.status(201).json(response({ isSuccess: true, code: 201, message: 'User registered successfully' }, newUser));
+    } catch (error) {
+        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+    }
+};
+export const verifyEmail = async (req, res) => {
+    const { email } = req.query;
+    try{
+        await verifyUserEmail(email);
+        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Email verified successfully!' }));
     } catch (error) {
         return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
     }
 };
 
-export const registerCreator = async (req, res, next) => {
-    try {
-        const userData = req.body;
-        const type = "CREATOR";
-        const newUser = await registerUserService(userData, type);
-        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'User registered successfully' }, newUser));
-    } catch (error) {
+export const getInfo = async (req, res) => {
+    const userId = req.currentId;
+    try{
+        const userData = await getUserInfo(userId);
+        const user = {id: userData.id, email: userData.email, nickname: userData.nickname, type: userData.type, is_brand_registered: userData.is_brand_registered };
+        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Get user info successfully!' }, user));
+    }catch (error) {
         return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
     }
-};
+}
+
 export const findUsername = async (req, res) => {
     const { email } = req.body;
     try {
@@ -39,11 +48,7 @@ export const findUsername = async (req, res) => {
 
 export const getOrderItems = async (req, res) => {
     const userId = req.currentId;
-    const paramId = req.params.userId;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '접근할 권한이 없습니다.' }));
-        }
         const ids = await getOrdersService(userId);
         if (ids) {
             const itemNumber = await getOrderItemNumberService(ids);
@@ -59,12 +64,8 @@ export const getOrderItems = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const userId = req.currentId;
-    const paramId = req.params.userId;
     const userData = req.body;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '수정할 권한이 없습니다.' }));
-        }
         await updateUserService(userId, userData);
         return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User updated successfully' }));
     } catch (error) {
@@ -74,12 +75,8 @@ export const updateUser = async (req, res) => {
 
 export const updatePassword = async (req, res) => {
     const userId = req.currentId;
-    const paramId = req.params.userId;
     const newPassword = req.body;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '수정할 권한이 없습니다.' }));
-        }
         await updatePasswordService(userId, newPassword);
         return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User password updated successfully' }));
     } catch (error) {
@@ -89,11 +86,7 @@ export const updatePassword = async (req, res) => {
 
 export const updatePasswordEmail = async (req, res)=>{
     const userId = req.currentId;
-    const paramId = req.params.userId;
     try {
-        if( userId != paramId ){
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: '수정할 권한이 없습니다.' }));
-        }
         const respon = await updatePasswordEmailService(userId);
         if(respon){
             return res.status(201).json(response({ isSuccess: true, code: 201, message: 'The page to change the password has been sent to your email' }));
@@ -116,7 +109,7 @@ export const findPassword = async (req, res, next) => {
 };
 
 export const removeUser = async (req, res, next) => {
-    const result = await deleteUser(req.params.userId);
+    const result = await deleteUser(req.currentId);
     if (result == 1) {
         req.headers["Authorization"] = null;
         res.clearCookie("refreshToken");
