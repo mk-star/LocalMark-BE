@@ -4,6 +4,12 @@ export const confirmCart =
 export const confirmCartItem =
 `SELECT EXISTS(SELECT 1 FROM Cart_Item WHERE id = ?) AS isExistCartItem`
 
+export const confirmProduct = 
+`SELECT EXISTS(SELECT 1 FROM Product WHERE id = ?) AS isExistProduct;`
+
+export const getProductByOptionSql =
+`SELECT product_id AS productId FROM Product_Option_Comb WHERE id = ?;`
+
 export const getProductOptionCombination = 
 `SELECT id FROM Product_Option_Comb 
 WHERE product_id = ? AND product_option_combination = ?;`

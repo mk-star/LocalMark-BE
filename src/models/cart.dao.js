@@ -6,15 +6,31 @@ import {
     addCartItem, 
     confirmCart, 
     confirmCartItem, 
+    confirmProduct, 
     deleteCartItemsById, 
     getCart, 
     getCartItem, 
     getCartItems,  
+    getProductByOptionSql,  
     getProductOptionCombination, 
     getProductOptionCombinationById, 
     getProductPriceSql, 
     updateCartItem } from "./cart.sql.js";
 
+
+export const getProductByOption = async(productOptionId) => {
+        
+    try{       
+            const conn = await pool.getConnection();
+
+            const [productId] = await pool.query(getProductByOptionSql, [productOptionId]);
+            conn.release();
+
+            return productId[0].productId;
+    } catch (error) {
+            throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+}
 
 export const getProductPrice = async(productId) => {
     

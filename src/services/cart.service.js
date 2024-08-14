@@ -10,6 +10,7 @@ import {
     getCartInfo, 
     getCartItemInfo, 
     getCartItemsInfo, 
+    getProductByOption, 
     getProductOption, 
     getProductOptionCombById, 
     getProductPrice, 
@@ -78,9 +79,12 @@ export const modifyCartItemService = async(cartItemId, body) => {
         const newOptionCombination = Object.entries(newOptions)
                                             .map(([key, value]) => `${key}:${value}`).join(',');
         
+        console.log(newOptionCombination);
         // 수정한 제품 옵션-조합 확인 (새로운 옵션 조합명이 해당 상품의 옵션 조합에 존재하는지 확인)
         const cartItemInfo = await getCartItemInfo(cartItemId);
+        console.log(cartItemInfo.product_option_id);
         const productId = await getProductByOption(cartItemInfo.product_option_id);
+        console.log(productId);
         const newProductOptionId = await getProductOption(productId, newOptionCombination);
 
         // 수정한 상품 옵션의 재고 확인
