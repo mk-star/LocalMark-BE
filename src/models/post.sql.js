@@ -87,10 +87,10 @@ LIMIT ? OFFSET ?;
 `
 
 export const confirmPost =
- `SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;`
+`SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;`
 
 export const getPostsByCreatorId =
- `SELECT * FROM Post
+`SELECT * FROM Post
 WHERE user_id = ?;`
 
 export const getImageFilesByPostId = 

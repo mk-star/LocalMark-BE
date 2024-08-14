@@ -148,7 +148,7 @@ export const removeCartItemService = async(userId, body) => {
 
         if(cartItemIds && cartItemIds.length > 0) {
             for (const cartItemId of cartItemIds) {
-                const result =  await removeCartItem(cartId, cartItemId);
+                const result = await removeCartItem(cartId, cartItemId);
                 if (result == -1){
                     throw new BaseError(status.CART_ITEM_NOT_EXISTS);
                 }

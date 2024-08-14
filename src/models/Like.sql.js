@@ -23,9 +23,9 @@ insert into Likes(comment_id,user_id) values(?,?);
 
 // 댓글 좋아요 취소
 export const commentDeleteLike= `
-DELETE FROM likes WHERE comment_id = ? AND user_id = ?;
+DELETE FROM Likes WHERE comment_id = ? AND user_id = ?;
 `
 
 export const likeNum= `
-    select count(*) as likeNum from likes where post_id = ?
+select count(*) as likeNum from Likes where post_id = ?
 `

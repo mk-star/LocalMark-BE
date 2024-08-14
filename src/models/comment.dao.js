@@ -83,9 +83,10 @@ export const selectCommentInfo = async(postId) =>{
 export const getCommentNum = async (postId) => {
   try{
     const conn = await pool.getConnection();
-    const num = await pool.query(commentNum, postId);
+    const num = await pool.query(commentNum, [postId]);
+    
     conn.release();
-    return num;
+    return num[0];
   }catch (err){
     console.log(`DB 호출 실패 ${err.message}`)
   }

@@ -9,6 +9,8 @@ import {
         
 export const addPost = async(req, res) => {
 
+        console.log(req.body);
+
         const postImages = req.files;
         
         const imagekeys = [];
@@ -44,20 +46,21 @@ export const postDetail = async(req, res, next) => {
 
 }
 
-export const modifyPost = async(req, res) => {
+export const modifyPost = async(req, res, next) => {
 
         console.log("게시글 수정 요청");
+        console.log("req.body:", req.body);
         const postId = req.params.postId;
         const newImages = req.files;
 
-        const imagekeys = [];
+        const newImagekeys = [];
         if (newImages && newImages.length > 0) {
                 for (const newImage of newImages) {
-                        imagekeys.push(newImage.key);
+                        newImagekeys.push(newImage.key);
                 }
         }
         
-        res.send(response(status.SUCCESS, await modifyPostDetail(postId, req.body, imagekeys)));
+        res.send(response(status.SUCCESS, await modifyPostDetail(postId, req.body, newImagekeys)));
 
 }
 
