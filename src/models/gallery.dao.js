@@ -152,7 +152,7 @@ export const getProduct = async (productId) => {
             const optionParts = option.option_type.split(', ');
             
             const optionTypeObj = optionParts.reduce((acc, part) => {
-                const [key, value] = part.split(': ');
+                const [key, value] = part.split(':');
                 acc[key.trim()] = value.trim();
                 return acc;
             }, {});
