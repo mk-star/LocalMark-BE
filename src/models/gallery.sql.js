@@ -84,6 +84,15 @@ FROM Product p
 WHERE p.id = ?;
 `
 
+// 제품 갤러리 설명 사진 조회
+export const getProductContentImages = `
+SELECT
+    filename
+FROM Product_Content pc
+WHERE pc.product_id = ?
+ORDER BY pc.id;
+`
+
 // 지역 존재 유무 확인
 export const confirmRegion = `
 SELECT
