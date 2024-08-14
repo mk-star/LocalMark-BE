@@ -23,6 +23,30 @@ export const brandGalleryResponseDTO = (data, currentPage, totalPage) => {
     return {"products": products, "currentPage": currentPage, "totalPage" : totalPage};
 }
 
+// 내 브랜드 주문 수집
+export const brandOrderResponseDTO = (data) => {
+
+    const orders = [];
+
+    for (let i = 0; i < data.length; i++) {
+        orders.push({
+            "order_num": data[i].id,
+            "order_date": formatDate(data[i].order_date),
+            "product_name": data[i].product_name,
+            "options": data[i].product_option_combination,
+            "quantity": data[i].quantity,
+            "total_price": data[i].total_price,
+            "receiver": data[i].receiver,
+            "phone": data[i].phone,
+            "zip_code": data[i].zip_code,
+            "address": data[i].address,
+            "spec_address": data[i].spec_address
+        })
+    }
+
+    return {"orders": orders};
+}
+
 export const BrandDto = ({ user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact }) => ({
     user_id,
     region_id,
@@ -34,3 +58,13 @@ export const BrandDto = ({ user_id, region_id, name, brand_url, description, bra
     business_registration_number,
     contact
 });
+
+
+// 날짜 형식 변경
+const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2); 
+    return `${year}.${month}.${day}`;
+}

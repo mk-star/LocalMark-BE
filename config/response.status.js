@@ -76,6 +76,12 @@ export const status = {
     "isSuccess": false, 
     "code": "BRAND4002", 
     "message": "페이지 파라미터를 입력해야 합니다."
+  },   
+  USER_IS_NOT_CREATOR: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "BRAND4003", 
+    "message": "크리에이터가 아닌 일반 유저입니다."
   },
 
 
