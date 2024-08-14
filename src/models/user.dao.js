@@ -48,6 +48,18 @@ export const findByEmail = async (email) => {
     }
 };
 
+export const findByNickname = async (nickname) => {
+    const sql = `SELECT * FROM User WHERE nickname = ?`;
+    const conn = await pool.getConnection();
+    try{
+        const [results] = await pool.query(sql, [nickname]);
+        conn.release()
+        return results[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const createUser = async (userData, hashedPassword) => {
     const sql = `
         INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at, is_email_verified)
