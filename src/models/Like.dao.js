@@ -66,9 +66,10 @@ export const commentLike = async (user_id, comment_id) => {
 export const getLikeNum  = async (post_id) =>{
   try{
     const conn = await pool.getConnection();
+    const num = await pool.query(likeNum, [post_id]);
+
     conn.release(); // 연결 해제
-    const num = await pool.query(likeNum, post_id);
-    return num;
+    return num[0];
   }catch (err){
     console.log(`좋아요 갯수 조회 실패 ${err.message}`)
   }

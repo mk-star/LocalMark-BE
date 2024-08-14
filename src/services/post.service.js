@@ -13,52 +13,61 @@ import {
     
 export const addPostInfo = async (userId, body, imagekeys) => {
 
-    let thumbnail_filename = null;
-    if (imagekeys[0]) {
-        thumbnail_filename = encodeURIComponent(imagekeys[0]);
-    }
-    const postId = await addPost({
-        "userId": userId,
-        "title": body.title,
-        "content": body.content,
-        "category": body.category,
-        "thumnail_filename": thumbnail_filename //null 이 될 수 있음. (이미지 첨부를 아무것도 하지 않았을 때)
-    })
+        try {
+            let thumbnail_filename = null;
 
-    if (imagekeys && imagekeys.length > 0) {
-        for (let i = 0; i < imagekeys.length; i++) {
-            console.log(imagekeys[i]);
-            await saveImagesByPostId(postId, imagekeys[i]);
+            if (imagekeys[0]) {
+                thumbnail_filename = encodeURIComponent(imagekeys[0]);
+            }
+            const postId = await addPost({
+                "userId": userId,
+                "title": body.title,
+                "content": body.content,
+                "category": body.category,
+                "thumnail_filename": thumbnail_filename, //null 이 될 수 있음. (이미지 첨부를 아무것도 하지 않았을 때)
+            })
+
+            console.log(imagekeys);
+
+            if (imagekeys[0]) {
+                for (let i = 0; i < imagekeys.length; i++) {
+                    console.log(imagekeys[i]);
+                    await saveImagesByPostId(postId, imagekeys[i]);
+                }
+            }
+
+
+            const result = await getPreviewPostDetail(postId);
+            return addPostResponseDTO(result);
+        } catch (error) {
+            throw error.message;
         }
-    }
-
-    const result = await getPreviewPostDetail(postId);
-    return addPostResponseDTO(result);
 }
 
-export const modifyPostDetail = async(postId, body, imagekeys) => {
+export const modifyPostDetail = async(postId, body, newImagekeys) => {
 
     try {
 
-        console.log(postId);
         let thumbnail_filename = null;
 
-        if (imagekeys.length > 0) {
-            thumbnail_filename = encodeURIComponent(imagekeys[0]);
-        }
-        await modifyPostById({
-            postId: postId, 
-            title: body.title, 
-            content: body.content, 
-            category: body.category, 
-            thumbnail_filename: thumbnail_filename
-        });
-        console.log("수정완료");
-        if (imagekeys.length > 0) {
-            await updatePostImages(postId, imagekeys);
-            console.log("이미지 수정완료");
+        if (newImagekeys[0]) {
+            thumbnail_filename = encodeURIComponent(newImagekeys[0]);
         }
 
+        if(body) {
+            await modifyPostById({
+                postId: postId, 
+                title: body.title, 
+                content: body.content, 
+                category: body.category, 
+                thumbnail_filename: thumbnail_filename,
+                newImagekeys: newImagekeys
+            });
+            console.log("수정완료");
+        } else {
+            throw BaseError(status.FORBIDDEN);
+        }
+      
         return modifyPostResponseDTO(await getPreviewPostDetail(postId));
     } catch (error) {
         throw error.message;
@@ -66,8 +75,6 @@ export const modifyPostDetail = async(postId, body, imagekeys) => {
 }
 
 export const deletePostById = async(postId) => {
-
-    console.log(postId);
 
     const deleteResult = await deletePost(postId);
 

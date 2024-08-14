@@ -178,11 +178,18 @@ paths:
         tags:
           - Posts
         summary: 게시글 상세 수정
+        consumes:
+          - multipart/form-data
         parameters:
           - name: postId
             in: path
             required: true
             type: integer
+          - name: directory
+            in: query
+            schema:
+              type: string
+              example: reviews
           - name: title
             in: formData
             required: true
