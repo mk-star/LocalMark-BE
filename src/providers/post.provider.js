@@ -20,6 +20,6 @@ export const getPostDetail = async(postId) => {
     const { post , images } = await getPreviewPostDetail(postId);
     console.log("post detail:", post);
     console.log("images:", images);
-    return postDetailResponseDTO(post, images, await getCommentNum(), await getLikeNum());
+    return postDetailResponseDTO(post, images, await getCommentNum(postId), await getLikeNum(postId));
 }
 

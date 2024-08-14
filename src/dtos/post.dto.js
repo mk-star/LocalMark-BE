@@ -36,8 +36,7 @@ export const postsResponseDTO = (posts, totalPage) => {
 
 
 export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
-
-    console.log("post detail:", post[0]);
+    console.log("comment:", commentNum[0])
     console.log("images:", images);
     post[0].created_at = formatDate(post[0].created_at);
 
@@ -50,9 +49,15 @@ export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
     }
 
     return {
-        "post": post[0],
-        "commentNum": commentNum,
-        "likeNum": likeNum,
+        "postId": post[0].postId,
+        "userId": post[0].userId,
+        "category": post[0].category,
+        "title": post[0].title,
+        "thumbnailFilename": post[0].thumbnailFilename,
+        "content": post[0].content,
+        "createdAt": post[0].createdAt,
+        "commentNum": commentNum[0][0].commentNum,
+        "likeNum": likeNum[0][0].likeNum,
         "imagesData": imagesData
     };
 }
