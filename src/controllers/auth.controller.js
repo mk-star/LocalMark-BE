@@ -22,7 +22,7 @@ export const login = async (req, res, next) => {
       secure: true,
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3일
     });
-    res.send(response(status.SUCCESS, { accessToken: result.accessToken, is_brand_registered: result.is_brand_registered }));
+    res.send(response(status.SUCCESS, { accessToken: result.accessToken }));
   }
 };
 
