@@ -45,6 +45,41 @@ JOIN Subregion s on s.id = p.subregion_id
 WHERE b.id = ? AND p.status = 'SELL'
 `
 
+// 내 브랜드 주문 수집
+export const getBrandOrder = `
+SELECT
+    o.id as id,
+    o.order_date,
+    o.id as order_number,
+    p.product_name,
+    poc.product_option_combination,
+    oi.quantity,
+    o.total_price,
+    o.receiver,
+    o.phone,
+    o.zip_code,
+    o.address,
+    o.spec_address
+FROM Order_Item oi
+JOIN Orders o on o.id = oi.order_id
+JOIN Product_Option_Comb poc on poc.id = oi.product_option_id
+JOIN Product p on p.id = oi.product_id
+JOIN Brand b on b.id = p.brand_id
+JOIN User u on u.id = b.user_id
+WHERE u.id = ?
+`
+
+// 내 브랜드 주문 수집 전 크리에이터 유무 확인
+export const confirmCreator = `
+SELECT
+    CASE
+        WHEN type = 'creator' THEN 1
+        ELSE 0
+    END AS isCreator
+FROM User
+WHERE id = ?;
+`
+
 // 브랜드 크리에이터 정보 조회
 export const getCreatorIdByBrandId = `
 SELECT user_id FROM brand

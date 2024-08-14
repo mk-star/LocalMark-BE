@@ -48,12 +48,12 @@ export const findByEmail = async (email) => {
     }
 };
 
-export const createUser = async (userData, hashedPassword, type) => {
+export const createUser = async (userData, hashedPassword) => {
     const sql = `
         INSERT INTO User (loginId, email, password, nickname, type, status, created_at, updated_at, is_email_verified)
         VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)
     `;
-    const values = [userData.loginId, userData.email, hashedPassword, userData.nickname, type, userData.status, 0];
+    const values = [userData.loginId, userData.email, hashedPassword, userData.nickname, userData.type, userData.status, 0];
     const conn = await pool.getConnection();
     try{
         const [results] = await pool.query(sql, values);
@@ -84,6 +84,24 @@ export const changeIsEmailVerified = async (userId) => {
     }
 };
 
+export const changeIsBrandRegistered = async (userId) => {
+    const sql = `
+        UPDATE User SET
+            is_brand_registered = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+    const values = [1, userId];
+    const conn = await pool.getConnection();
+    try{
+        const [results] = await pool.query(sql, values);
+        await conn.commit();
+        conn.release();
+        return ;
+    } catch(error){
+        conn.release();
+        throw error;
+    }
+}
 export const updateUser = async (userId, userData) => {
     const sql = `
         UPDATE User SET

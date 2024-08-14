@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getBrandInfo, confirmBrand, getBrandGallery, getProductCnt } from "./brand.sql.js";
+import { getBrandInfo, confirmBrand, getBrandGallery, getProductCnt, getBrandOrder, confirmCreator } from "./brand.sql.js";
 
 // 브랜드 정보 조회
 export const getBrandInfos = async (brandId) => {
@@ -70,6 +70,41 @@ export const getBrandGalleryList = async (brandId, page, sort) => {
         
         conn.release();
         return {"products": products, "currentPage": parseInt(page), totalPage};
+    } catch (err) {
+        throw new Error(status.PARAMETER_IS_WRONG)
+    }
+}
+
+// 내 브랜드 주문 수집
+export const getBrandMyOrder = async (userId, sort) => {
+    try {
+        const conn = await pool.getConnection();
+
+        const [confirmC] = await pool.query(confirmCreator, userId);
+        if (!confirmC[0].isCreator) {
+          conn.release();
+          return -1;
+        }
+
+        // // 정렬 순서
+        let sortKeyword = 'o.order_date DESC'; // 주문일 순
+        if(sort != "undefined" && typeof sort != "undefined" && sort != null){ 
+            if (sort == 1){ // 주문 번호 순
+                sortKeyword = 'o.id DESC'; 
+            } else if (sort == 2){  // 주문 수량 순
+                sortKeyword = 'oi.quantity DESC'; 
+            } else if (sort == 3){  // 주문 금액 순
+                sortKeyword = 'o.total_price DESC';
+            } else if (sort == 4){  // 옵션 순
+                sortKeyword = 'poc.product_option_combination DESC';
+            }
+        }
+
+        const orderQuery = `${getBrandOrder} ORDER BY ${sortKeyword};`;
+        const [orders] = await pool.query(orderQuery, userId);
+        
+        conn.release();
+        return orders;
     } catch (err) {
         throw new Error(status.PARAMETER_IS_WRONG)
     }

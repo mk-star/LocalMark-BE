@@ -8,7 +8,7 @@ export const login = async (req, res, next) => {
   console.log(req.body);
 
   const result = await userLogin(req.body);
-  
+
   if (result.inactiveDate) {
     res.send(response(status.ACCOUNT_CANCELED, { id: result.userId, inactive_date: result.inactiveDate}));
   } else {

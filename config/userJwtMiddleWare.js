@@ -12,6 +12,7 @@ export const jwtMiddleware = async (req, res, next) => {
 
   if (!authHeader || authHeader === "null") {
     console.log("Authorization 토큰: 권한 없음");
+
     return next(new BaseError(status.TOKEN_UNAUTHORIZED));
   }
   const authToken = authHeader.split(" ")[1];
