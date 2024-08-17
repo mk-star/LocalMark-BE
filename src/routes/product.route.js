@@ -6,4 +6,4 @@ import { addProduct } from "../controllers/product.controller.js";
 
 export const productRouter = express.Router({ mergeParams: true });
 
-productRouter.post("", imageUploader.single("file"), jwtMiddleware, asyncHandler(addProduct));
+productRouter.post("", jwtMiddleware, imageUploader.single("file"), asyncHandler(addProduct));
