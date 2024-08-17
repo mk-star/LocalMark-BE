@@ -175,6 +175,14 @@ export const status = {
     message: "이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
   },
 
+  //product
+  PRODUCT_FILE_NOT_ATTACHED: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "PRODUCT4001",
+    message: "파일이 첨부되지 않았습니다.",
+  },
+
   //review
   REVIEW_NOT_EXISTS: {
     status: StatusCodes.BAD_REQUEST,

@@ -17,10 +17,10 @@ import { brandRouter } from "./src/routes/brand.route.js";
 import { gelleryRouter } from "./src/routes/gallery.route.js";
 import { reviewRouter } from "./src/routes/review.route.js";
 import { cartRouter } from "./src/routes/cart.route.js";
-import { healthRoute } from "./src/routes/health.route.js";
 import {chatRouter} from "./src/routes/chat.route.js";
 import {morelocalRouter} from "./src/routes/morelocal.route.js";
-
+import { productRouter } from "./src/routes/product.route.js";
+import { healthRoute } from "./src/routes/health.route.js";
 
 //서버 가동
 dotenv.config();
@@ -49,7 +49,7 @@ app.use('/brand', brandRouter);
 app.use('/morelocal', morelocalRouter);
 app.use('/chatRooms',chatRouter)
 app.use("/reviews", reviewRouter);
-
+app.use("/products", productRouter);
 app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {

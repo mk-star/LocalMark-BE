@@ -19,7 +19,7 @@ export const s3 = new AWS.S3({
 });
 
 // 확장자 검사 목록
-const allowedExtensions = [".png", ".jpg", ".jpeg", ".bmp", ".gif"];
+const allowedExtensions = [".png", ".jpg", ".jpeg", ".bmp", ".gif", ".zip"];
 
 export const imageUploader = multer({
   storage: multerS3({
