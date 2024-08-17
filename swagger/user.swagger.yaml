@@ -1,0 +1,591 @@
+paths:
+  /users/signup:
+    post:
+      tags:
+        - User
+      summary: 회원가입
+      parameters:
+        - name: signup
+          in: body
+          required: true
+          schema:
+            properties:
+                loginId:
+                  type: string
+                  description: 아이디
+                  example: creatorId
+                password:
+                  type: string
+                  description: 비밀번호
+                  example: creatorPassword
+                nickname:
+                  type: string
+                  description: 닉네임
+                  example: creator1
+                email:
+                  type: string
+                  description: 이메일
+                  example: creator1@gmail.com
+                type:
+                  type: string
+                  description: 유저 타입(GENERAL, CREATOR)
+                  example: CREATOR
+                status:
+                  type: string
+                  description: 상태
+                  example: active
+      responses:
+        201:
+          description: 회원가입 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: User registered successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: user@example.com
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+  /users/my-info:
+    get:
+      tags:
+        - Mypage
+      summary: 내 정보 가져오기
+      responses:
+        201:
+          description: 내 정보 가져오기 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: 'Get user info successfully!'
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+  /users/orders:
+    get:
+      tags:
+        - Mypage
+      summary: 최근 주문 내역 불러오기
+      responses:
+        201:
+          description: 최근 주문 내역 불러오기 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: 'Get the orders items successfully'
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+  /users/find-username:
+    post:
+      tags:
+        - User
+      summary: 이메일로 아이디 보내주기
+      parameters:
+        - name: findUsername
+          in: body
+          required: true
+          schema:
+            properties:
+                email:
+                  type: string
+                  description: 이메일
+                  example: user@gmail.com
+      responses:
+        201:
+          description: 아이디 찾기 이메일 보내기 선공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: 'Username has been sent to your email'
+
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: user@example.com
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+  /users:
+    patch:
+      tags:
+        - Mypage
+      summary: 회원 정보 수정하기
+      parameters:
+        - name: updateUser
+          in: body
+          required: true
+          schema:
+            properties:
+                loginId:
+                  type: string
+                  description: 아이디
+                  example: generalId
+                email:
+                  type: string
+                  description: 이메일
+                  example: general1@gmail.com
+                nickname:
+                  type: string
+                  description: 닉네임
+                  example: general1
+      responses:
+        201:
+          description: 회원 정보 수정하기 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: 'Update user info successfully'
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+  /users/change-password-email:
+    post:
+      tags:
+        - Mypage
+      summary: 비밀번호 변경을 위한 이메일 보내기
+      responses:
+        201:
+          description: 비밀번호 변경하기 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: 'Send email info successfully'
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+  /users/change-password:
+    patch:
+      tags:
+        - Mypage
+      summary: 회원 비밀번호 수정하기
+      parameters:
+        - name: updatePassword
+          in: body
+          required: true
+          schema:
+            properties:
+                password:
+                  type: string
+                  description: 비밀번호
+                  example: generalPassword
+      responses:
+        201:
+          description: 비밀번호 변경하기 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: 'Update password info successfully'
+        400:
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: 잘못된 요청입니다
+        500:
+          description: 서버 에러
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /users/find-password:
+    post:
+      tags:
+        - User
+      summary: 비밀번호 찾기
+      parameters:
+        - name: findPassword
+          in: body
+          required: true
+          schema:
+            properties:
+              loginId:
+                type: string
+                description: 로그인 ID
+                example: generalId
+              email:
+                type: string
+                description: 이메일
+                example: general1@gmail.com
+      responses:
+        "200":
+          description: 비밀번호 찾기 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: string
+                example: "비밀번호 찾기 메일 전송에 성공하였습니다."
+
+  /users/status:
+    patch:
+      tags:
+        - User
+      summary: 탈퇴 신청/취소
+      responses:
+        "200":
+          description: 탈퇴 신청/취소 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: string
+                example: "회원 탈퇴/취소가 완료되었습니다."

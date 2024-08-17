@@ -1,0 +1,210 @@
+
+paths:
+  /gallery:
+    get:
+      tags:
+        - Gallery
+      summary: 제품 갤러리 조회/검색/필터링
+      description: |
+        제품 갤러리의 제품 목록을 제공합니다. 
+        region=지역id (필수X, 없으면 지역 전체), 
+        category=카테고리id (필수X, 없으면 카테고리 전체), 
+        page=보려는 페이지 (필수O, 1부터 시작), 
+        sort=정렬 방식 (필수X, 숫자, 없으면 조회순, 1: 가격 낮음, 2: 가격 높음, 3: 인기순), 
+        keyword=검색 단어 (필수X)
+      parameters:
+        - name: region
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 지역 id
+          required: false
+        - name: category
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 카테고리 id
+          required: false
+        - name: page
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 페이지 번호
+            example: 1
+          required: true
+        - name: sort
+          type: integer
+          in: query
+          schema:
+            type: integer
+            description: 정렬 방법
+          required: false
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: 제품 갤러리 조회/검색/필터링 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              result:
+                type: array
+                example: {
+                  "products": [
+                    {
+                      "product_id": 2,
+                      "brand_id": 1,
+                      "subregion_name": "성수",
+                      "product_name": "귀여운 양말1",
+                      "brand_name": "네코",
+                      "discount_rate": 10,
+                      "price": 2000,
+                      "thumbnail_url": "이미지.png"
+                    },
+                    {
+                      "product_id": 3,
+                      "brand_id": 1,
+                      "subregion_name": "성수",
+                      "product_name": "귀여운 양말2",
+                      "brand_name": "네코",
+                      "discount_rate": 10,
+                      "price": 2000,
+                      "thumbnail_url": "이미지.png"
+                    }
+                  ],
+                  "currentPage" : 1,
+                  "totalPage" : 5
+                }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: GALLERY4001
+              message:
+                type: string
+                example: 존재하지 않는 지역입니다.
+  /gallery/product/{productId}:
+    get:
+      tags:
+        - Gallery
+      summary: 제품 상세 페이지 조회
+      description: |
+        제품 상세 페이지를 위한 제품 정보를 제공합니다(제품 정보, 옵션, 이미지). 
+        productId = 제품id
+      parameters:
+        - name: productId
+          type: integer
+          in: path
+          schema:
+            type: integer
+            description: 제품 id
+          required: true
+      responses:
+        '200':
+          description: 제품 상세 페이지 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "product": {
+                    "product_id": 1,
+                    "brand_id": 1,
+                    "product_name": "이불",
+                    "brand_name": "푸른",
+                    "price": 12000,
+                    "discount_rate": 30,
+                    "delivery_fee": 3000,
+                    "description": [
+                      "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/products/masanai_%E1%84%89%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A6_2.png",
+                      "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/products/masanai_%E1%84%89%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A6_1.png",
+                      "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/products/Untitled.png"
+                    ],
+                    "star_avg": "3.5",
+                    "review_cnt": 2
+                  },
+                  "options": [
+                    {
+                      "opt_comb_id": 1,
+                      "option_type": {
+                        "색상": "초록",
+                        "사이즈": "S"
+                      },
+                      "stock": 10
+                    },
+                    {
+                      "opt_comb_id": 2,
+                      "option_type": {
+                        "색상": "초록",
+                        "사이즈": "M"
+                      },
+                      "stock": 5
+                    },
+                    {
+                      "opt_comb_id": 3,
+                      "option_type": {
+                        "색상": "노랑",
+                        "사이즈": "S"
+                      },
+                      "stock": 3
+                    },
+                    {
+                      "opt_comb_id": 4,
+                      "option_type": {
+                        "색상": "노랑",
+                        "사이즈": "M"
+                      },
+                      "stock": 15
+                    }
+                  ],
+                  "images": [
+                    "이미지1.png",
+                    "이미지2.png",
+                    "이미지3.png"
+                  ]
+                }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: GALLERY4003
+              message:
+                type: string
+                example: 존재하지 않는 상품입니다.
