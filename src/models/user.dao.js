@@ -9,7 +9,7 @@ import {
     selectUserSql,
     updateActiveUserSql,
     updateInactiveUserSql
-  } from "../models/user.sql.js";
+} from "../models/user.sql.js";
 
 export const findByID = async(userId) => {
     const sql = `SELECT * FROM User WHERE id = ?`;
@@ -293,6 +293,5 @@ export const restoreUserById = async (userId) => {
         return result.affectedRows;
         } catch (err) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
-    };
+    }
 };
-  
