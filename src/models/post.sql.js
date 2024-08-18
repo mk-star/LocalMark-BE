@@ -45,15 +45,14 @@ WHERE id = ?;
 `
 
 export const updatePostSql = `
-UPDATE Post SET category = ?, title = ?, thumbnail_filename = ?, content = ?
+UPDATE Post 
+SET category = ?, title = ?, thumbnail_filename = ?, content = ?
 WHERE id = ?;
 `
 
 export const deletePostSql = `
 DELETE FROM Post WHERE id = ?;
 `
-"INSERT INTO Post (user_Id, category, title, thumnail_filename, content)" +
-"VALUES (?, ?, ?, ?, ?)"
 
 export const getPostsByCategory =`
 SELECT
@@ -88,10 +87,10 @@ LIMIT ? OFFSET ?;
 `
 
 export const confirmPost =
- `SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;`
+`SELECT EXISTS(SELECT 1 FROM Post WHERE id = ?) as isExistPost;`
 
 export const getPostsByCreatorId =
- `SELECT * FROM Post
+`SELECT * FROM Post
 WHERE user_id = ?;`
 
 export const getImageFilesByPostId = 

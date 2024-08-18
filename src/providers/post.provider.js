@@ -9,7 +9,7 @@ import {getUserInfo} from "../services/user.service.js";
 
 export const getPosts = async(category, page) => {
 
-    const result = await getPreviewPosts(category, page)
+    const result = await getPreviewPosts(category, page);
 
     return postsResponseDTO(result.posts, result.totalPage);
 
@@ -17,11 +17,10 @@ export const getPosts = async(category, page) => {
 
 export const getPostDetail = async(postId) => {
 
-    console.log(postId);
-
     const { post , images } = await getPreviewPostDetail(postId);
     console.log("post detail:", post);
     console.log("images:", images);
+  
     const userId = post[0]?.user_id;
 
     // 비동기 함수들을 병렬로 실행

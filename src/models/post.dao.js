@@ -15,6 +15,7 @@ import {
 import { confirmBrand, getCreatorIdByBrandId } from "./brand.sql.js";
 import { BaseError } from "../../config/error.js";
 import { pool } from "../../config/db.config.js";
+import { s3 } from "../middleware/image.uploader.js";
 
 export const addPost = async (data) => {
   
@@ -25,8 +26,8 @@ export const addPost = async (data) => {
         conn.release();
 
         return addPost.insertId;
-    }catch(err){
-        console.log(`DB 저장 실패 ${err.message}`);
+    } catch (error) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
     
 }
@@ -35,10 +36,7 @@ export const addPost = async (data) => {
 export const getPreviewPosts = async (category, page) => {
 
     try {
-
         const conn = await pool.getConnection();
-
-        console.log(page);
 
         const limit = 7;
         const offset = (page - 1) * limit;
@@ -46,8 +44,6 @@ export const getPreviewPosts = async (category, page) => {
         //전체 게시글 수 조회 및 페이지 수
         const [totalPost] = await pool.query(totalPosts);
         const totalPostCount = totalPost[0].totalPosts;
-
-        console.log(totalPostCount);
 
         let totalPage;
         if(totalPostCount < limit) {
@@ -58,7 +54,6 @@ export const getPreviewPosts = async (category, page) => {
             totalPage = totalPostCount / 7;
         } 
 
-        console.log(category);
         let posts = [];
         if (!category) {
             [posts] = await pool.query(getPosts, [limit, offset]);
@@ -66,9 +61,6 @@ export const getPreviewPosts = async (category, page) => {
             [posts] = await pool.query(getPostsByCategory, [category, limit, offset]);
         }
         conn.release();
-
-        console.log(posts[0]);
-        console.log(totalPage);
 
         return { posts, totalPage };
 
@@ -81,7 +73,6 @@ export const getPreviewPosts = async (category, page) => {
 export const getPreviewPostDetail = async (postId) => {
 
     try {
-        
         const conn = await pool.getConnection();
 
         const [confirm] = await pool.query(confirmPost, [postId]);
@@ -92,15 +83,12 @@ export const getPreviewPostDetail = async (postId) => {
         }
 
         const [post] = await pool.query(getPostDetail, [postId]);
-
-        console.log("게시글 상세: ", post);
         
         const [images] = await pool.query(getImageFilesByPostId, [postId]);
 
         conn.release();
-        console.log({ post, images });
-        return { post, images };
 
+        return { post, images };
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
@@ -121,19 +109,32 @@ export const modifyPostById = async (data) => {
             conn.release();
             return -1;
         }
+
+        let thumbnail_filename = null;
+        console.log(data.thumbnail_filename);
+        if(data.thumbnail_filename) {
+            thumbnail_filename = data.thumbnail_filename;
+        }
     
         const [result] = await pool.query(updatePostSql, [
             data.category,
             data.title,
-            data.thumbnail_filename,
+            thumbnail_filename,
             data.content,
             postId,
         ]);
 
+        console.log('post 수정 완료');
+
+        const newImagekeys = data.newImagekeys;
+        if (newImagekeys[0]) {
+            await updatePostImages(postId, newImagekeys);
+            console.log("이미지 수정완료");
+        }
+
         conn.release();
 
         return result.affectedRows;
-        
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
@@ -143,12 +144,12 @@ export const modifyPostById = async (data) => {
 export const deletePost = async (postId) => {
     
     try {
+        console.log(postId);
       const conn = await pool.getConnection();
   
       const [confirm] = await pool.query(confirmPost, [postId]);
 
-      console.log(confirm[0].isExistPost);
-  
+      console.log(confirm[0]);
       if (!confirm[0].isExistPost) {
         conn.release();
         return -1;
@@ -156,14 +157,13 @@ export const deletePost = async (postId) => {
 
       const [row] = await pool.query(getImageFilesByPostId, [postId]);
       const images = row.map((row) => row.filename);
-
+  
       for (const imageFilename of images) {
-        console.log(imageFilename);
         await deletePostImages(imageFilename);
       }
 
       const [result] = await pool.query(deletePostSql, [postId]);
-
+  
       conn.release();
       return result.affectedRows;
     } catch (err) {
@@ -217,7 +217,7 @@ export const saveImagesByPostId = async (postId, imagekey) => {
         const encodedKey = encodeURIComponent(imagekey);
 
         const [result] = await pool.query(insertPostImagesyPostId, [postId, encodedKey]);
-         conn.release();
+        conn.release();
 
         return result;
     } catch (error) {
@@ -225,21 +225,29 @@ export const saveImagesByPostId = async (postId, imagekey) => {
     }
 }
 
-export const updatePostImages = async(postId, imagekeys) => {
-    try {
-
-        const conn = await pool.getConnection();
-        const [rows] = await pool.query(getImageFilesByPostId, postId);
-        const currentImages = rows.map((row) => row.filename);
+export const updatePostImages = async(postId, newImagekeys) => {
     
-        for (const filename of currentImages) {
-            await deletePostImages(filename);
+    try {
+        const conn = await pool.getConnection();
+        const [rows] = await pool.query(getImageFilesByPostId, [postId]);
+        const currentImages = rows.map((row) => row.filename);
+        
+        if(currentImages.length > 0) {
+            for (const filename of currentImages) {
+                console.log(filename);
+                await deletePostImages(filename);
+            }
         }
 
-        await pool.query(deleteImgsFileByPostId, postId);
+        console.log('s3이미지 삭제');
 
-        if (imagekeys && imagekeys.length > 0) {
-            await saveImagesByPostId(postId, imagekeys);
+        await pool.query(deleteImgsFileByPostId,[postId]);
+
+        if (newImagekeys[0]) {
+            for (let i = 0; i < newImagekeys.length; i++) {
+                console.log(newImagekeys[i]);
+                await saveImagesByPostId(postId, newImagekeys[i]);
+            }
         }
         
         conn.release();
@@ -247,12 +255,11 @@ export const updatePostImages = async(postId, imagekeys) => {
     } catch (error) {
         throw new BaseError(status.BAD_REQUEST);
     }
-
-
 }
 
 
 export const deletePostImages = async (filename) => {
+    
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: decodeURIComponent(filename),
@@ -261,9 +268,10 @@ export const deletePostImages = async (filename) => {
     try {
       s3.deleteObject(params, function (error, data) {
         if (error) {
-          console.log("err: ", error, error.stack);
+            console.log(`Error deleting ${filename}:`, error);
+            console.log("err: ", error, error.stack);
         } else {
-          console.log(data, " 정상 삭제 되었습니다.");
+            console.log(data, " 정상 삭제 되었습니다.");
         }
       });
     } catch (err) {

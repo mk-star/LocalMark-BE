@@ -55,5 +55,5 @@ ORDER BY created_at;
 `
 
 export const commentNum = `
-    select count(*) as commentNum from Comment where post_id = ?
+select count(*) as commentNum from Comment where post_id = ?
 `

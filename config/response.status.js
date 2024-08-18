@@ -76,6 +76,12 @@ export const status = {
     "isSuccess": false, 
     "code": "BRAND4002", 
     "message": "페이지 파라미터를 입력해야 합니다."
+  },   
+  USER_IS_NOT_CREATOR: {
+    status: StatusCodes.BAD_REQUEST, 
+    "isSuccess": false, 
+    "code": "BRAND4003", 
+    "message": "크리에이터가 아닌 일반 유저입니다."
   },
 
 
@@ -144,6 +150,38 @@ export const status = {
     code: "USER4009",
     message: "계정 탈퇴를 신청한 사용자입니다.",
   },
+  LOGINID_ALREADY_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,  // 409
+    isSuccess: false,
+    code: "USER4010",
+    message: "이미 존재하는 로그인 ID입니다.",
+  },
+  EMAIL_ALREADY_EXISTS: {
+    status: StatusCodes.CONFLICT,  // 409
+    isSuccess: false,
+    code: "USER4011",
+    message: "이미 존재하는 이메일입니다.",
+  },
+  NICKNAME_ALREADY_EXISTS: {
+    status: StatusCodes.CONFLICT,  // 409
+    isSuccess: false,
+    code: "USER4012",
+    message: "이미 존재하는 닉네임입니다.",
+  },
+  EMAIL_SENDING_FAILED: {
+    status: StatusCodes.SERVICE_UNAVAILABLE,  // 503
+    isSuccess: false,
+    code: "USER4013",
+    message: "이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
+  },
+
+  //product
+  PRODUCT_FILE_NOT_ATTACHED: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "PRODUCT4001",
+    message: "파일이 첨부되지 않았습니다.",
+  },
 
   //review
   REVIEW_NOT_EXISTS: {
@@ -151,6 +189,14 @@ export const status = {
     isSuccess: false,
     code: "REVIEW4001",
     message: "존재하지 않는 리뷰입니다.",
+  },
+
+  //cart
+  CART_ITEM_NOT_EXISTS: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "CARTITEM4001",
+    message: "존재하지 않는 장바구니 상품입니다.",
   },
 
   // socket error

@@ -9,7 +9,8 @@ import {
         
 export const addPost = async(req, res) => {
 
-        console.log("body: ", req.body);
+        console.log(req.body);
+
         const postImages = req.files;
         
         const imagekeys = [];
@@ -29,10 +30,7 @@ export const addPost = async(req, res) => {
 export const posts = async(req, res) => {
 
         const querys = req.query;
-        console.log(querys);
-
         const category = querys.category;
-        console.log(category);
         const page = parseInt(querys.page);
 
         res.send(response(status.SUCCESS, await getPosts(category, page)));
@@ -43,35 +41,32 @@ export const postDetail = async(req, res, next) => {
         
         console.log("게시글 상세 조회 요청");
         const params = req.params;
-        console.log("params(postId): ", params.postId);
 
         return res.send(response(status.SUCCESS, await getPostDetail(params.postId)));
 
 }
 
-export const modifyPost = async(req, res) => {
+export const modifyPost = async(req, res, next) => {
 
         console.log("게시글 수정 요청");
+        console.log("req.body:", req.body);
         const postId = req.params.postId;
-        console.log("req.body: ", req.body);
         const newImages = req.files;
 
-        const imagekeys = [];
+        const newImagekeys = [];
         if (newImages && newImages.length > 0) {
                 for (const newImage of newImages) {
-                        imagekeys.push(newImage.key);
+                        newImagekeys.push(newImage.key);
                 }
         }
         
-        res.send(response(status.SUCCESS,  
-                await modifyPostDetail(postId, req.body, imagekeys)));
+        res.send(response(status.SUCCESS, await modifyPostDetail(postId, req.body, newImagekeys)));
 
 }
 
 export const removePost = async(req, res) => {
         console.log("게시글 삭제 요청");
         const postId = req.params.postId;
-        console.log("params(postId): ", postId);
 
         return res.send(response(status.SUCCESS, await deletePostById(postId)));
 }
