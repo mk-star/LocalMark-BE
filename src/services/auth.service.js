@@ -22,7 +22,7 @@ export const userLogin = async (body) => {
   }
 
   const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
-  const accessToken = jwt.sign({ id: result.id, type: result.type, is_brand_registered: result.is_brand_registered }, secretKey, {
+  const accessToken = jwt.sign({ id: result.id, type: result.type, is_brand_registered: result.is_brand_registered, nickname: result.nickname }, secretKey, {
     expiresIn: "1h",
   });
   const refreshToken = jwt.sign({ id: result.id }, secretKey, {
