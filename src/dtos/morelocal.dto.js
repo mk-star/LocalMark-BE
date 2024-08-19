@@ -101,3 +101,8 @@ export const addLetterResponseDTO = (letter, images) => {
 export const modifyLetterResponseDTO = (letter, images) => {
     return {"letter" : letter, "images" : images};
 }
+
+// 이벤트 생성
+export const addEventResponseDTO = (event, images) => {
+    return {"event" : event, "images" : images};
+}

@@ -2,7 +2,7 @@ import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
 import { s3 } from "../middleware/image.uploader.js";
-import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage, updateLetter, selectLetterImage, deleteLetterImage, deleteLetter } from "./morelocal.sql.js";
+import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage, updateLetter, selectLetterImage, deleteLetterImage, deleteLetter, insertEvent, insertEventImage, updateEvent, selectEventImage, deleteEventImage, deleteEvent } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -258,3 +258,43 @@ export const deleteLetterById = async (letterId) => {
     }
   };
   
+
+// 이벤트 생성
+export const addEvent = async(event, imageList) => {
+  try {
+      const conn = await pool.getConnection();
+
+      const eventImage = imageList.map((key) => {
+          // const encodedKey = encodeURIComponent(key);
+          const encodedKey = key;
+          return [encodedKey];
+      });
+
+      const [newEvent] = await pool.query(insertEvent, [event.title, eventImage[0][0], event.content, event.start_date, event.end_date, event.subregion_id]);
+
+      conn.release();
+      return newEvent.insertId;
+      
+  } catch (err) {
+      throw new Error(status.PARAMETER_IS_WRONG)
+  }
+}
+
+// 이벤트 생성 - 이미지
+export const addEventImage = async(eventId, imageList) => {
+  try {
+      const conn = await pool.getConnection();
+
+      const eventImages = imageList.map((key) => {
+          // const encodedKey = encodeURIComponent(key);
+          const encodedKey = key;
+          return [eventId, encodedKey];
+      });
+    
+        await pool.query(insertEventImage, [eventImages]);
+    
+        conn.release();
+  } catch (err) {
+      throw new Error(status.PARAMETER_IS_WRONG)
+  }
+}

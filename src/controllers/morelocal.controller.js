@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo, removeLetter } from "../providers/morelocal.provider.js";
+import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo, removeLetter, addEventInfo } from "../providers/morelocal.provider.js";
 
 // 로컬레터 목록 조회
 export const letterList = async (req, res, next) => {
@@ -28,7 +28,7 @@ export const recentLetters = async (req, res, next) => {
 
 // 이벤트 목록 조회
 export const eventList = async (req, res, next) => {
-    console.log("로컬 레터 목록을 요청하였습니다!");
+    console.log("이벤트 목록을 요청하였습니다!");
 
     return res.send(response(status.SUCCESS, await getEventLists()));
 }
@@ -52,11 +52,11 @@ export const recentEvents = async (req, res, next) => {
 export const addNewLetter = async (req, res, next) => {
     console.log("로컬레터 생성을 요청하였습니다!");
     console.log("body", req.body);
-    const reviewImage = req.files;
+    const letterImage = req.files;
   
     const imageKey = [];
-    if (reviewImage) {
-      reviewImage.forEach((v) => {
+    if (letterImage) {
+      letterImage.forEach((v) => {
         imageKey.push(v.location);
       });
     }
@@ -96,4 +96,25 @@ export const deleteLetter = async (req, res, next) => {
   console.log("로컬레터 삭제를 요청하였습니다!");
 
   res.send(response(status.SUCCESS, await removeLetter(req.params.letterId)));
+};
+
+// 이벤트 생성
+export const addNewEvent = async (req, res, next) => {
+  console.log("이벤트 생성을 요청하였습니다!");
+  console.log("body", req.body);
+  const eventImage = req.files;
+
+  const imageKey = [];
+  if (eventImage) {
+    eventImage.forEach((v) => {
+      imageKey.push(v.location);
+    });
+  }
+
+  res.send(
+    response(
+      status.SUCCESS,
+      await addEventInfo(req.body, imageKey)
+    )
+  );
 };

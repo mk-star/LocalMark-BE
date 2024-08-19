@@ -447,6 +447,96 @@ paths:
                     }
                   ]
                 }
+    post:
+      tags:
+        - More Local
+      summary: 이벤트 생성 (임시!!!)
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: query
+          name: directory
+          schema:
+            type: string
+            example: events
+        - in: formData
+          name: image
+          type: array
+          items:
+            type: file
+            format: binary
+            description: 파일 업로드 (최소 0개, 최대 20개)
+        - in: formData
+          name: title
+          type: string
+          schema:
+            type: string
+            description: 제목
+          required: true
+        - in: formData
+          name: content
+          type: string
+          schema:
+            type: string
+            description: 내용
+          required: true
+        - in: formData
+          name: start_date
+          type: string
+          example: '2024-08-23'
+          schema:
+            type: string
+            description: 시작일
+          required: true
+        - in: formData
+          name: end_date
+          type: string
+          example: '2024-09-23'
+          schema:
+            type: string
+            description: 마지막일
+          required: true
+        - in: formData
+          name: subregion_id
+          type: integer
+          schema:
+            type: integer
+            description: 소지역
+          required: true
+      responses:
+        '200':
+          description: 이벤트 생성 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "event": {
+                    "event_id": 0,
+                    "subregion_name": "성수",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.07.02",
+                    "start_date": "2024.08.02",
+                    "end_date": "2024.10.02",
+                    "content": "내용"
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/00501111_20190121.jpg",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/5220564.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/8e3353bb9aad0.jpg"
+                  ]
+                }
   /morelocal/events/{eventId}:
     get:
       tags:
