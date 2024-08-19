@@ -126,17 +126,15 @@ export const createUser = async (userData) => {
         const conn = await pool.getConnection();
 
         const [rows] = await pool.query(selectEmailVerification, [userData.email]);
-        if (rows[0].is_email_verified == 0) {
+        if (rows.length === 0 || rows[0].is_email_verified == 0) {
           conn.release();
           return -1;
         }
-
         const [confirm1] = await pool.query(confirmLoginId, [userData.loginId]);
         if (confirm1[0].isExistLoginId) {
           conn.release();
           return -2;
         }
-
         const [confirm2] = await pool.query(confirmNickname, [userData.nickname]);
         if (confirm2[0].isExistNickname) {
           conn.release();
