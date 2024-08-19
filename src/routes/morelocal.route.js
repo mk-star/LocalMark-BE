@@ -1,7 +1,7 @@
 import express from "express";
 import asyncHandler from 'express-async-handler';
 
-import { letterList, letterInfo, recentLetters, eventList, eventInfo, recentEvents, addNewLetter, modifyLetter, deleteLetter, addNewEvent } from "../controllers/morelocal.controller.js";
+import { letterList, letterInfo, recentLetters, eventList, eventInfo, recentEvents, addNewLetter, modifyLetter, deleteLetter, addNewEvent, modifyEvent } from "../controllers/morelocal.controller.js";
 import { imageUploader } from "../middleware/image.uploader.js";
 
 export const morelocalRouter = express.Router();
@@ -17,5 +17,5 @@ morelocalRouter.get('/events', asyncHandler(eventList));
 morelocalRouter.get('/events/recent', asyncHandler(recentEvents));
 morelocalRouter.get('/events/:eventId', asyncHandler(eventInfo));
 morelocalRouter.post('/events', imageUploader.array("image", 20), asyncHandler(addNewEvent));   // 생성
-morelocalRouter.patch('/events/:eventId', asyncHandler());   // 수정
+morelocalRouter.patch('/events/:eventId', imageUploader.array("image", 20), asyncHandler(modifyEvent));   // 수정
 morelocalRouter.delete('/events/:eventId', asyncHandler());   // 삭제

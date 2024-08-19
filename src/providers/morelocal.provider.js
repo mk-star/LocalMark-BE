@@ -1,7 +1,7 @@
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
-import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO, recentEventResponseDTO, addLetterResponseDTO, modifyLetterResponseDTO, addEventResponseDTO } from "../dtos/morelocal.dto.js";
-import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage, updateLetterImages, modifyLetterById, deleteLetterById, addEvent, addEventImage } from "../models/morelocal.dao.js";
+import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO, recentEventResponseDTO, addLetterResponseDTO, modifyLetterResponseDTO, addEventResponseDTO, modifyEventResponseDTO } from "../dtos/morelocal.dto.js";
+import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage, updateLetterImages, modifyLetterById, deleteLetterById, addEvent, addEventImage, updateEventImages, modifyEventById } from "../models/morelocal.dao.js";
 
 // 로컬레터 목록 조회
 export const getLetterLists = async () => {
@@ -114,3 +114,24 @@ export const addEventInfo = async (body, imagekey) => {
         throw err;
     }
 }
+
+// 이벤트 수정
+export const modifyEventInfo = async (eventId, body, imageKey) => {
+    try {
+      await modifyEventById({
+        eventId: eventId,
+        title: body.title,
+        content: body.content,          
+        start_date: body.start_date, 
+        end_date: body.end_date, 
+        subregion_id: body.subregion_id
+      }, imageKey);
+  
+      await updateEventImages(eventId, imageKey);
+  
+      const {event, images} = await getEvent(eventId);
+      return modifyEventResponseDTO(event, images);
+    } catch (err) {
+      throw err;
+    }
+};

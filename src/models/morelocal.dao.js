@@ -298,3 +298,88 @@ export const addEventImage = async(eventId, imageList) => {
       throw new Error(status.PARAMETER_IS_WRONG)
   }
 }
+
+// 이벤트 수정
+export const modifyEventById = async (data, imageList) => {
+  try {
+      const conn = await pool.getConnection();
+
+      // const [confirm] = await pool.query(confirmEvent, [data.eventId]);
+      // if (!confirm[0].isExistEvent) {
+      //     conn.release();
+      //     return -1;
+      // }
+
+      const eventImage = imageList.map((key) => {
+          // const encodedKey = encodeURIComponent(key);
+          const encodedKey = key;
+          return [encodedKey];
+      });
+
+      const [event] = await pool.query(updateEvent, [
+          data.title,
+          eventImage[0][0],
+          data.content,
+          data.start_date, 
+          data.end_date, 
+          data.subregion_id,
+          data.eventId
+      ]);
+
+      conn.release();
+      return event.affectedRows;
+  } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+  }
+};
+
+// 이벤트 수정 - 사진
+export const updateEventImages = async (eventId, imageKey) => {
+  try {
+    const conn = await pool.getConnection();
+
+    const [rows] = await pool.query(selectEventImage, [eventId]);
+    const currentImages = rows.map((row) => row.filename);
+
+    for (const filename of currentImages) {
+      await deleteEventImages(filename);
+    }
+
+    await pool.query(deleteEventImage, [eventId]);
+
+    if (imageKey && imageKey.length > 0) {
+      await addEventImage(eventId, imageKey);
+    }
+
+    conn.release();
+  } catch (err) {
+    throw new BaseError(status.PARAMETER_IS_WRONG);
+  }
+};
+
+
+// 이벤트 삭제 - 사진
+export const deleteEventImages = async (filename) => {
+
+  const bucketUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REAGION}.amazonaws.com/`;
+
+  // URL에서 Key 추출
+  const filenameKey = decodeURIComponent(filename).replace(bucketUrl, '');
+
+  const params = {
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: decodeURIComponent(filenameKey),
+  };
+
+  try {
+    s3.deleteObject(params, function (error, data) {
+      if (error) {
+        console.log("err: ", error, error.stack);
+      } else {
+        console.log(data, " 정상 삭제 되었습니다.");
+      }
+    });
+  } catch (err) {
+    throw err;
+  }
+};

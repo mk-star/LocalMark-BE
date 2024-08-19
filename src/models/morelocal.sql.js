@@ -150,7 +150,7 @@ INSERT INTO Event_Image (event_id, filename) VALUES ?;
 
 // 이벤트 수정
 export const updateEvent = `
-UPDATE Event SET title = ?, thumbnail_url = ?, content = ?, start_date = ?, end_date = ? WHERE id = ?
+UPDATE Event SET title = ?, thumbnail_url = ?, content = ?, start_date = ?, end_date = ?, subregion_id = ? WHERE id = ?
 `
 
 // 이벤트 해당 eventId의 사진 선택
