@@ -22,6 +22,8 @@ const transporter = nodemailer.createTransport({
 export const registerUserService = async (userData) => {
     const existingUserByID = await findByLoginID(userData.loginId);
     if (existingUserByID) {
+        console.log("오잉");
+        console.log(status.LOGINID_ALREADY_EXISTS);
         throw new BaseError(status.LOGINID_ALREADY_EXISTS);
     }
     const existingUser = await findByEmail(userData.email);
