@@ -107,3 +107,17 @@ ORDER BY
     created_at DESC
 Limit 6;
 `
+
+// 로컬레터 생성
+export const insertLetter = `
+INSERT INTO Letter (admin_id, title, thumbnail_url, content, category) VALUES (1, ?, ?, ?, ?);
+`
+
+// 로컬레터 생성 - 사진
+export const insertLetterImage = `
+INSERT INTO Letter_Image (letter_id, filename) VALUES ?;
+`
+
+// 로컬레터 수정
+export const updateLetter = `
+`

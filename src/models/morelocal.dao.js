@@ -1,6 +1,6 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents } from "./morelocal.sql.js";
+import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -101,6 +101,44 @@ export const getRecentEvents = async() => {
         return events;
         
         
+    } catch (err) {
+        throw new Error(status.PARAMETER_IS_WRONG)
+    }
+}
+
+// 로컬레터 생성
+export const addLetter = async(letter, imageList) => {
+    try {
+        const conn = await pool.getConnection();
+
+        const letterImage = imageList.map((key) => {
+            const encodedKey = encodeURIComponent(key);
+            return [encodedKey];
+        });
+
+        const [newLetter] = await pool.query(insertLetter, [letter.title, letterImage[0][0], letter.content, letter.category]);
+
+        conn.release();
+        return newLetter.insertId;
+        
+    } catch (err) {
+        throw new Error(status.PARAMETER_IS_WRONG)
+    }
+}
+
+// 로컬레터 생성 - 이미지
+export const addLetterImage = async(letterId, imageList) => {
+    try {
+        const conn = await pool.getConnection();
+
+        const letterImages = imageList.map((key) => {
+            const encodedKey = encodeURIComponent(key);
+            return [letterId, encodedKey];
+        });
+      
+          await pool.query(insertLetterImage, [letterImages]);
+      
+          conn.release();
     } catch (err) {
         throw new Error(status.PARAMETER_IS_WRONG)
     }

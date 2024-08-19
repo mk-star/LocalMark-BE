@@ -1,7 +1,7 @@
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
-import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO, recentEventResponseDTO } from "../dtos/morelocal.dto.js";
-import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents } from "../models/morelocal.dao.js";
+import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO, recentEventResponseDTO, addLetterResponseDTO } from "../dtos/morelocal.dto.js";
+import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage } from "../models/morelocal.dao.js";
 
 // 로컬레터 목록 조회
 export const getLetterLists = async () => {
@@ -43,4 +43,26 @@ export const getEvent = async (eventId) => {
 // 이벤트 최근 업데이트글 6개
 export const getRecentEventList = async () => {
     return recentEventResponseDTO(await getRecentEvents());
+}
+
+// 로컬레터 생성
+export const addLetterInfo = async (body, imagekey) => {
+    console.log("pro", body);
+    try{
+        const letterData = await addLetter({
+            title: body.title, 
+            content: body.content, 
+            category: body.category
+        }, imagekey);
+
+        if(imagekey && imagekey.length > 0){
+            await addLetterImage(letterData, imagekey);
+        }
+        const {letter, images} = await getLetter(letterData);
+        return addLetterResponseDTO(letter, images);
+    } catch(err){
+        throw err;
+    }
+    
+
 }

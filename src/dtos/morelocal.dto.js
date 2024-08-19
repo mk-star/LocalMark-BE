@@ -91,3 +91,8 @@ export const recentEventResponseDTO = (data) => {
 
     return {"events": events};
 }
+
+// 로컬레터 생성
+export const addLetterResponseDTO = (letter, images) => {
+    return {"letter" : letter, "images" : images};
+}
