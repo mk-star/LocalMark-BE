@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById } from '../models/user.dao.js';
+import { findByID, findByLoginID, findByEmail, createUser, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById, findByNickname } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
     service: process.env.NODEMAILER_SERVICE,
@@ -22,11 +22,17 @@ const transporter = nodemailer.createTransport({
 export const registerUserService = async (userData) => {
     const existingUserByID = await findByLoginID(userData.loginId);
     if (existingUserByID) {
-        throw new Error('This id is already in use.');
+        console.log("오잉");
+        console.log(status.LOGINID_ALREADY_EXISTS);
+        throw new BaseError(status.LOGINID_ALREADY_EXISTS);
     }
     const existingUser = await findByEmail(userData.email);
     if (existingUser) {
-        throw new Error('This email is already in use.');
+        throw new BaseError(status.EMAIL_ALREADY_EXISTS);
+    }
+    const existingNickname = await findByNickname(userData.nickname);
+    if (existingNickname) {
+        throw new BaseError(status.NICKNAME_ALREADY_EXISTS);
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     await createUser(userData, hashedPassword);

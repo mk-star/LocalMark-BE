@@ -9,7 +9,7 @@ import {
     selectUserSql,
     updateActiveUserSql,
     updateInactiveUserSql
-  } from "../models/user.sql.js";
+} from "../models/user.sql.js";
 
 export const findByID = async(userId) => {
     const sql = `SELECT * FROM User WHERE id = ?`;
@@ -41,6 +41,18 @@ export const findByEmail = async (email) => {
     const conn = await pool.getConnection();
     try{
         const [results] = await pool.query(sql, [email]);
+        conn.release()
+        return results[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const findByNickname = async (nickname) => {
+    const sql = `SELECT * FROM User WHERE nickname = ?`;
+    const conn = await pool.getConnection();
+    try{
+        const [results] = await pool.query(sql, [nickname]);
         conn.release()
         return results[0];
     } catch (error) {
@@ -281,6 +293,5 @@ export const restoreUserById = async (userId) => {
         return result.affectedRows;
         } catch (err) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
-    };
+    }
 };
-  

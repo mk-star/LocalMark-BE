@@ -6,98 +6,88 @@ export const registerUser = async (req, res, next) => {
     try {
         const userData = req.body;
         const newUser = await registerUserService(userData);
-        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'User registered successfully' }, newUser));
-    } catch (error) {
-        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+        res.send(response(status.SUCCESS, 'User registered successfully', { user: newUser }));
+    } catch(err) {
+        next(err);
     }
 };
 export const verifyEmail = async (req, res) => {
-    const { email } = req.query;
     try{
+        const { email } = req.query;
         await verifyUserEmail(email);
-        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Email verified successfully!' }));
-    } catch (error) {
-        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+        res.send(response(status.SUCCESS, 'Email verified successfully!'));
+    } catch(err) {
+        next(err);
     }
 };
 
 export const getInfo = async (req, res) => {
-    const userId = req.currentId;
-    try{
+    try {
+        const userId = req.currentId;
         const userData = await getUserInfo(userId);
         const user = {id: userData.id, email: userData.email, nickname: userData.nickname, type: userData.type, is_brand_registered: userData.is_brand_registered };
-        return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Get user info successfully!' }, user));
-    }catch (error) {
-        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+        res.send(response(status.SUCCESS, 'Get user info successfully!', {user: user}));
+    } catch(err) {
+        next(err);
     }
 }
 
 export const findUsername = async (req, res) => {
-    const { email } = req.body;
     try {
+        const { email } = req.body;
         const result = await findUsernameByEmailService(email);
-        if (result) {
-            return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Username has been sent to your email' }, result));
-        } else {
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: 'Email not found' }));
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
+        res.send(response(status.SUCCESS, 'Username has been sent to your email', {loginId: result}));
+    } catch(err) {
+        next(err);
     }
 };
 
 export const getOrderItems = async (req, res) => {
-    const userId = req.currentId;
     try {
+        const userId = req.currentId;
         const ids = await getOrdersService(userId);
         if (ids) {
             const itemNumber = await getOrderItemNumberService(ids);
             const items = await getOrderItemsService(itemNumber);
-            return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Order items are found' }, items));
-        } else {
-            return res.status(201).json(response({ isSuccess: true, code: 201, message: 'No orders' }));
+            res.send(response(status.SUCCESS, 'Order items are found', {item: items}));
         }
-    } catch (error) {
-        res.status(500).send(error.message);
+    } catch(err) {
+        next(err);
     }
 };
 
 export const updateUser = async (req, res) => {
-    const userId = req.currentId;
-    const userData = req.body;
     try {
+        const userId = req.currentId;
+        const userData = req.body;
         await updateUserService(userId, userData);
-        return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User updated successfully' }));
-    } catch (error) {
-        res.status(500).send(error.message);
+        res.send(response(status.SUCCESS, 'User updated successfully'));
+    } catch(err) {
+        next(err);
     }
 };
 
 export const updatePassword = async (req, res) => {
-    const userId = req.currentId;
-    const newPassword = req.body;
     try {
+        const userId = req.currentId;
+        const newPassword = req.body;
         await updatePasswordService(userId, newPassword);
-        return res.status(200).json(response({ isSuccess: true, code: 200, message: 'User password updated successfully' }));
-    } catch (error) {
-        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+        res.send(response(status.SUCCESS, 'User password updated successfully' ));
+    } catch(err) {
+        next(err);
     }
 };
 
 export const updatePasswordEmail = async (req, res)=>{
-    const userId = req.currentId;
     try {
+        const userId = req.currentId;
         const respon = await updatePasswordEmailService(userId);
         if(respon){
-            return res.status(201).json(response({ isSuccess: true, code: 201, message: 'The page to change the password has been sent to your email' }));
+            res.send(response(status.SUCCESS, 'The page to change the password has been sent to your email'));
         }
-        else{
-            return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: 'Sending email is failed' }));
-        }
-    } catch (error) {
-        return res.status(400).json(errResponse({ isSuccess: false, code: 400, message: error.message }));
+    } catch(err) {
+        next(err);
     }
-
 }
 
 export const findPassword = async (req, res, next) => {

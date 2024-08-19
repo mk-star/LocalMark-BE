@@ -2,7 +2,7 @@ export const confirmLoginId =
   "SELECT EXISTS(SELECT 1 FROM User WHERE loginId = ?) AS isExistLoginId";
 
 export const selectUserSql =
-  "SELECT id, loginId, password, type, status, inactive_date, is_brand_registered FROM User WHERE loginId = ?";
+  "SELECT id, loginId, password, nickname, type, status, inactive_date, is_brand_registered FROM User WHERE loginId = ?";
 
 export const updateTokenSql = "UPDATE User SET token = ? WHERE id = ?";
 

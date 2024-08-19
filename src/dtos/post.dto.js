@@ -35,9 +35,8 @@ export const postsResponseDTO = (posts, totalPage) => {
 }
 
 
-export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
-
-    console.log("post detail:", post[0]);
+export const postDetailResponseDTO = (post, images, commentNum, likeNum, brandInfo, userInfo) => {
+    console.log("userInfo:", userInfo)
     console.log("images:", images);
     post[0].created_at = formatDate(post[0].created_at);
 
@@ -49,6 +48,18 @@ export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
             "filename": images[i].filename
         }) 
     }
+    const author = userInfo ? {
+        id: userInfo.id,
+        name: userInfo.loginId,
+        email: userInfo.email
+        //Todo: 유저 프로필 정보 추가
+    }: {};
+
+    const filteredBrandInfo = brandInfo ? {
+        brandName: brandInfo.brand_name,
+        brandUrl: brandInfo.brand_url,
+        description: brandInfo.description
+    } : {};
 
     return {
         "postId": post[0].id,
