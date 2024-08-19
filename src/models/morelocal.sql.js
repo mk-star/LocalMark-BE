@@ -120,4 +120,15 @@ INSERT INTO Letter_Image (letter_id, filename) VALUES ?;
 
 // 로컬레터 수정
 export const updateLetter = `
+UPDATE Letter SET title = ?, thumbnail_url = ?, content = ?, category = ? WHERE id = ?
+`
+
+// 로컬레터 해당 letterId의 사진 선택
+export const selectLetterImage = `
+SELECT * FROM Letter_Image WHERE letter_id = ?
+`
+
+// 로컬레터 해당 letterId의 사진 삭제
+export const deleteLetterImage = `
+DELETE FROM Letter_Image WHERE letter_id = ?
 `

@@ -96,3 +96,8 @@ export const recentEventResponseDTO = (data) => {
 export const addLetterResponseDTO = (letter, images) => {
     return {"letter" : letter, "images" : images};
 }
+
+// 로컬레터 수정
+export const modifyLetterResponseDTO = (letter, images) => {
+    return {"letter" : letter, "images" : images};
+}

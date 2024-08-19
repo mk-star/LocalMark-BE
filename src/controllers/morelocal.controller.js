@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo } from "../providers/morelocal.provider.js";
+import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo } from "../providers/morelocal.provider.js";
 
 // 로컬레터 목록 조회
 export const letterList = async (req, res, next) => {
@@ -65,6 +65,28 @@ export const addNewLetter = async (req, res, next) => {
       response(
         status.SUCCESS,
         await addLetterInfo(req.body, imageKey)
+      )
+    );
+  };
+
+// 로컬레터 수정
+export const modifyLetter = async (req, res, next) => {
+    console.log("로컬레터 수정을 요청하였습니다!");
+    console.log("body", req.body);
+  
+    const letterImage = req.files;
+  
+    const imageKey = [];
+    if (letterImage) {
+        letterImage.forEach((v) => {
+        imageKey.push(v.location);
+      });
+    }
+  
+    res.send(
+      response(
+        status.SUCCESS,
+        await modifyLetterInfo(req.params.letterId, req.body, imageKey)
       )
     );
   };

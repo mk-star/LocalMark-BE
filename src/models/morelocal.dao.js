@@ -1,6 +1,8 @@
 import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
-import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage } from "./morelocal.sql.js";
+import { BaseError } from "../../config/error.js";
+import { s3 } from "../middleware/image.uploader.js";
+import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage, updateLetter, selectLetterImage, deleteLetterImage } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -112,7 +114,8 @@ export const addLetter = async(letter, imageList) => {
         const conn = await pool.getConnection();
 
         const letterImage = imageList.map((key) => {
-            const encodedKey = encodeURIComponent(key);
+            // const encodedKey = encodeURIComponent(key);
+            const encodedKey = key;
             return [encodedKey];
         });
 
@@ -132,7 +135,8 @@ export const addLetterImage = async(letterId, imageList) => {
         const conn = await pool.getConnection();
 
         const letterImages = imageList.map((key) => {
-            const encodedKey = encodeURIComponent(key);
+            // const encodedKey = encodeURIComponent(key);
+            const encodedKey = key;
             return [letterId, encodedKey];
         });
       
@@ -143,3 +147,89 @@ export const addLetterImage = async(letterId, imageList) => {
         throw new Error(status.PARAMETER_IS_WRONG)
     }
 }
+
+// 로컬레터 수정
+export const modifyLetterById = async (data, imageList) => {
+    try {
+        const conn = await pool.getConnection();
+  
+        // const [confirm] = await pool.query(confirmLetter, [data.letterId]);
+        // if (!confirm[0].isExistLetter) {
+        //     conn.release();
+        //     return -1;
+        // }
+  
+        const letterImage = imageList.map((key) => {
+            // const encodedKey = encodeURIComponent(key);
+            const encodedKey = key;
+            return [encodedKey];
+        });
+
+        const [letter] = await pool.query(updateLetter, [
+            data.title,
+            letterImage[0][0],
+            data.content,
+            data.category,
+            data.letterId
+        ]);
+  
+        conn.release();
+        return letter.affectedRows;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+};
+
+// 로컬레터 수정 - 사진
+export const updateLetterImages = async (letterId, imageKey) => {
+    try {
+      const conn = await pool.getConnection();
+  
+      console.log(letterId);
+  
+      const [rows] = await pool.query(selectLetterImage, [letterId]);
+      const currentImages = rows.map((row) => row.filename);
+  
+      for (const filename of currentImages) {
+        await deleteLetterImages(filename);
+      }
+  
+      await pool.query(deleteLetterImage, [letterId]);
+  
+      if (imageKey && imageKey.length > 0) {
+        await addLetterImage(letterId, imageKey);
+      }
+  
+      conn.release();
+    } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+  };
+
+
+// 로컬레터 삭제 - 사진
+export const deleteLetterImages = async (filename) => {
+
+    const bucketUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REAGION}.amazonaws.com/`;
+    console.log("Bucket URL:", bucketUrl);
+
+    // URL에서 Key 추출
+    const filenameKey = decodeURIComponent(filename).replace(bucketUrl, '');
+
+    const params = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: decodeURIComponent(filenameKey),
+    };
+  
+    try {
+      s3.deleteObject(params, function (error, data) {
+        if (error) {
+          console.log("err: ", error, error.stack);
+        } else {
+          console.log(data, " 정상 삭제 되었습니다.");
+        }
+      });
+    } catch (err) {
+      throw err;
+    }
+};
