@@ -1,7 +1,7 @@
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
 import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO, recentEventResponseDTO, addLetterResponseDTO, modifyLetterResponseDTO } from "../dtos/morelocal.dto.js";
-import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage, updateLetterImages, modifyLetterById } from "../models/morelocal.dao.js";
+import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage, updateLetterImages, modifyLetterById, deleteLetterById } from "../models/morelocal.dao.js";
 
 // 로컬레터 목록 조회
 export const getLetterLists = async () => {
@@ -82,3 +82,15 @@ export const modifyLetterInfo = async (letterId, body, imageKey) => {
       throw err;
     }
   };
+
+// 로컬레터 삭제
+export const removeLetter = async (letterId) => {
+    const result = await deleteLetterById(letterId);
+  
+    if (result == -1) {
+      throw new BaseError(status.LETTER_NOT_EXIST);
+    }
+  
+    return "로컬레터가 성공적으로 삭제되었습니다.";
+};
+  

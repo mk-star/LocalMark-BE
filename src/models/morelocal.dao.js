@@ -2,7 +2,7 @@ import { pool } from "../../config/db.config.js";
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
 import { s3 } from "../middleware/image.uploader.js";
-import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage, updateLetter, selectLetterImage, deleteLetterImage } from "./morelocal.sql.js";
+import { getLetterList, recentLetters, confirmLetter, getLetterInfo, getLetterInfoImage, getEventList, confirmEvent, getEventInfo, getEventInfoImage, recentEvents, insertLetter, insertLetterImage, updateLetter, selectLetterImage, deleteLetterImage, deleteLetter } from "./morelocal.sql.js";
 
 // 로컬레터 목록 조회
 export const getLetters = async () => {
@@ -185,8 +185,6 @@ export const updateLetterImages = async (letterId, imageKey) => {
     try {
       const conn = await pool.getConnection();
   
-      console.log(letterId);
-  
       const [rows] = await pool.query(selectLetterImage, [letterId]);
       const currentImages = rows.map((row) => row.filename);
   
@@ -211,7 +209,6 @@ export const updateLetterImages = async (letterId, imageKey) => {
 export const deleteLetterImages = async (filename) => {
 
     const bucketUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REAGION}.amazonaws.com/`;
-    console.log("Bucket URL:", bucketUrl);
 
     // URL에서 Key 추출
     const filenameKey = decodeURIComponent(filename).replace(bucketUrl, '');
@@ -233,3 +230,31 @@ export const deleteLetterImages = async (filename) => {
       throw err;
     }
 };
+
+// 로컬레터 삭제
+export const deleteLetterById = async (letterId) => {
+    try {
+      const conn = await pool.getConnection();
+  
+      const [confirm] = await pool.query(confirmLetter, [letterId]);
+      if (!confirm[0].isExistLetter) {
+        conn.release();
+        return -1;
+      }
+  
+      const [rows] = await pool.query(selectLetterImage, [letterId]);
+      const currentImages = rows.map((row) => row.filename);
+  
+      for (const filename of currentImages) {
+        await deleteLetterImages(filename);
+      }
+  
+      const [letter] = await pool.query(deleteLetter, [letterId]);
+  
+      conn.release();
+      return letter.affectedRows;
+    } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+    }
+  };
+  

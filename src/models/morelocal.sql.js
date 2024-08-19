@@ -132,3 +132,8 @@ SELECT * FROM Letter_Image WHERE letter_id = ?
 export const deleteLetterImage = `
 DELETE FROM Letter_Image WHERE letter_id = ?
 `
+
+// 로컬레터 삭제
+export const deleteLetter = `
+DELETE FROM Letter WHERE id = ?
+`

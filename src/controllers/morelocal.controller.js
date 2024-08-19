@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo } from "../providers/morelocal.provider.js";
+import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo, removeLetter } from "../providers/morelocal.provider.js";
 
 // 로컬레터 목록 조회
 export const letterList = async (req, res, next) => {
@@ -90,3 +90,10 @@ export const modifyLetter = async (req, res, next) => {
       )
     );
   };
+
+// 로컬레터 삭제
+export const deleteLetter = async (req, res, next) => {
+  console.log("로컬레터 삭제를 요청하였습니다!");
+
+  res.send(response(status.SUCCESS, await removeLetter(req.params.letterId)));
+};
