@@ -19,11 +19,10 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+
 export const registerUserService = async (userData) => {
     const existingUserByID = await findByLoginID(userData.loginId);
     if (existingUserByID) {
-        console.log("오잉");
-        console.log(status.LOGINID_ALREADY_EXISTS);
         throw new BaseError(status.LOGINID_ALREADY_EXISTS);
     }
     const existingUser = await findByEmail(userData.email);
@@ -43,13 +42,14 @@ export const registerUserService = async (userData) => {
         subject: `[LOCAL MARK] 이메일 인증`,
         html: `<p>안녕하세요 ${userData.loginId} 님</p>
         <p>이메일 인증을 위해 아래 링크를 눌러주세요.</p>
-        <p><a href="http://localhost:3000/users/verify-email/?email=${encodeURIComponent(userData.email)}">Verify email</a></p>
+        <p><a href="http://localhost:5173/signup?role=Creator">Verify email</a></p>
         <p>감사합니다.</p>
         <p>LOCAL MARK</p>`,
         };
     await transporter.sendMail(mailOptions);
     return { userData };
 };
+
 export const verifyUserEmail = async (email) => {
     try{
         const user = await getUsernameByEmail(email);
