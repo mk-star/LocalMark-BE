@@ -51,11 +51,11 @@ app.use('/chatRooms',chatRouter)
 app.use("/reviews", reviewRouter);
 app.use("/products", productRouter);
 app.use("/health", healthRoute);
+app.use('/users', userRouter);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
 });
-app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {
     // 템플릿 엔진 변수 설정

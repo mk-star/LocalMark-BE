@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import crypto from "crypto";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { findByID, findByLoginID, findByEmail, createUser, changeIsEmailVerified, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById, findByNickname } from '../models/user.dao.js';
+import { findByID, createUser, createTemporaryUser, updateUser, getUsernameByEmail, getOrdersByID, getOrderItemNumberByIDs, getOrderItems, updatePassword, verifyEmail, resetPasswordByEmail, deleteUserById, restoreUserById, getUserByVerifyToken, modifyEmailStatus, sendVerificationEmail } from '../models/user.dao.js';
 
 const transporter = nodemailer.createTransport({
     service: process.env.NODEMAILER_SERVICE,
@@ -19,48 +19,50 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-
 export const registerUserService = async (userData) => {
-    const existingUserByID = await findByLoginID(userData.loginId);
-    if (existingUserByID) {
+    const result = await createUser(userData);
+    if (result == -1) {
+        throw new BaseError(status.EMAIL_NOT_VERIFIED);
+    } else if (result == -2) {
         throw new BaseError(status.LOGINID_ALREADY_EXISTS);
-    }
-    const existingUser = await findByEmail(userData.email);
-    if (existingUser) {
-        throw new BaseError(status.EMAIL_ALREADY_EXISTS);
-    }
-    const existingNickname = await findByNickname(userData.nickname);
-    if (existingNickname) {
+    } else if (result == -3) {
         throw new BaseError(status.NICKNAME_ALREADY_EXISTS);
     }
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    await createUser(userData, hashedPassword);
-    // 회원에 대한 정보 db에 저장 후 확인 이메일 보내기
-    const mailOptions = {
-        from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
-        to: userData.email,
-        subject: `[LOCAL MARK] 이메일 인증`,
-        html: `<p>안녕하세요 ${userData.loginId} 님</p>
-        <p>이메일 인증을 위해 아래 링크를 눌러주세요.</p>
-        <p><a href="http://localhost:5173/signup?role=Creator">Verify email</a></p>
-        <p>감사합니다.</p>
-        <p>LOCAL MARK</p>`,
-        };
-    await transporter.sendMail(mailOptions);
-    return { userData };
+    return "사용자가 성공적으로 등록되었습니다.";
 };
 
-export const verifyUserEmail = async (email) => {
-    try{
-        const user = await getUsernameByEmail(email);
-        const result = await changeIsEmailVerified(user[0].id);
-        return result;
-    } catch (error) {
-        throw error;
+export const sendVerificationEmailRequest = async (email) => {
+    const token = crypto.randomBytes(20).toString("hex");
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1); //1시간 이후 만료
+
+    const user = await createTemporaryUser(email, token, expires);
+    if(user == -1) {
+        throw new BaseError(status.EMAIL_ALREADY_EXISTS);
     }
+        
+    const result = await sendVerificationEmail(email, token, expires);
+    if (result == -1) {
+      throw new BaseError(status.EMAIL_SENDING_FAILED);
+    }
+    return "회원가입 메일 전송에 성공하였습니다.";
 };
 
-export const getUserInfo = async (userId) =>{
+export const verifyEmailStatus = async (token, expires) => {
+    const user = await getUserByVerifyToken(token, expires);
+    if (user == -1) {
+        throw new BaseError(status.USER_NOT_EXISTS);
+    } else if (user == -2) {
+        throw new BaseError(status.TOKEN_EXPIRED);
+    }
+    const result = await modifyEmailStatus(user);
+    if (result) {
+        throw new BaseError(status.ALREADY_VERIFIED_EMAIL);
+    }
+    return "이메일 인증이 성공적으로 완료되었습니다.";
+};
+
+export const getUserInfo = async (userId) => {
     try{
         const userData = await findByID(userId);
         return userData;
@@ -120,20 +122,13 @@ export const getOrderItemsService = async (itemNumber) => {
 };
 
 export const updateUserService = async (userId, userData) => {
-    try {
-        const existingUserByID = await findByID(userData.loginId);
-        if (existingUserByID) {
-            throw new Error('This id is already in use.');
+        const result = await updateUser(userId, userData);
+        if (result == -1) {
+            throw new BaseError(status.LOGINID_ALREADY_EXISTS);
+        } else if (result == -2) {
+            throw new BaseError(status.EMAIL_ALREADY_EXISTS);
         }
-        const existingUser = await findByEmail(userData.email);
-        if (existingUser) {
-            throw new Error('This email is already in use.');
-        }
-        const updatedUser = await updateUser(userId, userData);
-        return updatedUser;
-    } catch (error) {
-        throw error;
-    }
+        return "회원 정보 수정이 성공적으로 완료되었습니다.";
 };
 
 export const updatePasswordService = async (userId, newPassword) => {
