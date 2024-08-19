@@ -1,25 +1,21 @@
-import { registerUserService, verifyUserEmail, getUserInfo, findUsernameByEmailService, getOrdersService, getOrderItemNumberService, getOrderItemsService, updateUserService, updatePasswordService, updatePasswordEmailService, resetPassword, deleteUser } from '../services/user.service.js';
-import { response, errResponse } from '../../config/response.js';
+import { registerUserService, sendVerificationEmailRequest , getUserInfo, findUsernameByEmailService, getOrdersService, getOrderItemNumberService, getOrderItemsService, updateUserService, updatePasswordService, updatePasswordEmailService, resetPassword, deleteUser, verifyEmailStatus } from '../services/user.service.js';
+import { response } from '../../config/response.js';
 import { status } from "../../config/response.status.js";
 
+
 export const registerUser = async (req, res, next) => {
-    try {
-        const userData = req.body;
-        const newUser = await registerUserService(userData);
-        res.send(response(status.SUCCESS, 'User registered successfully', { user: newUser }));
-    } catch(err) {
-        next(err);
-    }
+    res.send(response(status.SUCCESS, await registerUserService(req.body)));
 };
+
+export const requestEmailVerification = async (req, res) => {
+    const { email } = req.body;
+    res.send(response(status.SUCCESS, await sendVerificationEmailRequest (email)));
+};
+
 export const verifyEmail = async (req, res) => {
-    try{
-        const { email } = req.query;
-        await verifyUserEmail(email);
-        res.send(response(status.SUCCESS, 'Email verified successfully!'));
-    } catch(err) {
-        next(err);
-    }
-};
+    const { token, expires } = req.query;
+    res.send(response(status.SUCCESS, await verifyEmailStatus(token, expires)));
+}
 
 export const getInfo = async (req, res) => {
     try {
@@ -57,14 +53,9 @@ export const getOrderItems = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-    try {
-        const userId = req.currentId;
-        const userData = req.body;
-        await updateUserService(userId, userData);
-        res.send(response(status.SUCCESS, 'User updated successfully'));
-    } catch(err) {
-        next(err);
-    }
+    const userId = req.currentId;
+    const userData = req.body;
+    res.send(response(status.SUCCESS, await updateUserService(userId, userData)));
 };
 
 export const updatePassword = async (req, res) => {

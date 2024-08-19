@@ -151,28 +151,47 @@ export const status = {
     message: "계정 탈퇴를 신청한 사용자입니다.",
   },
   LOGINID_ALREADY_EXISTS: {
-    status: StatusCodes.BAD_REQUEST,  // 409
+    status: StatusCodes.CONFLICT,
     isSuccess: false,
     code: "USER4010",
     message: "이미 존재하는 로그인 ID입니다.",
   },
   EMAIL_ALREADY_EXISTS: {
-    status: StatusCodes.CONFLICT,  // 409
+    status: StatusCodes.CONFLICT, 
     isSuccess: false,
     code: "USER4011",
     message: "이미 존재하는 이메일입니다.",
   },
   NICKNAME_ALREADY_EXISTS: {
-    status: StatusCodes.CONFLICT,  // 409
+    status: StatusCodes.CONFLICT, 
     isSuccess: false,
     code: "USER4012",
     message: "이미 존재하는 닉네임입니다.",
   },
   EMAIL_SENDING_FAILED: {
-    status: StatusCodes.SERVICE_UNAVAILABLE,  // 503
+    status: StatusCodes.SERVICE_UNAVAILABLE, 
     isSuccess: false,
     code: "USER4013",
     message: "이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
+  },
+  TOKEN_EXPIRED: {
+    status: StatusCodes.BAD_REQUEST,
+    isSuccess: false,
+    code: "USER4014",
+    message: "만료된 이메일 토큰입니다.",
+  },
+  EMAIL_NOT_VERIFIED: {
+    status: StatusCodes.FORBIDDEN, 
+    isSuccess: false,
+    code: "USER4015",
+    message: "이메일 인증이 완료되지 않았습니다.",
+  },
+
+  ALREADY_VERIFIED_EMAIL: {
+    status: StatusCodes.CONFLICT,
+    isSuccess: false,
+    code: "USER4016",
+    message: "이미 인증된 이메일입니다.",
   },
 
   //product
@@ -205,6 +224,7 @@ export const status = {
     isSuccess: false,
     code: "SOCKET5001"
   },
+
   // db error
   PARAMETER_IS_WRONG: {
     status: StatusCodes.BAD_REQUEST,
