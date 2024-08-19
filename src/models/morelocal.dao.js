@@ -383,3 +383,30 @@ export const deleteEventImages = async (filename) => {
     throw err;
   }
 };
+
+// 이벤트 삭제
+export const deleteEventById = async (eventId) => {
+  try {
+    const conn = await pool.getConnection();
+
+    const [confirm] = await pool.query(confirmEvent, [eventId]);
+    if (!confirm[0].isExistEvent) {
+      conn.release();
+      return -1;
+    }
+
+    const [rows] = await pool.query(selectEventImage, [eventId]);
+    const currentImages = rows.map((row) => row.filename);
+
+    for (const filename of currentImages) {
+      await deleteEventImages(filename);
+    }
+
+    const [event] = await pool.query(deleteEvent, [eventId]);
+
+    conn.release();
+    return event.affectedRows;
+  } catch (err) {
+    throw new BaseError(status.PARAMETER_IS_WRONG);
+  }
+};

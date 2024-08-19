@@ -1,7 +1,7 @@
 import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
 import { letterlistResponseDTO, letterResponseDTO, recentLetterResponseDTO, eventlistResponseDTO, eventResponseDTO, recentEventResponseDTO, addLetterResponseDTO, modifyLetterResponseDTO, addEventResponseDTO, modifyEventResponseDTO } from "../dtos/morelocal.dto.js";
-import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage, updateLetterImages, modifyLetterById, deleteLetterById, addEvent, addEventImage, updateEventImages, modifyEventById } from "../models/morelocal.dao.js";
+import { getLetters, getLetterDetail, getRecentLetters, getEvents, getEventDetail, getRecentEvents, addLetter, addLetterImage, updateLetterImages, modifyLetterById, deleteLetterById, addEvent, addEventImage, updateEventImages, modifyEventById, deleteEventById } from "../models/morelocal.dao.js";
 
 // 로컬레터 목록 조회
 export const getLetterLists = async () => {
@@ -134,4 +134,15 @@ export const modifyEventInfo = async (eventId, body, imageKey) => {
     } catch (err) {
       throw err;
     }
+};
+
+// 이벤트 삭제
+export const removeEvent = async (eventId) => {
+    const result = await deleteEventById(eventId);
+  
+    if (result == -1) {
+      throw new BaseError(status.EMAIL_NOT_EXISTS);
+    }
+  
+    return "이벤트가 성공적으로 삭제되었습니다.";
 };

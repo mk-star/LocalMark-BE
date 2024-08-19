@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo, removeLetter, addEventInfo, modifyEventInfo } from "../providers/morelocal.provider.js";
+import { getLetterLists, getLetter, getRecentLetterList, getEventLists, getEvent, getRecentEventList, addLetterInfo, modifyLetterInfo, removeLetter, addEventInfo, modifyEventInfo, removeEvent } from "../providers/morelocal.provider.js";
 
 // 로컬레터 목록 조회
 export const letterList = async (req, res, next) => {
@@ -139,4 +139,11 @@ export const modifyEvent = async (req, res, next) => {
       await modifyEventInfo(req.params.eventId, req.body, imageKey)
     )
   );
+};
+
+// 이벤트 삭제
+export const deletEvent = async (req, res, next) => {
+  console.log("이벤트 삭제를 요청하였습니다!");
+
+  res.send(response(status.SUCCESS, await removeEvent(req.params.eventId)));
 };
