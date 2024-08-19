@@ -295,6 +295,20 @@ paths:
                     "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/b2610009.jpg"
                   ]
                 }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: LETTER4001
+              message:
+                type: string
+                example: 존재하지 않는 로컬레터입니다.  
     delete:
       tags:
         - More Local
@@ -324,7 +338,21 @@ paths:
                 example: "SUCCESS!"
               result:
                 type: array
-                example: 로컬레터가 성공적으로 삭제되었습니다.  
+                example: 로컬레터가 성공적으로 삭제되었습니다. 
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: LETTER4001
+              message:
+                type: string
+                example: 존재하지 않는 로컬레터입니다.   
   /morelocal/letters/recent:
     get:
       tags:
@@ -697,6 +725,20 @@ paths:
                     "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/8e3353bb9aad0.jpg"
                   ]
                 }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: EVENT4001
+              message:
+                type: string
+                example: 존재하지 않는 이벤트입니다. 
     delete:
       tags:
         - More Local
@@ -727,6 +769,20 @@ paths:
               result:
                 type: array
                 example: 이벤트가 성공적으로 삭제되었습니다.  
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: EVENT4001
+              message:
+                type: string
+                example: 존재하지 않는 이벤트입니다. 
   /morelocal/events/recent:
     get:
       tags:

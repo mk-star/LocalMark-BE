@@ -66,21 +66,24 @@ export const addLetterInfo = async (body, imagekey) => {
 
 // 로컬레터 수정
 export const modifyLetterInfo = async (letterId, body, imageKey) => {
-    try {
-      await modifyLetterById({
+
+    // 로컬레터 존재하는지 판별
+    const result = await getLetterDetail(letterId);
+    if (result == -1){
+        throw new BaseError(status.LETTER_NOT_EXIST);
+    }
+
+    await modifyLetterById({
         letterId: letterId,
         title: body.title,
         content: body.content,
         category: body.category,
-      }, imageKey);
+    }, imageKey);
   
-      await updateLetterImages(letterId, imageKey);
+    await updateLetterImages(letterId, imageKey);
   
-      const {letter, images} = await getLetter(letterId);
-      return modifyLetterResponseDTO(letter, images);
-    } catch (err) {
-      throw err;
-    }
+    const {letter, images} = await getLetter(letterId);
+    return modifyLetterResponseDTO(letter, images);
   };
 
 // 로컬레터 삭제
@@ -117,23 +120,26 @@ export const addEventInfo = async (body, imagekey) => {
 
 // 이벤트 수정
 export const modifyEventInfo = async (eventId, body, imageKey) => {
-    try {
-      await modifyEventById({
+
+    // 이벤트 존재하는지 판별
+    const result = await getEventDetail(eventId);
+    if (result == -1){
+        throw new BaseError(status.EVENT_NOT_EXIST);
+    }
+    
+    await modifyEventById({
         eventId: eventId,
         title: body.title,
         content: body.content,          
         start_date: body.start_date, 
         end_date: body.end_date, 
         subregion_id: body.subregion_id
-      }, imageKey);
+    }, imageKey);
   
-      await updateEventImages(eventId, imageKey);
+    await updateEventImages(eventId, imageKey);
   
-      const {event, images} = await getEvent(eventId);
-      return modifyEventResponseDTO(event, images);
-    } catch (err) {
-      throw err;
-    }
+    const {event, images} = await getEvent(eventId);
+    return modifyEventResponseDTO(event, images);
 };
 
 // 이벤트 삭제
@@ -141,7 +147,7 @@ export const removeEvent = async (eventId) => {
     const result = await deleteEventById(eventId);
   
     if (result == -1) {
-      throw new BaseError(status.EMAIL_NOT_EXISTS);
+      throw new BaseError(status.EVENT_NOT_EXIST);
     }
   
     return "이벤트가 성공적으로 삭제되었습니다.";

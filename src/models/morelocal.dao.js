@@ -13,7 +13,7 @@ export const getLetters = async () => {
         conn.release();
         return letters;
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -36,7 +36,7 @@ export const getLetterDetail = async (letterId) => {
         return {letter: letter[0], images: imageUrls};
         
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -52,7 +52,7 @@ export const getRecentLetters = async() => {
         
         
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -66,7 +66,7 @@ export const getEvents = async () => {
         conn.release();
         return events;
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -88,7 +88,7 @@ export const getEventDetail = async (eventId) => {
         return {event: event[0], images: imageUrls};
         
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -102,9 +102,8 @@ export const getRecentEvents = async() => {
         conn.release();
         return events;
         
-        
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -125,7 +124,7 @@ export const addLetter = async(letter, imageList) => {
         return newLetter.insertId;
         
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -144,7 +143,7 @@ export const addLetterImage = async(letterId, imageList) => {
       
           conn.release();
     } catch (err) {
-        throw new Error(status.PARAMETER_IS_WRONG)
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 }
 
@@ -152,12 +151,6 @@ export const addLetterImage = async(letterId, imageList) => {
 export const modifyLetterById = async (data, imageList) => {
     try {
         const conn = await pool.getConnection();
-  
-        // const [confirm] = await pool.query(confirmLetter, [data.letterId]);
-        // if (!confirm[0].isExistLetter) {
-        //     conn.release();
-        //     return -1;
-        // }
   
         const letterImage = imageList.map((key) => {
             // const encodedKey = encodeURIComponent(key);
@@ -200,7 +193,7 @@ export const updateLetterImages = async (letterId, imageKey) => {
   
       conn.release();
     } catch (err) {
-      throw new BaseError(status.PARAMETER_IS_WRONG);
+        throw new BaseError(status.PARAMETER_IS_WRONG);
     }
   };
 
@@ -276,7 +269,7 @@ export const addEvent = async(event, imageList) => {
       return newEvent.insertId;
       
   } catch (err) {
-      throw new Error(status.PARAMETER_IS_WRONG)
+      throw new BaseError(status.PARAMETER_IS_WRONG);
   }
 }
 
@@ -295,7 +288,7 @@ export const addEventImage = async(eventId, imageList) => {
     
         conn.release();
   } catch (err) {
-      throw new Error(status.PARAMETER_IS_WRONG)
+      throw new BaseError(status.PARAMETER_IS_WRONG);
   }
 }
 
@@ -303,12 +296,6 @@ export const addEventImage = async(eventId, imageList) => {
 export const modifyEventById = async (data, imageList) => {
   try {
       const conn = await pool.getConnection();
-
-      // const [confirm] = await pool.query(confirmEvent, [data.eventId]);
-      // if (!confirm[0].isExistEvent) {
-      //     conn.release();
-      //     return -1;
-      // }
 
       const eventImage = imageList.map((key) => {
           // const encodedKey = encodeURIComponent(key);
