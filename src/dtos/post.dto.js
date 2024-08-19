@@ -41,6 +41,7 @@ export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
     console.log("images:", images);
     post[0].created_at = formatDate(post[0].created_at);
 
+    
     const imagesData = [];
 
     for (let i = 0; i < images.length; i++) {
@@ -50,10 +51,17 @@ export const postDetailResponseDTO = (post, images, commentNum, likeNum) => {
     }
 
     return {
-        "post": post[0],
-        "commentNum": commentNum,
-        "likeNum": likeNum,
-        "imagesData": imagesData
+        "postId": post[0].id,
+        "category": post[0].category,
+        "title": post[0].title,
+        "thumbnailFilename": post[0].thumbnailFilename,
+        "content": post[0].content,
+        "createdAt": post[0].created_at,
+        "commentNum": commentNum[0].commentNum,
+        "likeNum": likeNum[0].likeNum,
+        "imagesData": imagesData,
+        "author":author,
+        "brand": filteredBrandInfo
     };
 }
 
