@@ -84,6 +84,78 @@ paths:
                     }
                   ]
                 }
+    post:
+      tags:
+        - More Local
+      summary: 로컬레터 생성 (임시!!!)
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: query
+          name: directory
+          schema:
+            type: string
+            example: letters
+        - in: formData
+          name: image
+          type: array
+          items:
+            type: file
+            format: binary
+            description: 파일 업로드 (최소 0개, 최대 20개)
+        - in: formData
+          name: title
+          schema:
+            type: string
+            description: 제목
+            example: 제목
+          required: true
+        - in: formData
+          name: content
+          schema:
+            type: string
+            description: 내용
+            example: 내용
+          required: true
+        - in: formData
+          name: category
+          schema:
+            type: string
+            description: 카테고리(뉴스레터 or 인터뷰)
+            example: 인터뷰
+          required: true
+      responses:
+        '200':
+          description: 로컬레터 생성 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "letter": {
+                    "letter_id": 0,
+                    "category": "인터뷰",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.08.02",
+                    "content": "내용"
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/more+local_%E1%84%83%E1%85%A2%E1%84%91%E1%85%AD+%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/cat.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/b2610009.jpg"
+                  ]
+                }
   /morelocal/letters/{letterId}:
     get:
       tags:
@@ -144,7 +216,143 @@ paths:
                 example: LETTER4001
               message:
                 type: string
-                example: 존재하지 않는 로컬레터입니다.       
+                example: 존재하지 않는 로컬레터입니다.  
+    patch:
+      tags:
+        - More Local
+      summary: 로컬레터 수정 (임시!!!)
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: letterId
+          schema:
+            type: integer
+            description: 로컬레터id
+          required: true
+        - in: query
+          name: directory
+          schema:
+            type: string
+            example: letters
+        - in: formData
+          name: image
+          type: array
+          items:
+            type: file
+            format: binary
+            description: 파일 업로드 (최소 0개, 최대 20개)
+        - in: formData
+          name: title
+          schema:
+            type: string
+            description: 제목
+            example: 제목
+          required: true
+        - in: formData
+          name: content
+          schema:
+            type: string
+            description: 내용
+            example: 내용
+          required: true
+        - in: formData
+          name: category
+          schema:
+            type: string
+            description: 카테고리(뉴스레터 or 인터뷰)
+            example: 인터뷰
+          required: true
+      responses:
+        '200':
+          description: 로컬레터 수정 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "letter": {
+                    "letter_id": 0,
+                    "category": "인터뷰",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.08.02",
+                    "content": "내용"
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/more+local_%E1%84%83%E1%85%A2%E1%84%91%E1%85%AD+%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/cat.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/letters/b2610009.jpg"
+                  ]
+                }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: LETTER4001
+              message:
+                type: string
+                example: 존재하지 않는 로컬레터입니다.  
+    delete:
+      tags:
+        - More Local
+      summary: 로컬레터 삭제 (임시!!!)
+      parameters:
+        - name: letterId
+          type: integer
+          in: path
+          schema:
+            type: integer
+            description: 로컬레터 id
+          required: true
+      responses:
+        '200':
+          description: 로컬레터 삭제 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: 로컬레터가 성공적으로 삭제되었습니다. 
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: LETTER4001
+              message:
+                type: string
+                example: 존재하지 않는 로컬레터입니다.   
   /morelocal/letters/recent:
     get:
       tags:
@@ -267,6 +475,96 @@ paths:
                     }
                   ]
                 }
+    post:
+      tags:
+        - More Local
+      summary: 이벤트 생성 (임시!!!)
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: query
+          name: directory
+          schema:
+            type: string
+            example: events
+        - in: formData
+          name: image
+          type: array
+          items:
+            type: file
+            format: binary
+            description: 파일 업로드 (최소 0개, 최대 20개)
+        - in: formData
+          name: title
+          type: string
+          schema:
+            type: string
+            description: 제목
+          required: true
+        - in: formData
+          name: content
+          type: string
+          schema:
+            type: string
+            description: 내용
+          required: true
+        - in: formData
+          name: start_date
+          type: string
+          example: '2024-08-23'
+          schema:
+            type: string
+            description: 시작일
+          required: true
+        - in: formData
+          name: end_date
+          type: string
+          example: '2024-09-23'
+          schema:
+            type: string
+            description: 마지막일
+          required: true
+        - in: formData
+          name: subregion_id
+          type: integer
+          schema:
+            type: integer
+            description: 소지역
+          required: true
+      responses:
+        '200':
+          description: 이벤트 생성 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "event": {
+                    "event_id": 0,
+                    "subregion_name": "성수",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.07.02",
+                    "start_date": "2024.08.02",
+                    "end_date": "2024.10.02",
+                    "content": "내용"
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/00501111_20190121.jpg",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/5220564.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/8e3353bb9aad0.jpg"
+                  ]
+                }
   /morelocal/events/{eventId}:
     get:
       tags:
@@ -329,7 +627,162 @@ paths:
                 example: EVENT4001
               message:
                 type: string
-                example: 존재하지 않는 이벤트입니다.    
+                example: 존재하지 않는 이벤트입니다.  
+    patch:
+      tags:
+        - More Local
+      summary: 이벤트 수정 (임시!!!)
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: eventId
+          type: integer
+          in: path
+          schema:
+            type: integer
+            description: 이벤트 id
+          required: true
+        - in: query
+          name: directory
+          schema:
+            type: string
+            example: events
+        - in: formData
+          name: image
+          type: array
+          items:
+            type: file
+            format: binary
+            description: 파일 업로드 (최소 0개, 최대 20개)
+        - in: formData
+          name: title
+          type: string
+          schema:
+            type: string
+            description: 제목
+          required: true
+        - in: formData
+          name: content
+          type: string
+          schema:
+            type: string
+            description: 내용
+          required: true
+        - in: formData
+          name: start_date
+          type: string
+          example: '2024-08-23'
+          schema:
+            type: string
+            description: 시작일
+          required: true
+        - in: formData
+          name: end_date
+          type: string
+          example: '2024-09-23'
+          schema:
+            type: string
+            description: 마지막일
+          required: true
+        - in: formData
+          name: subregion_id
+          type: integer
+          schema:
+            type: integer
+            description: 소지역
+          required: true
+      responses:
+        '200':
+          description: 이벤트 수정 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: {
+                  "event": {
+                    "event_id": 0,
+                    "subregion_name": "성수",
+                    "title": "제목",
+                    "thumbnail_url": "https://image.png",
+                    "created_at": "2024.07.02",
+                    "start_date": "2024.08.02",
+                    "end_date": "2024.10.02",
+                    "content": "내용"
+                  },
+                  "images": [
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/00501111_20190121.jpg",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/5220564.png",
+                    "https://localmark-s3.s3.ap-northeast-2.amazonaws.com/events/8e3353bb9aad0.jpg"
+                  ]
+                }
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: EVENT4001
+              message:
+                type: string
+                example: 존재하지 않는 이벤트입니다. 
+    delete:
+      tags:
+        - More Local
+      summary: 이벤트 삭제 (임시!!!)
+      parameters:
+        - name: eventId
+          type: integer
+          in: path
+          schema:
+            type: integer
+            description: 이벤트 id
+          required: true
+      responses:
+        '200':
+          description: 이벤트 삭제 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "SUCCESS!"
+              result:
+                type: array
+                example: 이벤트가 성공적으로 삭제되었습니다.  
+        '400':
+          description: 파라미터 오류 (존재하지 않는 id값)
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: EVENT4001
+              message:
+                type: string
+                example: 존재하지 않는 이벤트입니다. 
   /morelocal/events/recent:
     get:
       tags:
