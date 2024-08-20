@@ -47,10 +47,11 @@ export const brandOrderResponseDTO = (data) => {
     return {"orders": orders};
 }
 
-export const BrandDto = ({ user_id, region_id, name, brand_url, description, brand_image, business_name, business_registration_number, contact }) => ({
+export const BrandDto = ({ user_id, region_id, brand_name, brand_category, brand_url, description, brand_image, business_name, business_registration_number, contact }) => ({
     user_id,
     region_id,
-    name,
+    brand_name,
+    brand_category,
     brand_url,
     description,
     brand_image,

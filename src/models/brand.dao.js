@@ -128,11 +128,11 @@ export const createBrandDAO = async(userId, brandData) =>{
     const conn = await pool.getConnection();
     const sql = `
             INSERT INTO Brand (
-                user_id, region_id, brand_name, brand_url, description, brand_image, business_name, business_registration_number, contact
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                user_id, region_id, brand_name, brand_category, brand_url, description, brand_image, business_name, business_registration_number, contact
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
-            userId, brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
+            userId, brandData.region_id, brandData.brand_name, brandData.brand_category, brandData.brand_url, brandData.description,
             brandData.brand_image, brandData.business_name, brandData.business_registration_number, brandData.contact
         ];
     try{
@@ -148,12 +148,12 @@ export const createBrandDAO = async(userId, brandData) =>{
 export const updateBrandDAO = async(brandId, userId, brandData) => {
     const sql = `
         UPDATE Brand SET
-            region_id = ?, brand_name = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
+            region_id = ?, brand_name = ?, brand_category = ?, brand_url = ?, description = ?, brand_image = ?, business_name = ?, business_registration_number = ?, contact = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ? AND user_id = ?
     `;
 
     const values = [
-        brandData.region_id, brandData.brand_name, brandData.brand_url, brandData.description,
+        brandData.region_id, brandData.brand_name, brandData.brand_category, brandData.brand_url, brandData.description,
         brandData.brand_image, brandData.business_name, brandData.business_registration_number,
         brandData.contact, brandId, userId
     ];
@@ -161,7 +161,6 @@ export const updateBrandDAO = async(brandId, userId, brandData) => {
     try{
         const results = await pool.query(sql, values);
         conn.release();
-        console.log(results);
         return results;
     }catch(error){
         throw error;

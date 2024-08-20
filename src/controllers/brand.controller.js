@@ -32,12 +32,10 @@ export const createBrand = async(req, res, next) => {
     try {
         const brandData = req.body;
         const userId = req.currentId;
-        req.query.directory = "brands";
         // S3에 업로드된 파일의 URL 가져오기
         if (req.file && req.file.location) {
             brandData.brand_image = req.file.location;
         }
-        console.log('brand_image', brandData);
         const newBrand = await createBrandService(userId, brandData);
         return res.status(201).json(response({ isSuccess: true, code: 201, message: 'Brand created successfully' }, newBrand));
     } catch (error) {
@@ -49,6 +47,10 @@ export const updateBrand = async(req, res, next) => {
         const brandId = req.params.brandId;
         const userId = req.currentId;
         const updateBrand = req.body;
+        // S3에 업로드된 파일의 URL 가져오기
+        if (req.file && req.file.location) {
+            updateBrand.brand_image = req.file.location;
+        }
         await updateBrandService(brandId, userId, updateBrand);
         return res.status(200).json(response({ isSuccess: true, code: 200, message: 'Brand updated successfully' }));
     } catch (error) {
