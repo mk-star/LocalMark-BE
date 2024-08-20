@@ -51,32 +51,20 @@ export const createTemporaryUser = async (email, token, expires) => {
 };
 
 export const sendVerificationEmail = async (email, token, expires) => {
-    const mailOptions = {
-        from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
-        to: email,
-        subject: `[LOCAL MARK] 이메일 인증`,
-        html: `<p>안녕하세요</p>
-        <p>이메일 인증을 위해 아래 링크를 눌러주세요.</p>
-        <p><a href="http://localhost:3000/users/verify-email?token=${token}&expires=${expires}">Verify email</a></p>
-        <p>감사합니다.</p>
-        <p>LOCAL MARK</p>`,
-    };
-  
     try {
-      smtpTransport.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          smtpTransport.close(); // 전송 종료
-          conn.release(); // 연결 종료
-          return -1;
-        } else {
-          smtpTransport.close(); // 전송 종료
-          conn.release(); // 연결 종료
-          return {token, expires}
-        }
-      });
+        const mailOptions = {
+            from: process.env.NODEMAILER_USER, // 발신자 이메일 주소.
+            to: email,
+            subject: `[LOCAL MARK] 이메일 인증`,
+            html: `<p>안녕하세요</p>
+            <p>이메일 인증을 위해 아래 링크를 눌러주세요.</p>
+            <p><a href="https://umc.localmark.store/users/verify-email?token=${token}&expires=${expires}">Verify email</a></p>
+            <p>감사합니다.</p>
+            <p>LOCAL MARK</p>`,
+        };
+        await smtpTransport.sendMail(mailOptions);
     } catch (err) {
-      smtpTransport.close();
-      throw new BaseError(status.PARAMETER_IS_WRONG);
+      throw new BaseError(status.EMAIL_SENDING_FAILED);
     }
 }
 
@@ -98,6 +86,7 @@ export const getUserByVerifyToken = async (token, expires) => {
             conn.release();
             return -2; // 토큰이 만료됨
         }
+        console.log(user[0]);
         conn.release();
         return user[0];
       } catch (err) {
