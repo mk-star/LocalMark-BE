@@ -5,8 +5,10 @@ import {
     getOrder,
     restoreStock,
     updateOrderStatus,
-    updateStock
-} from "../models/oreder.dao.js";
+    updateStock, validStockCount
+} from "../models/order.dao.js";
+import {BaseError} from "../../config/error.js";
+import {status} from "../../config/response.status.js";
 
 // 아임포트 인증 토큰 발급 함수
 async function getIamportToken() {
@@ -22,18 +24,25 @@ async function getIamportToken() {
         return result.data.response.access_token;
     } catch (error) {
         console.error("아임포트 토큰 발급 실패:", error);
-        throw error;
+        throw new BaseError(status.PAYMENT_IS_WRONG);
     }
 }
 
 // 주문 생성 및 결제 준비 서비스
-export async function createOrderAndPreparePayment(orderData) {
-    const { user_id, receiver, address_name, phone, zip_code, address, spec_address, delivery_fee, total_price, order_items } = orderData;
+export async function createOrderAndPreparePayment(userId, orderData) {
+    const { receiver, address_name, phone, zip_code, address, spec_address, delivery_fee, total_price, order_items } = orderData;
 
+    // 재고 확인 로직
+    for (const item of order_items) {
+        const isValid = await validStockCount(item.productOptionId, item.quantity);
+        if(isValid == -1){
+            throw new BaseError(status.STOCK_COUNT_NOT_EXIST)
+        }
+    }
 
     // 주문 정보 저장
     const newOrder = await createOrder(
-        user_id,
+        userId,
         receiver,
         address_name,
         phone,
@@ -48,9 +57,9 @@ export async function createOrderAndPreparePayment(orderData) {
     // 주문 아이템 저장
     for (const item of order_items) {
         await createOrderItem(
-            item.product_id,
+            item.productId,
             newOrder,
-            item.product_option_id,
+            item.productOptionId,
             item.price,
             item.quantity
         );
@@ -58,7 +67,7 @@ export async function createOrderAndPreparePayment(orderData) {
 
     // 재고 감소
     for (const item of order_items) {
-        await updateStock(item.product_option_id, item.quantity);
+        await updateStock(item.productOptionId, item.quantity);
     }
 
     // 아임포트 토큰 발급
@@ -92,7 +101,7 @@ export async function createOrderAndPreparePayment(orderData) {
 
 // 결제 완료 및 검증 서비스
 export async function completePaymentInfo(paymentInfo) {
-    const { imp_uid, merchant_uid, order_id } = paymentInfo;
+    const { imp_uid, orderId, merchant_uid } = paymentInfo;
 
     const accessToken = await getIamportToken();
 
@@ -107,19 +116,21 @@ export async function completePaymentInfo(paymentInfo) {
     }
 
     // 주문 상태 업데이트
-    await updateOrderStatus(order_id, 'COMPLETE');
+    await updateOrderStatus(orderId, 'COMPLETE');
+    return "결제 완료 및 주문 상태 업데이트 성공";
 }
 
 // 주문 취소 서비스
-export async function cancelOrderInfo(order_id, reason) {
+export async function cancelOrderInfo(orderId, reason) {
     // 주문 정보 가져오기
-    const order = await getOrder(order_id);
+    const order = await getOrder(orderId);
     if (!order) {
-        throw new Error('주문을 찾을 수 없습니다.');
+        throw new BaseError(status.ORDER_NOT_EXIST)
     }
 
     // 재고 복구
-    const orderItems = await getOrder(order_id);
+    const orderItems = await getOrder(orderId);
+    console.log(orderItems)
     for (const item of orderItems) {
         await restoreStock(item.product_option_id, item.quantity);
     }
@@ -137,5 +148,6 @@ export async function cancelOrderInfo(order_id, reason) {
     );
 
     // 주문 상태 업데이트
-    await updateOrderStatus(order_id, 'CANCEL')
+    await updateOrderStatus(orderId, 'CANCEL')
+    return "주문이 취소되었습니다.";
 }
