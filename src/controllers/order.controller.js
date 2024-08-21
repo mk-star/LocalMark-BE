@@ -24,4 +24,13 @@ export async function completePayment(req, res) {
     }
 }
 
-
+export async function cancelOrder(req, res) {
+    const { order_id } = req.params;
+    try {
+        await cancelOrderInfo(order_id, req.body.reason);
+        res.status(200).json({ message: '주문이 취소되었습니다.' });
+    } catch (error) {
+        console.error('주문 취소 오류:', error);
+        res.status(500).json({ error: '주문 취소 실패' });
+    }
+}

@@ -109,3 +109,33 @@ export async function completePaymentInfo(paymentInfo) {
     // 주문 상태 업데이트
     await updateOrderStatus(order_id, 'COMPLETE');
 }
+
+// 주문 취소 서비스
+export async function cancelOrderInfo(order_id, reason) {
+    // 주문 정보 가져오기
+    const order = await getOrder(order_id);
+    if (!order) {
+        throw new Error('주문을 찾을 수 없습니다.');
+    }
+
+    // 재고 복구
+    const orderItems = await getOrder(order_id);
+    for (const item of orderItems) {
+        await restoreStock(item.product_option_id, item.quantity);
+    }
+
+    // 결제 취소 요청 (아임포트)
+    const accessToken = await getIamportToken();
+    await axios.post(
+        `https://api.iamport.kr/payments/cancel`,
+        {
+            imp_uid: order.imp_uid,
+            merchant_uid: order.merchant_uid,
+            reason
+        },
+        {headers: {Authorization: `Bearer ${accessToken}`}}
+    );
+
+    // 주문 상태 업데이트
+    await updateOrderStatus(order_id, 'CANCEL')
+}
