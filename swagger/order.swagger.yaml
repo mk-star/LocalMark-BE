@@ -132,13 +132,19 @@ paths:
                 type: string
                 example: "유효하지 않은 주문 ID 또는 결제 정보입니다."
 
-  /order/cancel:
+  /orders/{orderId}/cancel:
     post:
       summary: "주문 취소"
       description: "사용자가 결제된 주문을 취소합니다."
       tags:
         - Order
       parameters:
+        - name: orderId
+          in: path
+          description: "취소할 주문 ID"
+          required: true
+          type: integer
+          example: 7
         - in: body
           name: cancelRequest
           description: "주문 취소 정보"
@@ -146,10 +152,6 @@ paths:
           schema:
             type: object
             properties:
-              order_id:
-                type: integer
-                example: 9876
-                description: "주문 ID"
               reason:
                 type: string
                 example: "고객 요청에 의한 취소"
