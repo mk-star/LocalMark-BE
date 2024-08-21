@@ -20,6 +20,8 @@ import { cartRouter } from "./src/routes/cart.route.js";
 import {chatRouter} from "./src/routes/chat.route.js";
 import {morelocalRouter} from "./src/routes/morelocal.route.js";
 import { productRouter } from "./src/routes/product.route.js";
+import {orderRouter} from "./src/routes/order.route.js";
+
 import { healthRoute } from "./src/routes/health.route.js";
 
 //서버 가동
@@ -52,6 +54,7 @@ app.use("/reviews", reviewRouter);
 app.use("/products", productRouter);
 app.use("/health", healthRoute);
 app.use('/users', userRouter);
+app.use("/orders",orderRouter);
 
 app.get("/", (req, res) => {
   res.send("로컬마크 시작~");
