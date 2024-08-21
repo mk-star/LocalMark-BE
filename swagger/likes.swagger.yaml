@@ -3,7 +3,7 @@ paths:
     post:
       tags:
         - Like
-      summary: Like a post
+      summary: 로컬 커뮤니티 게시글의 좋아요를 추가/취소 합니다.
       description: Like a specific post by its ID.
       parameters:
         - name: postId
@@ -57,7 +57,7 @@ paths:
     post:
       tags:
         - Like
-      summary: Like a comment
+      summary: 작성된 댓글의 좋아요를 추가/취소 합니다.
       description: Like a specific comment by its ID.
       parameters:
         - name: commentId
