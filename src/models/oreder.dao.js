@@ -29,3 +29,32 @@ export const updateStock = async (product_option_id, quantity) => {
     `;
     await pool.execute(query, [quantity, product_option_id]);
 };
+
+// 재고 복구 (취소 시 증가)
+export const restoreStock = async (product_option_id, quantity) => {
+    const query = `
+        UPDATE Product_Stock
+        SET stock = stock + ?
+        WHERE product_option_id = ?
+    `;
+    await pool.execute(query, [quantity, product_option_id]);
+};
+
+// 주문 상태 업데이트
+export const updateOrderStatus = async (order_id, status) => {
+    const query = `
+        UPDATE Orders
+        SET status = ?
+        WHERE id = ?
+    `;
+    await pool.execute(query, [status, order_id]);
+};
+
+// 주문 정보 가져오기
+export const getOrder = async (order_id) => {
+    const query = `
+        SELECT * FROM Orders WHERE id = ?
+    `;
+    const [rows] = await pool.execute(query, [order_id]);
+    return rows[0];  // 단일 주문 정보 반환
+};

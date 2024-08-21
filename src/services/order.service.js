@@ -1,5 +1,12 @@
 import axios from 'axios';
-import {createOrder, createOrderItem, getOrder, updateOrderStatus, updateStock} from "../models/oreder.dao.js";
+import {
+    createOrder,
+    createOrderItem,
+    getOrder,
+    restoreStock,
+    updateOrderStatus,
+    updateStock
+} from "../models/oreder.dao.js";
 
 // 아임포트 인증 토큰 발급 함수
 async function getIamportToken() {
@@ -80,7 +87,25 @@ export async function createOrderAndPreparePayment(orderData) {
     const { imp_uid } = iamportResponse.data.response;
     console.log(iamportResponse.data);
 
-
-    return { order: newOrder,imp_uid, paymentData };
+    return { order: newOrder, imp_uid, paymentData };
 }
 
+// 결제 완료 및 검증 서비스
+export async function completePaymentInfo(paymentInfo) {
+    const { imp_uid, merchant_uid, order_id } = paymentInfo;
+
+    const accessToken = await getIamportToken();
+
+    // 결제 검증
+    const iamportResponse = await axios.get(`https://api.iamport.kr/payments/${imp_uid}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    const payment = iamportResponse.data.response;
+    if (payment.status !== 'paid') {
+        throw new Error('결제 실패');
+    }
+
+    // 주문 상태 업데이트
+    await updateOrderStatus(order_id, 'COMPLETE');
+}

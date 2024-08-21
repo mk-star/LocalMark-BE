@@ -14,3 +14,14 @@ export async function createOrder(req, res) {
     }
 }
 
+export async function completePayment(req, res) {
+    try {
+        await completePaymentInfo(req.body);
+        res.status(200).json({ message: '결제 완료 및 주문 상태 업데이트 성공' });
+    } catch (error) {
+        console.error('결제 완료 및 검증 오류:', error);
+        res.status(500).json({ error: '결제 완료 또는 검증 실패' });
+    }
+}
+
+
