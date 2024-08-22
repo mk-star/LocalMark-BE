@@ -3,7 +3,7 @@ paths:
     get:
       tags:
         - Comment
-      summary: Get comments for a post
+      summary: 댓글 및 대댓글 일괄 조회
       parameters:
         - name: postId
           in: path
@@ -13,7 +13,7 @@ paths:
             description: The ID of the post
       responses:
         200:
-          description: Successfully retrieved comments
+          description: 댓글과 대댓글이 조회되었습니다.
           content:
             application/json:
               schema:
@@ -110,7 +110,7 @@ paths:
     post:
       tags:
         - Comment
-      summary: Add a new comment
+      summary: 댓글 작성
       parameters:
         - name: postId
           in: path
@@ -134,7 +134,7 @@ paths:
 
       responses:
         201:
-          description: Comment created successfully
+          description: 댓글 또는 대댓글 작성이 완료되었습니다.
           content:
             application/json:
               schema:
@@ -175,7 +175,7 @@ paths:
     delete:
       tags:
         - Comment
-      summary: Delete comments (다중 삭제 기능 제공)
+      summary: 댓글 또는 대댓글 삭제 (다중 삭제 기능 제공)
       parameters:
         - name: postId
           in: path
@@ -193,7 +193,7 @@ paths:
 
       responses:
         200:
-          description: Comments deleted successfully
+          description: 선택한 댓글이 모두 삭제되었습니다.
           content:
             application/json:
               schema:
