@@ -14,7 +14,30 @@ export const requestEmailVerification = async (req, res) => {
 
 export const verifyEmail = async (req, res) => {
     const { token, expires } = req.query;
-    res.send(response(status.SUCCESS, await verifyEmailStatus(token, expires)));
+    const result = await verifyEmailStatus(token, expires);
+    if (result == 1) {
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        alert('이메일 인증이 완료되었습니다.');
+                        window.close();
+                    </script>
+                </body>
+            </html>
+        `);
+    } else {
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        alert('이메일 인증에 실패했습니다. 다시 시도해 주세요.');
+                        window.close();
+                    </script>
+                </body>
+            </html>
+        `);
+    }
 }
 
 export const getInfo = async (req, res) => {
