@@ -31,7 +31,7 @@ export const verifyEmail = async (req, res) => {
             <html>
                 <body>
                     <script>
-                        alert('이메일 인증에 실패했습니다. 다시 시도해 주세요.');
+                        alert('이미 이메일 인증을 완료하였습니다');
                         window.close();
                     </script>
                 </body>
