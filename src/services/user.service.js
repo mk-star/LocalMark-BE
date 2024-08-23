@@ -56,10 +56,8 @@ export const verifyEmailStatus = async (token, expires) => {
         throw new BaseError(status.TOKEN_EXPIRED);
     }
     const result = await modifyEmailStatus(user);
-    if (result == -1) {
-        throw new BaseError(status.ALREADY_VERIFIED_EMAIL);
-    }
-    return "이메일 인증이 성공적으로 완료되었습니다.";
+    console.log(result);
+    return result;
 };
 
 export const getUserInfo = async (userId) => {
