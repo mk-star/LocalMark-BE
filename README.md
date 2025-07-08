@@ -1,79 +1,62 @@
-# LOCAL-MARK-BE
+# 🛍️ 로컬 크리에이터와 구매자를 위한 로컬 마켓 플랫폼
+![표지](https://github.com/user-attachments/assets/f240370d-2724-4217-bcad-89e8e8709867)
+- 배포 URL: https://main--localmark.netlify.app/
 
-## Branch Rules
+<br/>
 
-#### Main Branch
+## 프로젝트 소개
+로컬 크리에이터란 지역의 자연/문화적 자산을 바탕으로 사업을 운영하는 사업자를 말합니다. <br />
 
-- 브랜치 이름 : Main
-- 최종 배포가 가능한 상태만을 관리하는 브랜치입니다.
+이 플랫폼은 로컬 크리에이터에게
+- 입점 기회,
+- 상품 판매와 홍보 채널,
+- 전국의 로컬 크리에이터들과의 네트워킹 기회를 제공합니다.
 
-#### Feature Branch
+구매자는
+- 유니크한 로컬 상품을 쉽게 구매할 수 있고,
+- 지역 비즈니스와 창작자에 대한 다양한 정보도 얻을 수 있어요.
 
-- 브랜치 이름 : feature/<기능명>/#<이슈번호>
-- 브랜치 이름 예시 : feature/login/#1
-- 기능 개발, 오류 수정 등에 사용되는 브랜치입니다.
+<br/>
 
-## Git Commit Message Convention
+## 주요 기능
+### 🛒 로컬 마켓
+로컬 크리에이터의 브랜드 및 상품을 등록하고 판매할 수 있는 공간입니다.
 
-### Commit Message 구조
+### 📌 More Local
+로컬 행사, 이벤트 정보와 로컬 크리에이터 인터뷰를 열람할 수 있습니다.
 
-- 헤더는 필수이며, 범위(scope), 본문(body), 바닥글(footer)은 선택 사항입니다.
+### 💬 로컬 커뮤니티
+로컬 크리에이터들 간의 소통과 정보 공유를 위한 커뮤니티 기능을 제공합니다.
 
-```
-<type>(<scope>): <subject>          -- 헤더
-<BLANK LINE>
-<body>                              -- 본문
-<BLANK LINE>
-<footer>                            -- 바닥글
-```
+<br/>
 
-#### 헤더
+## 기술 스택
+- Tech Stack
+  - Node.js
+- DB
+  - AWS RDS (MySQL)
+- DevOps
+  - AWS EC2, Github Actions
 
-- type, subject로 구성되어 있습니다.
+<br/>
 
-##### Commit Type
+## 담당 업무
+- 로그인, 회원 탈퇴, 비밀번호 찾기 (SMTP)
+- 상품 CRUD
+- 리뷰 CRUD
 
-- `type`은 해당 커밋의 성격을 나타내며 아래 중 하나여야 한다.
-  | 커밋 유형 | 의미 |
-  | --------- | ------------------------------------------------------------ |
-  | Feat | 새로운 기능 추가 |
-  | Fix | 버그 수정 |
-  | Docs | 문서 수정 |
-  | Style | 코드 formatting, 세미콜론 누락, 코드 자체의 변경이 없는 경우 |
-  | Refactor | 코드 리팩토링 |
-  | Test | 테스트 코드, 리팩토링 테스트 코드 추가 |
-  | Chore | 그 외 기타 수정 ex) .gitignore |
-  | Comment | 필요한 주석 추가 및 변경 |
+<br/>
 
-#### Subject 규칙
+## ERD
+<img src="https://github.com/user-attachments/assets/56e8a61f-8bb2-46f2-8cd5-944a3c20c19e" />
 
-- 제목은 영문 기준 **50자 이내**로 제한
-- **첫 글자는 대문자**로 작성, **끝에는 `.`(마침표) 금지**
-- **명령문으로 작성, 과거형 금지**
-- 이슈 넘버가 있을 경우 기입
+<br/>
+<br/>
 
-#### 본문(body) 규칙
 
-- 본문은 선택사항이며, 최대한 상세히 작성
-- **각 행은 72자 이내**로 작성
-- 길어질 경우 개행을 통해 입력
-- 어떻게 보다는 **무엇과 왜를 설명**
-- 글머리 기호도 사용 가능. 하이픈(-), 별표(\*)
+## 프로젝트 오버뷰
+![image](https://github.com/user-attachments/assets/2399e5e2-2b56-4eb4-8b2f-71e3d4bf107f)
+![image](https://github.com/user-attachments/assets/d56a4e6a-7713-454d-8c4b-0b5ae3889b05)
+![image](https://github.com/user-attachments/assets/c618da48-0ec2-411d-80d5-00fee6abc983)
 
-#### 꼬리말(footer) 규칙
 
-- 꼬리말은 선택사항이며, 이슈 트래킹을 위해서 사용된다.(commit 후 이슈 종료 가능)
-- "유형: #이슈 번호" 형식으로 작성
-- 여러 개의 이슈 번호는 쉼표(,)로 구분
-
-관련 내용 - [Github 이슈와 커밋 메시지 연결](https://devport.tistory.com/12)
-
-#### Commit message 예시
-
-```
-Feat: 카카오 로그인 기능 추가(#1)
-
-소셜 로그인 기능 추가를 위해 카카오 로그인 기능을 추가함
-
-Close: #1, #12
-```
